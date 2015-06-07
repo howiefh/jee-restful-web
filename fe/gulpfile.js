@@ -1,6 +1,7 @@
 /*global -$ */
 'use strict';
 /*
+ * gulp 3.9
  * - src
  *   - js
  *   - css
@@ -9,12 +10,14 @@
  * - tmp
  * - bower_components
  */
-//npm install --save-dev gulp gulp-filter gulp-flatten gulp-imagemin gulp-jshint gulp-minify-css gulp-uglify gulp-useref main-bower-files gulp-load-plugins gulp-clean gulp-cache gulp-concat gulp-rev-all gulp-rename gulp-beautify gulp-size gulp-inject gulp-if wiredep imagemin-pngquant
+//npm install --save-dev gulp gulp-filter gulp-flatten gulp-imagemin gulp-jshint gulp-minify-css gulp-uglify gulp-useref main-bower-files gulp-load-plugins gulp-clean gulp-cache gulp-concat gulp-rev-all gulp-rename gulp-beautify gulp-size gulp-inject gulp-if gulp-replace wiredep imagemin-pngquant del
 
 var gulp = require('gulp'),
     del = require('del'),
+    mainBowerFiles = require('main-bower-files'),
     pngquant = require('imagemin-pngquant'),
     $ = require('gulp-load-plugins')(),
+    prefix = 'http://localhost:8080/jeews',
     dist = '../src/main/webapp/WEB-INF/static/',
     distViews = '../src/main/webapp/WEB-INF/',
     src = 'src/',
@@ -24,29 +27,46 @@ var gulp = require('gulp'),
     css = 'css/*.css',
     fonts = 'fonts/*',
     images = 'images/*',
-    jsFilter = $.filter('**/*.js'),
-    cssFilter = $.filter('**/*.css'),
-    fontFilter = $.filter('**/*.{eot,svg,ttf,woff,woff2,otf}'),
-    htmlFilter = $.filter('**/*.html'),
-    nonHtmlFilter = $.filter('**/*.+(js|css|png|jpg|eot|svg|ttf|woff|woff2|otf)'),
-    prefix = 'http://localhost:8080/jeews';
+    jsFilter = '**/*.js',
+    cssFilter = '**/*.css',
+    fontFilter = '**/*.{eot,svg,ttf,woff,woff2,otf}',
+    htmlFilter = '**/*.html',
+    nonHtmlFilter = '**/*.+(js|css|png|jpg|eot|svg|ttf|woff|woff2|otf)';
 var revAll = new $.revAll({
     //不重命名文件
     dontRenameFile: ['.html'] ,
     //无需关联处理文件
     dontGlobal: [ /^\/favicon.ico$/ ,'.bat','.txt'],
     //该项配置只影响绝对路径的资源
-    prefix: 'http://static.server.com'
+    prefix: prefix
 });
-
+var overridesPkg = {
+    'jquery': {
+        'main': 'dist/jquery.min.js'
+    }
+};
 // 在页面中插入bower组件
 // use starttag <!-- bower:js -->
 gulp.task('wiredep', function () {
     var wiredep = require('wiredep').stream;
-
-    return gulp.src(src + template)
+    var htmlType = {
+        html: { /*和inject嵌入bower的起始和结束标记一致*/
+            block: /(([ \t]*)<!--\s*bower:*(\S*)\s*-->)(\n|\r|.)*?(<!--\s*endinject\s*-->)/gi,
+            replace: { /*替换前缀*/
+                css: function (filePath) {
+                    return '<link  rel="stylesheet" href="' + filePath.replace(/.*\//,prefix + '/static/css/') + '">';
+                },
+                js: function (filePath) {
+                    return '<script src="' + filePath.replace(/.*\//,prefix + '/static/js/') + '"></script>';
+                }
+            }
+        }
+    };
+    return gulp.src(src + '**/*.html')
         .pipe(wiredep({
         exclude: ['bootstrap-sass-official'],
+        overrides: overridesPkg,
+        fileTypes: htmlType,
         ignorePath: /^(\.\.\/)*\.\./
         }))
         .pipe(gulp.dest(tmp));
@@ -54,7 +74,7 @@ gulp.task('wiredep', function () {
 //美化代码
 gulp.task('beautify', function() {
     return gulp.src(src+js)
-        .pipe(beautify({indentSize: 2}))
+        .pipe($.beautify({indentSize: 2}))
         .pipe(gulp.dest(tmp + 'js'))
 });
 //验证js
@@ -63,7 +83,6 @@ gulp.task('jshint', function () {
         .pipe($.jshint())
         .pipe($.jshint.reporter('default'));
 });
-
 //将模板文件中的js css压缩
 // use starttag <!-- build:js -->
 gulp.task('useref',function() {
@@ -85,44 +104,35 @@ gulp.task('useref',function() {
 gulp.task('clean', function (cb) {
     del([dist + js,dist + css,dist + fonts,dist + images, tmp + '**/*'], {force:true}, cb);
 });
-
 //release 拷贝bower下的资源文件到目标目录
 gulp.task('bower',function() {
+    var jsF = $.filter(jsFilter),
+        cssF = $.filter(cssFilter),
+        fontF = $.filter(fontFilter);
     //添加return可以告知gulp任务已经结束，否则后续任务依赖当前任务的输出文件的话可能有问题
     //flatten可以去掉一些相对路径，使所有文件在一个目标目录下
-    return gulp.src(require('main-bower-files')())
-        .pipe(jsFilter)
+    return gulp.src(mainBowerFiles())
+        .pipe(jsF)
         .pipe($.flatten())
         .pipe(gulp.dest(tmp+'js'))
-        .pipe(jsFilter.restore())
-        .pipe(cssFilter)
+        .pipe(jsF.restore())
+        .pipe(cssF)
         .pipe($.flatten())
         .pipe(gulp.dest(tmp+'css'))
-        .pipe(cssFilter.restore())
-        .pipe(fontFilter)
+        .pipe(cssF.restore())
+        .pipe(fontF)
         .pipe($.flatten())
         .pipe(gulp.dest(tmp+'fonts'));
 });
-//dev 拷贝bower下的压缩过的资源文件到目标目录
-gulp.task('bower:min',function() {
-    return gulp.src(require('main-bower-files')({
-        'overrides': {
-            'jquery': {
-                'main': 'dist/jquery.min.js'
-            }
-        }
-        }))
-        .pipe(jsFilter)
-        .pipe($.flatten())
-        .pipe(gulp.dest(tmp+'js'))
-        .pipe(jsFilter.restore())
-        .pipe(cssFilter)
-        .pipe($.flatten())
-        .pipe(gulp.dest(tmp+'css'))
-        .pipe(cssFilter.restore())
-        .pipe(fontFilter)
-        .pipe($.flatten())
-        .pipe(gulp.dest(tmp+'fonts'));
+//赋值src文件到tmp中
+gulp.task('copy',function() {
+    return gulp.src(src + '**/*')
+        .pipe(gulp.dest(tmp));
+});
+//release 压缩css js 图片
+gulp.task('collect',['bower','copy'],function(cb) {
+    //在任务定义的function中传入callback变量，当callback()执行时，任务结束。
+    cb();
 });
 //压缩css
 gulp.task('minifycss',['collect'],function() {
@@ -152,59 +162,74 @@ gulp.task('minifyimg',['collect'],function() {
         })))
         .pipe(gulp.dest(tmp + 'images'));
 });
-//赋值src文件到tmp中
-gulp.task('copy',function() {
-    return gulp.src(src + '**/*')
-        .pipe(gulp.dest(tmp));
-});
-//release 压缩css js 图片
-gulp.task('collect',['bower','copy'],function(cb) {
-    //在任务定义的function中传入callback变量，当callback()执行时，任务结束。
-    cb();
-});
-//dev 收集bower中压缩过的文件及src中的文件
-gulp.task('collect:min',['bower:min','copy'],function(cb) {
-    cb();
-});
 //release 去掉非压缩的js,css
 gulp.task('minify',['collect','minifycss','minifyjs','minifyimg'],function(cb) {
-    del([tmp + js,tmp + css, '!' + tmp + '**/*.min.js','!' + tmp + '**/*.min.css'], {force:true}, cb);
-});
-//dev 将js，css插入到模板文件中
-// use starttag <!-- inject:js -->
-gulp.task('inject',['collect:min'],function() {
-    var target = gulp.src(src + '**/*.html');
-    // It's not necessary to read the files (will speed up things), we're only after their paths:
-    var sources = gulp.src([tmp + js, tmp + css], {read: false});
-    return target.pipe($.inject(sources, {addRootSlash:false, addPrefix: prefix}))
-        .pipe(gulp.dest(tmp));
+    del([tmp + js,tmp + css, '!' + tmp + 'js/main.min.js','!' + tmp + 'css/style.min.css'], {force:true}, cb);
 });
 //release 压缩后的css和js插入模板文件
-gulp.task('minify:inject',['minify'],function() {
+gulp.task('inject:release',['minify'],function() {
     var target = gulp.src(src + '**/*.html');
     var sources = gulp.src([tmp + '**/*.min.js', tmp + '**/*.min.css'], {read: false});
     return target.pipe($.inject(sources, {addRootSlash:false, addPrefix: prefix}))
+        //删除标记和空行
+        .pipe($.replace(/([ \t]*<!--\s*(bower|inject):*\S*\s*-->)((\n|\r|.)*?)(<!--\s*endinject\s*-->)/gi,'$3'))
+        .pipe($.replace(/^[\t ]*\n/mg,''))
+        .pipe(gulp.dest(tmp));
+});
+/* 发布,图片、css、js被压缩过 */
+gulp.task('release',['inject:release'],function() {
+    var htmlF = $.filter(htmlFilter),
+        nonHtmlF = $.filter(nonHtmlFilter);
+    return gulp.src([tmp + '**/*','!'+tmp+'views/app.html'])
+        .pipe(htmlF)
+        .pipe(gulp.dest(distViews))
+        .pipe(htmlF.restore())
+        .pipe(nonHtmlF)
+        .pipe(gulp.dest(dist))
+        .pipe($.size({title: 'release', gzip: true}));
+});
+gulp.task('inject:dev', function () {
+    var jsF = $.filter(jsFilter),
+        cssF = $.filter(cssFilter),
+        fontF = $.filter(fontFilter),
+        nonHtmlF = $.filter(nonHtmlFilter);
+    var bowerSources = gulp.src(mainBowerFiles({
+        'overrides': overridesPkg
+        }))
+        .pipe(jsF)
+        .pipe($.flatten())
+        .pipe(gulp.dest(tmp+'js'))
+        .pipe(jsF.restore())
+        .pipe(cssF)
+        .pipe($.flatten())
+        .pipe(gulp.dest(tmp+'css'))
+        .pipe(cssF.restore())
+        .pipe(fontF)
+        .pipe($.flatten())
+        .pipe(gulp.dest(tmp+'fonts'))
+        .pipe(fontF.restore());
+    var sources = gulp.src(src + '**/*')
+        .pipe(nonHtmlF)
+        .pipe(gulp.dest(tmp));
+    var target = gulp.src(src + '**/*.html');
+    return target.pipe($.inject(bowerSources, {name: 'bower', addRootSlash:false, addPrefix: prefix}))
+        .pipe($.inject(sources, {addRootSlash:false, addPrefix: prefix}))
+        //删除标记和空行
+        .pipe($.replace(/([ \t]*<!--\s*(bower|inject):*\S*\s*-->)((\n|\r|.)*?)(<!--\s*endinject\s*-->)/gi,'$3'))
+        .pipe($.replace(/^[\t ]*\n/mg,''))
         .pipe(gulp.dest(tmp));
 });
 /* 开发 */
-gulp.task('dev',['inject'],function() {
+gulp.task('dev',['inject:dev'],function() {
+    var htmlF = $.filter(htmlFilter),
+        nonHtmlF = $.filter(nonHtmlFilter);
     return gulp.src([tmp + '**/*','!'+tmp+'views/app.html'])
-        .pipe(htmlFilter)
+        .pipe(htmlF)
         .pipe(gulp.dest(distViews))
-        .pipe(htmlFilter.restore())
-        .pipe(nonHtmlFilter)
+        .pipe(htmlF.restore())
+        .pipe(nonHtmlF)
         .pipe(gulp.dest(dist))
         .pipe($.size({title: 'dev', gzip: true}));
-});
-/* 发布,图片、css、js被压缩过 */
-gulp.task('release',['minify:inject'],function() {
-    return gulp.src([tmp + '**/*','!'+tmp+'views/app.html'])
-        .pipe(htmlFilter)
-        .pipe(gulp.dest(distViews))
-        .pipe(htmlFilter.restore())
-        .pipe(nonHtmlFilter)
-        .pipe(gulp.dest(dist))
-        .pipe($.size({title: 'release', gzip: true}));
 });
 //默认任务
 gulp.task('default',['clean'], function () {
