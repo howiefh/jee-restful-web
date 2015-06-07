@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.howiefh.jeews.test.dao.TestUserDao">
+  <insert id="insert">
+  insert into test_user (id,username,password,salt,roles,locked)
+  values (#{id},#{username},#{password},#{salt},#{roles},#{locked})
+  </insert>
+  <select id="get" resultType="TestUser">
+  select * from test_user where id = #{id}
+  </select>
+  <select id="findAllList" resultType="TestUser">
+  select * from test_user
+  </select>
+  <select id="findByName" resultType="TestUser">
+  select * from test_user where username like #{username}
+  </select>
+  <update id="update">
+  update test_user
+  set username = #{username}, password = #{password}, roles = #{roles}
+  where id = #{id}
+  </update>
+  <delete id="delete">
+  delete from test_user
+  where id = #{id}
+  </delete>
+</mapper>

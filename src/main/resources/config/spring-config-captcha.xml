@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+  <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+    <property name="config">
+      <bean class="com.google.code.kaptcha.util.Config">
+        <constructor-arg>
+          <props>
+            <!-- 是否有边框 -->
+            <prop key="kaptcha.border">${captcha.border}</prop>
+            <!-- 边框颜色 -->
+            <prop key="kaptcha.border.color">${captcha.border.color}</prop>
+            <!-- 边框厚度 -->
+            <prop key="kaptcha.border.thickness">${captcha.border.thickness}</prop>
+            <!-- 验证码生成器 -->
+            <prop key="kaptcha.producer.impl">${captcha.producer.impl}</prop>
+            <!-- 验证码文本生成器 -->
+            <prop key="kaptcha.textproducer.impl">${captcha.textproducer.impl}</prop>
+            <!-- 验证码文本字符间距 -->
+            <prop key="kaptcha.textproducer.char.space">${captcha.textproducer.char.space}</prop>
+            <!-- 生成验证码内容范围 -->
+            <prop key="kaptcha.textproducer.char.string">${captcha.textproducer.char.string}</prop>
+            <!-- 验证码个数 -->
+            <prop key="kaptcha.textproducer.char.length">${captcha.textproducer.char.length}</prop>
+            <!-- 验证码字体颜色 -->
+            <prop key="kaptcha.textproducer.font.color">${captcha.textproducer.font.color}</prop>
+            <!-- 验证码字体大小 -->
+            <prop key="kaptcha.textproducer.font.size">${captcha.textproducer.font.size}</prop>
+            <!-- 验证码所属字体样式 -->
+            <prop key="kaptcha.textproducer.font.names">${captcha.textproducer.font.names}</prop>
+            <!-- 验证码噪点生成对象 -->
+            <prop key="kaptcha.noise.impl">${captcha.noise.impl}</prop>
+            <!-- 干扰线颜色 -->
+            <prop key="kaptcha.noise.color">${captcha.noise.color}</prop>
+            <!-- 验证码样式引擎 -->
+            <prop key="kaptcha.obscurificator.impl">${captcha.obscurificator.impl}</prop>
+            <!-- 验证码文本字符渲染 -->
+            <prop key="kaptcha.word.impl">${captcha.word.impl}</prop>
+            <!-- 验证码背景生成器 -->
+            <prop key="kaptcha.background.impl">${captcha.background.impl}</prop>
+            <!-- 验证码背景颜色渐进 -->
+            <prop key="kaptcha.background.clear.from">${captcha.background.clear.from}</prop>
+            <!-- 验证码背景颜色渐进 -->
+            <prop key="kaptcha.background.clear.to">${captcha.background.clear.to}</prop>
+            <!-- 验证码宽度 -->
+            <prop key="kaptcha.image.width">${captcha.image.width}</prop>
+            <!-- 验证码高度 -->
+            <prop key="kaptcha.image.height">${captcha.image.height}</prop>
+            <!-- seesion key -->
+            <prop key="kaptcha.session.key">${captcha.session.key}</prop>
+          </props>
+        </constructor-arg>
+      </bean>
+    </property>
+  </bean>
+</beans>

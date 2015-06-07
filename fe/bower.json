@@ -1,0 +1,21 @@
+{
+  "name": "jeews",
+  "version": "0.0.1",
+  "authors": [
+    "Feng Hao <howiefh(at)gmail.com>"
+  ],
+  "description": "JEE Web Site",
+  "main": "src/js/app.js",
+  "license": "MIT",
+  "homepage": "http://io.github.howiefh",
+  "dependencies": {
+    "jquery": "~2.1.4"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
