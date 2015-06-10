@@ -22,3 +22,5 @@
     使用Gulp构建，Bower进行包管理，主要使用的框架
 
     * jQuery
+    * Bootstrap
+    * AngularJS

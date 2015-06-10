@@ -9,7 +9,11 @@
   "license": "MIT",
   "homepage": "http://io.github.howiefh",
   "dependencies": {
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "angular": "~1.4.0",
+    "angular-resource": "~1.4.0",
+    "angular-route": "~1.4.0",
+    "bootstrap": "~3.3.4"
   },
   "ignore": [
     "**/.*",

@@ -1,0 +1,36 @@
+<div class="container">
+    <h1>用户详情</h1>
+    <form novalidate="novalidate" class="form-horizontal">
+        <input type="hidden" id="id" ng-model="user.id" value="{{user.id}}"/>
+        <div class="control-group">
+            <label class="control-label" for="username">用户名:</label>
+
+            <div class="controls">
+                <input type="text" id="username" ng-model="user.username"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password">密码:</label>
+
+            <div class="controls">
+                <input type="password" id="password" ng-model="user.password"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="rolesList">角色:</label>
+
+            <div class="controls">
+                <select id="rolesList" name="rolesList" multiple="multiple"  ng-model="user.rolesList">
+                    <option value="admin">admin</option>
+                    <option value="user">user</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <a ng-click="cancel()" class="btn btn-small">取消</a>
+                <a ng-click="updateUser()" class="btn btn-small btn-primary">更新用户</a>
+            </div>
+        </div>
+    </form>
+</div>

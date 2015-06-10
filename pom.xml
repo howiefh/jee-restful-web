@@ -15,6 +15,9 @@
     <cglib.version>3.1</cglib.version>
 
     <junit.version>4.11</junit.version>
+    <mockito.version>1.10.19</mockito.version>
+    <jsonpath.version>2.0.0</jsonpath.version>
+    <hamcrest.version>1.3</hamcrest.version>
 
     <servlet-api.version>3.1.0</servlet-api.version>
     <jsp-api.version>2.3.1</jsp-api.version>
@@ -35,7 +38,9 @@
     <ehcache-web.version>2.0.4</ehcache-web.version>
 
     <kaptcha.version>0.0.9</kaptcha.version>
-    
+
+    <jackson.version>2.5.3</jackson.version>
+
     <jdk.version>1.8</jdk.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -146,9 +151,39 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>${hamcrest.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>hamcrest-core</artifactId>
+          <groupId>org.hamcrest</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path</artifactId>
+      <version>${jsonpath.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path-assert</artifactId>
+      <version>${jsonpath.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -257,12 +292,28 @@
       <artifactId>cglib</artifactId>
       <version>${cglib.version}</version>
     </dependency>
-    
+
     <!-- 验证码 -->
     <dependency>
       <groupId>com.github.axet</groupId>
       <artifactId>kaptcha</artifactId>
       <version>${kaptcha.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
     </dependency>
   </dependencies>
 
@@ -309,6 +360,11 @@
           <wtpversion>2.0</wtpversion>
           <manifest>${basedir}/src/main/webapp/META-INF/MANIFEST.MF</manifest>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.2</version>
       </plugin>
     </plugins>
   </build>

@@ -5,7 +5,6 @@ target/
 fe/bower_components/
 fe/node_modules/
 fe/static/
-fe/src/js/
-fe/src/images/
-fe/src/css/
+src/main/webapp/WEB-INF/static/
+src/main/webapp/WEB-INF/views/
 *.log

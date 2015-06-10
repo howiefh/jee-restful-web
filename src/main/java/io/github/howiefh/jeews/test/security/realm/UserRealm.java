@@ -2,6 +2,7 @@ package io.github.howiefh.jeews.test.security.realm;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,10 +39,10 @@ public class UserRealm extends AuthorizingRealm {
         String username = (String)principals.getPrimaryPrincipal();
 
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        String roles = userService.findByName(username).getRoles();
+        List<String> roles = userService.findByName(username).getRolesList();
         Set<String> roleSet = new HashSet<String>();
         Set<String> permissionSet = new HashSet<String>();
-        for (String role : roles.split(",")) {
+        for (String role : roles) {
 			roleSet.add(role);
             for (String permission: permissions.get(role).split(",")) {
                 permissionSet.add(permission);
