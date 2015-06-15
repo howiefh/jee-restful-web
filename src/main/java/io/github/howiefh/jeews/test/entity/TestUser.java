@@ -1,28 +1,24 @@
 package io.github.howiefh.jeews.test.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.hateoas.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TestUser implements Serializable {
-	private static final long serialVersionUID = 5528940907575087443L;
-	private long id;
-    private String username;
+@Relation(value = "test", collectionRelation = "tests")
+public class TestUser extends TestBaseEntity {
+	private static final long serialVersionUID = 415987600518114093L;
+	private String username;
     private String password;
     private String salt;
     private List<String> rolesList;
     @JsonIgnore
     private String roles;
     private boolean locked;
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
+	
 	public String getUsername() {
 		return username;
 	}

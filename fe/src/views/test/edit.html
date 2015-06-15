@@ -1,34 +1,25 @@
-<div class="container">
-    <h1>用户详情</h1>
-    <form novalidate="novalidate" class="form-horizontal">
-        <div class="control-group">
-            <label class="control-label" for="username">用户名:</label>
-
-            <div class="controls">
-                <input type="text" id="username" ng-model="user.username"/>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="password">密码:</label>
-
-            <div class="controls">
-                <input type="password" id="password" ng-model="user.password"/>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="rolesList">角色:</label>
-
-            <div class="controls">
-                <select id="rolesList" name="rolesList" multiple="multiple"  ng-model="user.rolesList">
-                    <option value="admin">admin</option>
-                    <option value="user">user</option>
-                </select>
-            </div>
-        </div>
-        <div class="control-group">
-            <div class="controls">
-                <a ng-click="createNewUser()" class="btn btn-small btn-primary">添加用户</a>
-            </div>
-        </div>
-    </form>
+<h1>添加用户</h1>
+<form class="ws-form" name="wsForm" novalidate>
+    <div class="form-group">
+        <label for="name">用户名 *</label>
+        <input ng-model="user.username" type="text" class="form-control" id="name" placeholder="用户名：张三" required>
+    </div>
+    <div class="form-group">
+        <label for="password">密码 *</label>
+        <input ng-model="user.password" type="password" class="form-control" id="password" placeholder="密码" required>
+    </div>
+    <div class="form-group">
+        <label for="role">角色</label>
+        <select ng-model="user.rolesList"  multiple="multiple" class="form-control" id="role">
+             <option value="admin">admin</option>
+             <option value="user">user</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>锁定</label>
+        <input ng-model="user.locked" type="checkbox" class="" id="locked" >
+    </div>
+</form>
+<div class="actions">
+    <a class="btn btn-lg btn-success" ng-click="wsForm.$valid && createUser()" ng-class="{disabled : wsForm.$invalid}">保存</a>
 </div>

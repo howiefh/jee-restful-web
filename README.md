@@ -1,6 +1,6 @@
 # JEE Web Site
 
-一个小Demo
+构建 RESTful Web Service 的 Demo
 
 ## 技术
 
@@ -16,6 +16,7 @@
     * Ehcache 2.6
     * SLF4J 1.7、Log4j 2.3
     * Kaptcha 0.9
+    * Spring HATEOAS 0.17
 
 2. 前端
 
@@ -24,3 +25,5 @@
     * jQuery
     * Bootstrap
     * AngularJS
+    * Restangular
+    * AngularUI Router

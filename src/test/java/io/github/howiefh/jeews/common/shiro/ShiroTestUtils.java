@@ -1,6 +1,6 @@
 package io.github.howiefh.jeews.common.shiro;
 import io.github.howiefh.jeews.test.entity.TestUser;
-import io.github.howiefh.jeews.test.security.realm.UserRealm;
+import io.github.howiefh.jeews.test.security.realm.TestUserRealm;
 
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
@@ -35,7 +35,7 @@ public class ShiroTestUtils {
 		SimplePrincipalCollection principals = new SimplePrincipalCollection(user.getUsername(), "root");
 		principals.add(user, "root");
 		Mockito.when(subject.getPrincipals()).thenReturn(principals);
-		Mockito.when(subject.hasRole(UserRealm.ADMIN)).thenReturn(isSuperAdmin);
+		Mockito.when(subject.hasRole(TestUserRealm.ADMIN)).thenReturn(isSuperAdmin);
 		bindSubject(subject);
 	}
 

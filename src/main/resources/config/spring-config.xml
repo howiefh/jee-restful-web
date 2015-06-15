@@ -107,7 +107,7 @@
     <property name="basePackage" value="io.github.howiefh.jeews"/>
     <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
   </bean>
-  
+ 
   <import resource="classpath:config/spring-config-cache.xml"/>
   <import resource="classpath:config/spring-config-shiro.xml"/>
   <import resource="classpath:config/spring-config-captcha.xml"/>

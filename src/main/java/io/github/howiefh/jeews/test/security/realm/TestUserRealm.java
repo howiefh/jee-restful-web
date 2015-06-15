@@ -22,7 +22,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class UserRealm extends AuthorizingRealm {
+public class TestUserRealm extends AuthorizingRealm {
     @Autowired
     private TestUserService userService;
     
@@ -30,7 +30,7 @@ public class UserRealm extends AuthorizingRealm {
     public final static String ADMIN = "admin";
     public final static String USER = "user";
     
-    public UserRealm() {
+    public TestUserRealm() {
 		permissions.put(ADMIN, "test:view,test:create,test:update,test:delete");
 		permissions.put(USER, "test:view");
 	}

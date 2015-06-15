@@ -12,13 +12,17 @@
 
   <!-- 加载配置属性文件 -->
   <context:property-placeholder location="classpath:config/jeews.properties" />
-
+  
   <!-- 开启controller注解支持 -->
   <!-- 注意事项请参考：http://jinnianshilongnian.iteye.com/blog/1762632 -->
   <context:component-scan base-package="io.github.howiefh.jeews.**.controller" use-default-filters="false">
     <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
   </context:component-scan>
+  
+  <!--  可以去掉context:annotation-config -->
+  <!-- for RESTful see https://github.com/spring-projects/spring-hateoas/issues/259-->
+  <bean class="io.github.howiefh.jeews.test.config.TestHypermediaConfiguration" /> 
 
   <!-- 采用注解方式配置MVC -->
   <mvc:annotation-driven />

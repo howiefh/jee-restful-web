@@ -7,4 +7,5 @@ fe/node_modules/
 fe/static/
 src/main/webapp/WEB-INF/static/
 src/main/webapp/WEB-INF/views/
+log/
 *.log
