@@ -25,7 +25,14 @@
   <bean class="io.github.howiefh.jeews.test.config.TestHypermediaConfiguration" /> 
 
   <!-- 采用注解方式配置MVC -->
-  <mvc:annotation-driven />
+  <!-- see http://stackoverflow.com/questions/22135002/spring-data-does-not-handle-pageable-action-argument-creation#22143995 -->
+  <mvc:annotation-driven>
+    <mvc:argument-resolvers>
+      <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" />
+    </mvc:argument-resolvers>
+  </mvc:annotation-driven>
+  <!-- see https://github.com/spring-projects/spring-hateoas/issues/161 -->
+  <bean class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" />
 
   <!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
   <!-- 当在web.xml 中   DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->

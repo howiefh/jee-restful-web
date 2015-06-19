@@ -10,9 +10,3 @@ html{
     content: "请输入有效内容";
     color: red;
 }
-th.order{
-    background-color: #ddd;
-}
-th.pointer{
-    cursor: pointer;
-}

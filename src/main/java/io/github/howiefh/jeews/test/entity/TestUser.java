@@ -1,5 +1,7 @@
 package io.github.howiefh.jeews.test.entity;
 
+import io.github.howiefh.jeews.common.entity.BasicEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Relation(value = "test", collectionRelation = "tests")
-public class TestUser extends TestBaseEntity {
+public class TestUser extends BasicEntity {
 	private static final long serialVersionUID = 415987600518114093L;
 	private String username;
     private String password;

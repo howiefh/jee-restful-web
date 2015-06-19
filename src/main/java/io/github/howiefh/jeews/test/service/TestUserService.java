@@ -10,6 +10,9 @@ import org.apache.shiro.crypto.hash.DefaultHashService;
 import org.apache.shiro.crypto.hash.HashRequest;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,29 +20,40 @@ public class TestUserService {
 	@Autowired
     private TestUserDao userDao;
     
-	public int insert(TestUser user) {
+	public int save(TestUser user) {
         encryptPasswordAndGenSalt(user);
-		return userDao.insert(user);
+		return userDao.save(user);
 	}
     
-	public TestUser getOne(long id) {
-        return userDao.get(id);
+	public TestUser findOne(long id) {
+        return userDao.findOne(id);
 	}
 	public TestUser findByName(String username) {
 		return userDao.findByName(username);
 	}
     
-	public List<TestUser> findAllList() {
-		return userDao.findAllList();
+	public List<TestUser> findAll() {
+		return (List<TestUser>) userDao.findAll();
+	}
+    
+	public Page<TestUser> findAllByPage(Pageable pageable) {
+        List<TestUser> users = (List<TestUser>) userDao.findAllByPage(pageable);
+        long count = userDao.count();
+        return new PageImpl<TestUser>(users, pageable, count);
 	}
     
     public int update(TestUser user) {
-        encryptPasswordAndGenSalt(user);
+        if (user.getPassword()!=null) {
+            encryptPasswordAndGenSalt(user);
+		}
 		return userDao.update(user);
 	}
     
-    public int delete(TestUser user) {
-		return userDao.delete(user);
+    public int delete(Long id) {
+		return userDao.delete(id);
+	}
+    public int deleteAll(List<Long> ids) {
+		return userDao.deleteAll(ids);
 	}
     private void encryptPasswordAndGenSalt(TestUser user) {
         SecureRandomNumberGenerator generator = new SecureRandomNumberGenerator();

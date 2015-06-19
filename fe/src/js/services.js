@@ -5,5 +5,7 @@
 var testServices = angular.module('testServices', []);
 
 testServices.factory('Users', ['Restangular', function(Restangular) {
-  return Restangular.service('testusers');
+  var path = 'testusers';
+  var service = Restangular.service(path);  
+  return service;
 }]);

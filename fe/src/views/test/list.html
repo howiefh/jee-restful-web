@@ -1,37 +1,45 @@
-<div class="">
-    <form class="form-inline" role="form">
-        <div class="form-group">
-            <label class="sr-only" for="search">过滤</label>
-            <input ng-model="criteria" id="search" type="text" class="form-control" placeholder="过滤 ..." >
-        </div>
-    </form>
-</div>
-
-
-<h2 class="page-header">{{filteredUsers.length}} 个用户</h2>
-
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th class="pointer" ng-click="orderListBy('id')" ng-class="{order: attribute == 'id'}">id</th>
-            <th class="pointer" ng-click="orderListBy('username')" ng-class="{order: attribute == 'username'}">用户名</th>
-            <th class="pointer" ng-click="orderListBy('rolesList')" ng-class="{order: attribute == 'rolesList'}">角色列表</th>
-            <th class="pointer" ng-click="orderListBy('locked')" ng-class="{order: attribute == 'locked'}">是否锁定</th>
-            <th>操作</th>
-        </tr>
-        </thead>
+    <div class="">
+        <div class="col-lg-12 page-header">
+            <button class="btn btn-danger pull-right" ng-click="deleteSelected()">删除选中</button>
+            <button class="btn btn-default pull-right" ng-click="tableParams.sorting({})">清除排序</button>
+        </div> <!-- /.col-lg-12 -->
+    </div>
+    <table ng-table="tableParams"  show-filter="true" class="table">
         <tbody>
-        <tr ng-repeat="user in filteredUsers = (users | filter:criteria) | orderBy:attribute:reverse">
-            <td>{{user.id}}</td>
-            <td><a href="#/users/update/{{user.id}}">{{user.username}}</a></td>
-            <td>{{user.rolesList | uppercase}}</td>
-            <td>{{user.locked | checkmark }}</td>
-            <td>
-                <a class="btn btn-info" href="#/users/update/{{user.id}}"><i class="icon-edit icon-white">编辑</i></a>
+        <tr ng-repeat="user in $data">
+            <td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
+                <input type="checkbox" ng-model="checkboxes.items[user.id]" />
+            </td>
+            <td data-title="'id'"  sortable="'id'">
+                {{user.id}}
+            </td>
+            <td data-title="'用户名'"  sortable="'username'" filter="{ 'username': 'text' }">
+                <span ng-if="!user.$edit"><a href="#/users/update/{{user.id}}">{{user.username}}</a></span>
+                <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.username" /></div>
+            </td>
+            <td data-title="'用户角色'" filter="{ 'rolesList': 'text' }">
+                <span ng-if="!user.$edit">{{user.rolesList}}</span>
+                <div ng-if="user.$edit">
+                    <select ng-model="user.rolesList"  multiple="multiple" class="form-control">
+                         <option value="admin">admin</option>
+                         <option value="user">user</option>
+                    </select>
+                </div>
+            </td>
+            <td data-title="'是否锁定'">
+                <span ng-if="!user.$edit">{{user.locked | checkmark }}</span>
+                <div ng-if="user.$edit"><input class="form-control" type="checkbox" ng-model="user.locked" /></div>
+            </td>
+            <td data-title="'操作'">
+                <a ng-if="!user.$edit" href="" class="btn btn-info" ng-click="user.$edit = true"><i class="icon-edit icon-white">编辑</i></a>
+                <a ng-if="user.$edit" href="" class="btn btn-info" ng-click="updateUser(user)"><i class="icon-edit icon-white">保存</i></a>
                 <button class="btn btn-danger" ng-click="deleteUser(user)"><i class="icon-trash icon-white">X</i></button>
             </td>
         </tr>
         </tbody>
     </table>
+    <script type="text/ng-template" id="ng-table/headers/checkbox.html">
+        <input type="checkbox" ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />
+    </script>
 </div>

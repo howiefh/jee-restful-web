@@ -2,6 +2,10 @@ package io.github.howiefh.jeews.test.controller;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+
+import java.util.Arrays;
+import java.util.List;
+
 import io.github.howiefh.jeews.common.shiro.ShiroTestUtils;
 import io.github.howiefh.jeews.test.entity.TestUser;
 
@@ -50,7 +54,8 @@ public class TestUserRestControllerTest {
 	@Autowired
 	private WebApplicationContext wac;
 	private MockMvc mockMvc;
-
+	private int id = 12;
+    private List<Long> ids = Arrays.asList(11L,10L,9L);
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac)  
@@ -68,14 +73,15 @@ public class TestUserRestControllerTest {
 	}
 
 	@Test
-	public void testList() throws Exception {
-		mockMvc.perform(get("/testusers").accept(MediaTypes.HAL_JSON))
+	public void testGetAll() throws Exception {
+	    mockMvc.perform(get("/testusers?page=0&size=10&sort=id,asc")  
+	            .accept(MediaTypes.HAL_JSON)) //执行请求  
 	            .andExpect(status().isOk()) //200
-	            .andExpect(content().contentType(MediaTypes.HAL_JSON)) //验证响应contentType  
-				.andReturn();
+	            .andExpect(content().contentType(MediaTypes.HAL_JSON)); //验证响应contentType  
 	}
+
 	@Test
-	public void testGetTestUser() throws Exception {
+	public void testGet() throws Exception {
 		mockMvc.perform(get("/testusers/{id}",1L).accept(MediaTypes.HAL_JSON))
 	            .andExpect(status().isOk()) //200
 	            .andExpect(content().contentType(MediaTypes.HAL_JSON)) //验证响应contentType  
@@ -86,24 +92,28 @@ public class TestUserRestControllerTest {
 	}
 
 	@Test
-	public void test3Delete() throws Exception {
-        int id = 12;
-	    mockMvc.perform(delete("/testusers/{id}", id)  
-	            .contentType(MediaType.APPLICATION_JSON)
+	public void test1Create() throws Exception {
+	    String requestBody = "{\"id\":"+id+",\"username\":\"user"+id+"\",\"password\":\"123456\",\"rolesList\":[\"user, admin\"]}";  
+	    mockMvc.perform(post("/testusers")  
+	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)  
 	            .accept(MediaTypes.HAL_JSON)) //执行请求  
-	            .andExpect(status().isNoContent()); //204
-	      
-	    mockMvc.perform(delete("/testusers/?id={id}", 0L)  
-	            .accept(MediaType.APPLICATION_JSON)) //执行请求  
-	            .andExpect(status().isInternalServerError()) //500错误请求  
-	            .andExpect(jsonPath("$.code").value(500 + "")) //使用Json path验证JSON
-	            .andReturn();  
+	            .andExpect(status().isCreated()) //201
+	            .andExpect(jsonPath("$.id").value(id)) //使用Json path验证JSON
+	            .andExpect(content().contentType(MediaTypes.HAL_JSON)); //验证响应contentType  
+        
+	    requestBody = "{\"username\":\"zhangsan\",\"password\":\"123456\",\"rolesList\":[\"user, admin\"]}";  
+	    mockMvc.perform(post("/testusers")  
+	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)  
+	            .accept(MediaTypes.HAL_JSON)) //执行请求  
+	            .andExpect(status().isCreated()) //201
+	            .andExpect(jsonPath("$.id").exists()) //使用Json path验证JSON
+	            .andExpect(content().contentType(MediaTypes.HAL_JSON)); //验证响应contentType  
 	}
 
 	@Test
 	public void test2Update() throws Exception {
-        int id = 12;
-	    String requestBody = "{\"id\":"+id+",\"username\":\"user" + id + "\",\"password\":\"123456\",\"rolesList\":[\"user\"]}";  
+	    String requestBody = "{\"id\":"+id+",\"username\":\"user" + id + "\",\"rolesList\":[\"user\"]}";  
+//	    requestBody = "{\"id\":"+id+",\"username\":\"user" + id + "\",\"password\":\"123456\",\"rolesList\":[\"user\"]}";  
 	    mockMvc.perform(put("/testusers/{id}", id)  
 	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)  
 	            .accept(MediaTypes.HAL_JSON)) //执行请求  
@@ -123,23 +133,33 @@ public class TestUserRestControllerTest {
 	}
 
 	@Test
-	public void test1Create() throws Exception {
-        int id = 12;
-	    String requestBody = "{\"id\":"+id+",\"username\":\"user"+id+"\",\"password\":\"123456\",\"rolesList\":[\"user, admin\"]}";  
-	    mockMvc.perform(post("/testusers")  
-	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)  
+	public void test3Delete() throws Exception {
+	    mockMvc.perform(delete("/testusers/{id}", id)  
+	            .contentType(MediaType.APPLICATION_JSON)
 	            .accept(MediaTypes.HAL_JSON)) //执行请求  
-	            .andExpect(status().isCreated()) //201
-	            .andExpect(jsonPath("$.id").value(id)) //使用Json path验证JSON
-	            .andExpect(content().contentType(MediaTypes.HAL_JSON)); //验证响应contentType  
-        
-	    requestBody = "{\"username\":\"zhangsan\",\"password\":\"123456\",\"rolesList\":[\"user, admin\"]}";  
-	    mockMvc.perform(post("/testusers")  
-	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)  
+	            .andExpect(status().isNoContent()); //204
+	      
+	    mockMvc.perform(delete("/testusers/?id={id}", 0L)  
+	            .accept(MediaType.APPLICATION_JSON)) //执行请求  
+	            .andExpect(status().isInternalServerError()) //500错误请求  
+	            .andExpect(jsonPath("$.code").value(500 + "")) //使用Json path验证JSON
+	            .andReturn();  
+	}
+
+    @Test
+	public void test4DeleteAll() throws Exception {
+        for (int i = 0; i < ids.size(); i++) {
+            Long idL = ids.get(i);
+    	    String requestBody = "{\"id\":"+idL+",\"username\":\"user"+idL+"\",\"password\":\"123456\",\"rolesList\":[\"user, admin\"]}";  
+    	    mockMvc.perform(post("/testusers")  
+    	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)  
+    	            .accept(MediaTypes.HAL_JSON)) //执行请求  
+    	            .andExpect(status().isCreated()); //201
+		}
+	    mockMvc.perform(delete("/testusers")  
+	            .contentType(MediaType.APPLICATION_JSON).content(ids.toString())
 	            .accept(MediaTypes.HAL_JSON)) //执行请求  
-	            .andExpect(status().isCreated()) //201
-	            .andExpect(jsonPath("$.id").exists()) //使用Json path验证JSON
-	            .andExpect(content().contentType(MediaTypes.HAL_JSON)); //验证响应contentType  
+	            .andExpect(status().isNoContent()); //204
 	}
     
 	@Test
