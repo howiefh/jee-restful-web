@@ -8,6 +8,7 @@ package io.github.howiefh.jeews.common.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -15,5 +16,6 @@ import org.springframework.data.domain.Pageable;
  * @author howiefh
  */
 public interface PagingAndSortingDao<T, ID extends Serializable> extends CrudDao<T, ID>{
-	List<T> findAllByPage(Pageable pageable);
+	List<T> findPage(@Param("page") Pageable pageable);
+	List<T> findPageBy(@Param("page") Pageable pageable,@Param("param") T entity);
 }

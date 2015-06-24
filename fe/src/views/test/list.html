@@ -1,45 +1,82 @@
 <div class="table-responsive">
-    <div class="">
-        <div class="col-lg-12 page-header">
-            <button class="btn btn-danger pull-right" ng-click="deleteSelected()">删除选中</button>
-            <button class="btn btn-default pull-right" ng-click="tableParams.sorting({})">清除排序</button>
-        </div> <!-- /.col-lg-12 -->
+  <div class="">
+    <div class="table-toolbar">
+      <div class="columns columns-right btn-group pull-right">
+        <button class="btn btn-default" type="button" name="refresh" ng-click="tableParams.sorting({})" title="刷新">
+          <i class="glyphicon glyphicon-refresh icon-refresh"> </i>
+        </button>
+        <button class="btn btn-danger" type="button" name="trash" ng-click="deleteSelected()" title="删除">
+          <i class="glyphicon glyphicon-trash icon-trash"> </i>
+        </button>
+      </div>
+      <div class="pull-right search">
+        <div class="input-group">
+          <div class="input-group-btn dropdown" dropdown><!-- https://github.com/angular-ui/bootstrap/issues/2998 -->
+            <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+              {{selectedKey.name}}<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+            <li ng-repeat="key in keys">
+            <a href="#" ng-click="setKey(key)">{{key.name}}</a>
+            </li>
+            </ul>
+          </div>
+          <!-- /btn-group -->
+          <input class="form-control" placeholder="搜索..." type="text" ng-model="search.query" ng-enter="search()">
+        </div>
+        <!-- /input-group -->
+      </div>
     </div>
-    <table ng-table="tableParams"  show-filter="true" class="table">
-        <tbody>
-        <tr ng-repeat="user in $data">
-            <td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
-                <input type="checkbox" ng-model="checkboxes.items[user.id]" />
-            </td>
-            <td data-title="'id'"  sortable="'id'">
-                {{user.id}}
-            </td>
-            <td data-title="'用户名'"  sortable="'username'" filter="{ 'username': 'text' }">
-                <span ng-if="!user.$edit"><a href="#/users/update/{{user.id}}">{{user.username}}</a></span>
-                <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.username" /></div>
-            </td>
-            <td data-title="'用户角色'" filter="{ 'rolesList': 'text' }">
-                <span ng-if="!user.$edit">{{user.rolesList}}</span>
-                <div ng-if="user.$edit">
-                    <select ng-model="user.rolesList"  multiple="multiple" class="form-control">
-                         <option value="admin">admin</option>
-                         <option value="user">user</option>
-                    </select>
-                </div>
-            </td>
-            <td data-title="'是否锁定'">
-                <span ng-if="!user.$edit">{{user.locked | checkmark }}</span>
-                <div ng-if="user.$edit"><input class="form-control" type="checkbox" ng-model="user.locked" /></div>
-            </td>
-            <td data-title="'操作'">
-                <a ng-if="!user.$edit" href="" class="btn btn-info" ng-click="user.$edit = true"><i class="icon-edit icon-white">编辑</i></a>
-                <a ng-if="user.$edit" href="" class="btn btn-info" ng-click="updateUser(user)"><i class="icon-edit icon-white">保存</i></a>
-                <button class="btn btn-danger" ng-click="deleteUser(user)"><i class="icon-trash icon-white">X</i></button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <script type="text/ng-template" id="ng-table/headers/checkbox.html">
+  </div>
+  <table ng-table="tableParams" show-filter="true" class="table">
+    <tbody>
+      <tr ng-repeat="user in $data">
+        <td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
+          <input type="checkbox" ng-model="checkboxes.items[user.id]" />
+        </td>
+        <td data-title="'id'" sortable="'id'">{{user.id}}</td>
+        <td data-title="'用户名'" sortable="'username'" filter="{ 'username': 'text' }">
+          <span ng-if="!user.$edit"><a href="#/users/update/{{user.id}}">{{user.username}}</a></span>
+          <div ng-if="user.$edit">
+            <input class="form-control" type="text" ng-model="user.username" />
+          </div>
+        </td>
+        <td data-title="'邮箱'" sortable="'email'" filter="{ 'email': 'text' }">
+          <span ng-if="!user.$edit">{{user.email}}</span>
+          <div ng-if="user.$edit">
+            <input class="form-control" type="text" ng-model="user.email" />
+          </div>
+        </td>
+        <td data-title="'用户角色'" filter="{ 'rolesList': 'text' }">
+          <span ng-if="!user.$edit">{{user.rolesList}}</span>
+          <div ng-if="user.$edit">
+            <select ng-model="user.rolesList" multiple="multiple" class="form-control">
+              <option value="admin">admin</option>
+              <option value="user">user</option>
+            </select>
+          </div>
+        </td>
+        <td data-title="'是否锁定'">
+        <span ng-if="!user.$edit">{{user.locked | checkmark }}</span>
+          <div ng-if="user.$edit">
+            <input class="form-control" type="checkbox" ng-model="user.locked" />
+          </div>
+        </td>
+        <td data-title="'操作'">
+          <a ng-if="!user.$edit" href="" class="btn btn-info" ng-click="user.$edit = true">
+          <i class="icon-edit icon-white">编辑</i>
+          </a>
+          <a ng-if="user.$edit" href="" class="btn btn-info" ng-click="updateUser(user)">
+          <i class="icon-edit icon-white">保存</i>
+          </a>
+          <button class="btn btn-danger" ng-click="deleteUser(user)" title="删除">
+          <i class="glyphicon glyphicon-trash icon-trash"> </i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <script type="text/ng-template" id="ng-table/headers/checkbox.html">
         <input type="checkbox" ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />
-    </script>
+  </script>
 </div>

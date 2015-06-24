@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var jeewsTest = angular.module('jeewsTest', [ 'ui.router', 'restangular', 'ngTable',
+var jeewsTest = angular.module('jeewsTest', [ 'ui.router', 'ui.bootstrap', 'restangular', 'ngTable',
     'testControllers', 'testFilters', 'testServices', 'testDirectives' ]);
 
 jeewsTest.config([

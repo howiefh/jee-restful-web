@@ -14,7 +14,8 @@
     "bootstrap": "~3.3.4",
     "restangular": "~1.5.1",
     "angular-ui-router": "~0.2.15",
-    "ng-table": "~0.5.4"
+    "ng-table": "~0.5.4",
+    "angular-bootstrap": "~0.13.0"
   },
   "ignore": [
     "**/.*",

@@ -15,6 +15,7 @@ public class TestUser extends BasicEntity {
 	private static final long serialVersionUID = 415987600518114093L;
 	private String username;
     private String password;
+    private String email;
     private String salt;
     private List<String> rolesList;
     @JsonIgnore
@@ -56,6 +57,12 @@ public class TestUser extends BasicEntity {
 			rolesList.add(string.trim());
 		}
 		this.roles = roles;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	@JsonIgnore()
 	public String getSalt() {

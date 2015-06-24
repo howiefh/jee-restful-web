@@ -1,12 +1,43 @@
-html{
-    font-family:sans-serif;
-    -ms-text-size-adjust:100%;
-    -webkit-text-size-adjust:100%
-}
 .ws-form {
     transition:0.5s linear all;
 }
 .ws-form.ng-invalid:after{
     content: "请输入有效内容";
     color: red;
+}
+.table-toolbar .btn-group > .btn-group {
+    display: inline-block;
+    margin-left: -1px !important;
+}
+.table-toolbar .btn-group > .btn-group > .btn {
+    border-radius: 0;
+}
+.table-toolbar .btn-group > .btn-group:first-child > .btn {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.table-toolbar .btn-group > .btn-group:last-child > .btn {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.table-toolbar .columns-left {
+    margin-right: 5px;
+}
+.table-toolbar .columns-right {
+    margin-left: 5px;
+}
+.table-toolbar .columns label {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.428571429;
+}
+.table-toolbar .bars,
+.table-toolbar .search,
+.table-toolbar .columns {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 34px;
 }

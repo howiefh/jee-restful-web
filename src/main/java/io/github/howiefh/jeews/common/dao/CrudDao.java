@@ -8,6 +8,7 @@ package io.github.howiefh.jeews.common.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.repository.Repository;
 
 /**
@@ -27,7 +28,6 @@ public interface CrudDao<T,ID extends Serializable> extends Repository<T, ID>{
 	 * Retrieves an entity by its id.
 	 * 
 	 * @param id must not be {@literal null}.
-	 * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
 	 * @return the entity with the given id or {@literal null} if none found
 	 */
 	T findOne(ID id);
@@ -45,12 +45,19 @@ public interface CrudDao<T,ID extends Serializable> extends Repository<T, ID>{
 	 * @return the number of entities
 	 */
 	long count();
+    
+	/**
+	 * Returns the number of entities available.
+     * 
+	 * @param entity
+	 * @return the number of entities
+	 */
+	long countBy(@Param("param") T entity);
 
 	/**
 	 * Updates a given entity.
 	 * 
 	 * @param entity
-	 * @throws IllegalArgumentException in case the given entity is (@literal null}.
 	 * @return
 	 */
 	int update(T entity);
@@ -59,7 +66,6 @@ public interface CrudDao<T,ID extends Serializable> extends Repository<T, ID>{
 	 * Deletes the entity with the given id.
 	 * 
 	 * @param id must not be {@literal null}.
-	 * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
 	 * @return
 	 */
 	int delete(ID id);

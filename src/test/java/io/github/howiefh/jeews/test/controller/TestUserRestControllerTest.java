@@ -73,11 +73,23 @@ public class TestUserRestControllerTest {
 	}
 
 	@Test
-	public void testGetAll() throws Exception {
-	    mockMvc.perform(get("/testusers?page=0&size=10&sort=id,asc")  
+	public void testGetList() throws Exception {
+	    mockMvc.perform(get("/testusers?page=0&size=10&sort=id,asc&sort=username,desc&username=user")  
 	            .accept(MediaTypes.HAL_JSON)) //执行请求  
 	            .andExpect(status().isOk()) //200
 	            .andExpect(content().contentType(MediaTypes.HAL_JSON)); //验证响应contentType  
+	    mockMvc.perform(get("/testusers?page=0&size=10&sort=id,asc&sort=username,desc&email=101")  
+	            .accept(MediaTypes.HAL_JSON)) //执行请求  
+	            .andExpect(status().isOk()) //200
+	            .andExpect(content().contentType(MediaTypes.HAL_JSON)); //验证响应contentType  
+	    mockMvc.perform(get("/testusers?page=0&size=10&sort=id,asc")  
+	            .accept(MediaTypes.HAL_JSON)) //执行请求  
+	            .andExpect(status().isOk()) //200
+	            .andExpect(content().contentType(MediaTypes.HAL_JSON));
+	    mockMvc.perform(get("/testusers")  
+	            .accept(MediaTypes.HAL_JSON)) //执行请求  
+	            .andExpect(status().isOk()) //200
+	            .andExpect(content().contentType(MediaTypes.HAL_JSON));
 	}
 
 	@Test

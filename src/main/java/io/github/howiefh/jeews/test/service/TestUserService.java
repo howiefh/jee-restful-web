@@ -36,9 +36,9 @@ public class TestUserService {
 		return (List<TestUser>) userDao.findAll();
 	}
     
-	public Page<TestUser> findAllByPage(Pageable pageable) {
-        List<TestUser> users = (List<TestUser>) userDao.findAllByPage(pageable);
-        long count = userDao.count();
+	public Page<TestUser> findPageBy(Pageable pageable, TestUser user) {
+        List<TestUser> users = (List<TestUser>) userDao.findPageBy(pageable, user);
+        long count = userDao.countBy(user);
         return new PageImpl<TestUser>(users, pageable, count);
 	}
     
@@ -52,8 +52,8 @@ public class TestUserService {
     public int delete(Long id) {
 		return userDao.delete(id);
 	}
-    public int deleteAll(List<Long> ids) {
-		return userDao.deleteAll(ids);
+    public int deleteBatch(List<Long> ids) {
+		return userDao.deleteBatch(ids);
 	}
     private void encryptPasswordAndGenSalt(TestUser user) {
         SecureRandomNumberGenerator generator = new SecureRandomNumberGenerator();

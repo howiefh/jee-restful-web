@@ -3,43 +3,99 @@
 <mapper namespace="io.github.howiefh.jeews.test.dao.TestUserDao">
   <!-- 加keyProperty和useGenerateKeys属性可以使返回主键值 -->
   <insert id="save" useGeneratedKeys="true" keyProperty="id">
-    insert into test_user (id,username,password,salt,roles,locked)
-    values (#{id},#{username},#{password},#{salt},#{roles},#{locked})
+    insert
+    into test_user (id,username,password,email,salt,roles,locked)
+    values
+    (#{id},#{username},#{password},#{email},#{salt},#{roles},#{locked})
   </insert>
+  
   <select id="findOne" resultType="TestUser">
-    select * from test_user where id = #{id}
+    select * from test_user where
+    id = #{id}
   </select>
+  
+  <select id="countBy" resultType="long">
+    <if test="param.username != null and param.username != ''">
+      <bind name="_username" value="'%' + param.username + '%'" />
+    </if>
+    <if test="param.email != null and param.email != ''">
+      <bind name="_email" value="'%' + param.email  + '%'" />
+    </if>
+    select count(0) from test_user
+    <where>
+      <if test="param.username != null and param.username != ''">
+        username like #{_username}
+      </if>
+      <if test="param.email != null and param.email != ''">
+        email like #{_email}
+      </if>
+    </where>
+  </select>
+  
   <select id="count" resultType="long">
     select count(0) from test_user
   </select>
+  
   <select id="findAll" resultType="TestUser">
     select * from test_user
   </select>
-  <select id="findAllByPage" resultType="TestUser">
-    select * from test_user order by id limit #{offset}, #{pageSize}
+  
+  <select id="findPage" resultType="TestUser">
+    select * from test_user
+    order by id limit #{offset}, #{pageSize}
   </select>
+  
+  <select id="findPageBy" resultType="TestUser">
+    <if test="param.username != null and param.username != ''">
+      <bind name="_username" value="'%' + param.username + '%'" />
+    </if>
+    <if test="param.email != null and param.email != ''">
+      <bind name="_email" value="'%' + param.email  + '%'" />
+    </if>
+    select * from test_user
+    <where>
+      <if test="param.username != null and param.username != ''">
+        username like #{_username}
+      </if>
+      <if test="param.email != null and param.email != ''">
+        email like #{_email}
+      </if>
+    </where>
+    order by
+    <foreach item="item" collection="page.sort" separator=",">
+      ${item.property} ${item.direction}
+    </foreach>
+    limit #{page.offset}, #{page.pageSize}
+  </select>
+  
   <select id="findByName" resultType="TestUser">
-    select * from test_user where username like #{username}
+    select * from test_user
+    where username like #{username}
   </select>
+  
   <update id="update">
     update test_user
     <set>
       <if test="username != null">username=#{username},</if>
       <if test="password != null">password=#{password},</if>
+      <if test="email != null">email=#{email},</if>
       <if test="roles != null">roles=#{roles},</if>
       <if test="locked != null">locked=#{locked}</if>
     </set>
     where id = #{id}
   </update>
+  
   <delete id="delete">
     delete from test_user
     where id = #{id}
   </delete>
-  <delete id="deleteAll" parameterType="java.util.List">
+  
+  <delete id="deleteBatch" parameterType="java.util.List">
     delete from test_user
-    where id in 
-    <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-    #{item}
+    where id in
+    <foreach item="item" index="index" collection="ids" open="("
+      separator="," close=")">
+      #{item}
     </foreach>
   </delete>
 </mapper>

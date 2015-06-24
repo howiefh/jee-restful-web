@@ -212,7 +212,7 @@ gulp.task('inject:dev', function () {
         .pipe(nonHtmlF)
         .pipe(gulp.dest(tmp));
     var target = gulp.src(src + '**/*.html');
-    return target.pipe($.inject(bowerSources, {name: 'bower', addRootSlash:false, addPrefix: prefix}))
+    return target.pipe($.inject(bowerSources.pipe($.filter(["**/*","!**/jquery.min.js","!**/bootstrap.js"])), {name: 'bower', addRootSlash:false, addPrefix: prefix}))
         .pipe($.inject(sources, {addRootSlash:false, addPrefix: prefix}))
         //删除标记和空行
         .pipe($.replace(/([ \t]*<!--\s*(bower|inject):*\S*\s*-->)((\n|\r|.)*?)(<!--\s*endinject\s*-->)/gi,'$3'))

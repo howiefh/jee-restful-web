@@ -23,13 +23,21 @@ testControllers.controller('UserListCtrl', [
         getData : function($defer, params) {
           var page = params.page() - 1, count = params.count(), sort = '';
           _.each(params.sorting(), function(n, key) {
-            sort += key + ',' + n + ';'
+            sort += key + ',' + n; 
           });
-          Users.getList({
+          var query = {
             page : page,
             size : count,
             sort : sort
-          }).then(
+          };
+          if ($scope.search.query != '') {
+            if($scope.selectedKey.id == 'username') {
+                query.username = $scope.search.query;
+            } else if($scope.selectedKey.id == 'email') {
+                query.email = $scope.search.query;
+            }
+          }
+          Users.getList(query).then(
               function(users) {
                 params.total(users.page.totalElements);
                 // use build-in angular filter
@@ -43,11 +51,11 @@ testControllers.controller('UserListCtrl', [
               });
         }
       });
+      // 表格每行的多选框
       $scope.checkboxes = {
         'checked' : false,
         items : {}
       };
-
       // watch for check all checkbox
       $scope.$watch('checkboxes.checked', function(value) {
         angular.forEach($scope.users, function(item) {
@@ -56,7 +64,6 @@ testControllers.controller('UserListCtrl', [
           }
         });
       });
-
       // watch for data checkboxes
       $scope.$watch('checkboxes.items', function(values) {
         if (!$scope.users) {
@@ -75,6 +82,7 @@ testControllers.controller('UserListCtrl', [
             "indeterminate", (checked != 0 && unchecked != 0));
       }, true);
 
+      //删除选中
       $scope.deleteSelected = function() {
         var selected = _.map($scope.checkboxes.items, function(num, key) {
           if (num === true)
@@ -100,6 +108,16 @@ testControllers.controller('UserListCtrl', [
         }, function(){
           userToUpdate.$edit = false;
         });
+      };
+      $scope.search = function() {
+        $scope.tableParams.page(1);
+        $scope.tableParams.reload();
+      };
+      //选择按什么关键字搜索
+      $scope.keys = [ {id: 'username', name: '用户名'}, {id: 'email', name: '邮箱'} ];
+      $scope.selectedKey = $scope.keys[0];
+      $scope.setKey = function(key) {
+        $scope.selectedKey = key;
       };
     } ]);
 

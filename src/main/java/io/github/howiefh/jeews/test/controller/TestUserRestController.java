@@ -18,6 +18,7 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityLinks;
@@ -48,10 +49,12 @@ public class TestUserRestController {
     private PagedResourcesAssembler<TestUser> assembler;
     
     @RequiresPermissions("test:view")
-    @RequestMapping(method = RequestMethod.GET, value = "") 
-	public HttpEntity<PagedResources<TestUserResource>> getAll(
-	        @PageableDefault(size = 10, page = 0) Pageable pageable) {
-        Page<TestUser> users = userService.findAllByPage(pageable);
+    @RequestMapping(value = "", method = RequestMethod.GET) 
+	public HttpEntity<PagedResources<TestUserResource>> getList(
+            //@SortDefaults see http://terasolunaorg.github.io/guideline/1.0.x/en/ArchitectureInDetail/Pagination.html#implementation-of-application-layer
+	        @PageableDefault(size = 10, page = 0, sort = {"id"}, direction = Direction.ASC) Pageable pageable, 
+	        TestUser user) {
+        Page<TestUser> users = userService.findPageBy(pageable, user);
 	    return new ResponseEntity<>(assembler.toResource(users, new TestUserResourceAssembler()), HttpStatus.OK);
 	}
 	@RequiresPermissions("test:view")
@@ -66,7 +69,7 @@ public class TestUserRestController {
 	    userService.save(user);
 	    HttpHeaders headers = new HttpHeaders();
 	    TestUserResource testResource = new TestUserResourceAssembler().toResource(user);
-	    //为了 linkForSingleResource 方法可以正常工作，控制器类中需要包含访问单个资源的方法，而且其“@RequestMapping”是类似“/{id}”这样的形式
+	    //为了 linkForSingleResource 方法可以正常工作，控制器类中需要包含访问单个资源的方法，而且其“@RequestMapping”是类似“/{id}”这样的形式 不是"{id}"这样
 	    headers.setLocation(entityLinks.linkForSingleResource(TestUser.class, user.getId()).toUri());
 	    ResponseEntity<TestUserResource> responseEntity = new ResponseEntity<TestUserResource>(testResource, headers, HttpStatus.CREATED);
 	    return responseEntity;
@@ -88,8 +91,8 @@ public class TestUserRestController {
     @RequiresPermissions("test:delete")
 	@RequestMapping(value="", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteAll(@RequestBody List<Long> ids) {
-	    userService.deleteAll(ids);
+	public void deleteBatch(@RequestBody List<Long> ids) {
+	    userService.deleteBatch(ids);
 	}
 	@RequestMapping(value="/login", method = RequestMethod.POST)
     public void showLoginForm(HttpServletRequest req) {
