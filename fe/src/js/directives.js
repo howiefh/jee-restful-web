@@ -2,7 +2,7 @@
 
 /* Directives */
 
-angular.module('testDirectives', []).directive('ngEnter', function() {//http://eric.sau.pe/angularjs-detect-enter-key-ngenter/
+angular.module('directives', []).directive('ngEnter', function() {//http://eric.sau.pe/angularjs-detect-enter-key-ngenter/
   return function(scope, element, attrs) {
     element.bind("keydown keypress", function(event) {
       if (event.which === 13) {

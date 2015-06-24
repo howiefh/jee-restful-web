@@ -2,10 +2,10 @@
 
 /* Services */
 
-var testServices = angular.module('testServices', []);
+var services = angular.module('services', []);
 
-testServices.factory('Users', ['Restangular', function(Restangular) {
-  var path = 'testusers';
+services.factory('Users', ['Restangular', function(Restangular) {
+  var path = 'users';
   var service = Restangular.service(path);  
   return service;
 }]);

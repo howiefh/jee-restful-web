@@ -2,9 +2,9 @@
 
 /* Controllers */
 
-var testControllers = angular.module('testControllers', []);
+var controllers = angular.module('controllers', []);
 
-testControllers.controller('UserListCtrl', [
+controllers.controller('UserListCtrl', [
     '$scope',
     '$window',
     '$filter',
@@ -121,7 +121,7 @@ testControllers.controller('UserListCtrl', [
       };
     } ]);
 
-testControllers.controller('UserDetailCtrl', [ '$scope', '$window',
+controllers.controller('UserDetailCtrl', [ '$scope', '$window',
     '$stateParams', '$state', 'usersRes',
     function($scope, $window, $stateParams, $state, usersRes) {
       $scope.user = usersRes;
@@ -143,7 +143,7 @@ testControllers.controller('UserDetailCtrl', [ '$scope', '$window',
       };
     } ]);
 
-testControllers.controller('UserCreationCtrl', [ '$scope', '$location',
+controllers.controller('UserCreationCtrl', [ '$scope', '$location',
     '$window', 'Users', function($scope, $location, $window, Users) {
 
       $scope.createUser = function() {

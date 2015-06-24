@@ -44,6 +44,8 @@
 
     <jackson.version>2.5.3</jackson.version>
 
+    <oltu.version>1.0.0</oltu.version>
+
     <jdk.version>1.8</jdk.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -334,6 +336,17 @@
       <groupId>org.springframework.plugin</groupId>
       <artifactId>spring-plugin-core</artifactId>
       <version>${spring-plugin.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.authzserver</artifactId>
+      <version>${oltu.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.oltu.oauth2</groupId>
+      <artifactId>org.apache.oltu.oauth2.resourceserver</artifactId>
+      <version>${oltu.version}</version>
     </dependency>
 
   </dependencies>

@@ -11,7 +11,7 @@
   </bean>
 
   <!-- realm -->
-  <bean id="userRealm" class="io.github.howiefh.jeews.test.security.realm.TestUserRealm">
+  <bean id="userRealm" class="io.github.howiefh.jeews.modules.sys.security.realm.UserRealm">
     <property name="credentialsMatcher" ref="credentialsMatcher"/>
   </bean>
 
@@ -110,9 +110,8 @@
     <property name="filterChainDefinitions">
       <value>
         /static/** = anon
-        /testusers/index = anon
-        /testusers/logout = logout
-        /testusers/login = authc
+        /users/logout = logout
+        /users/login = authc
         /** = user
       </value>
     </property>

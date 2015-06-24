@@ -22,7 +22,7 @@
   
   <!--  可以去掉context:annotation-config -->
   <!-- for RESTful see https://github.com/spring-projects/spring-hateoas/issues/259-->
-  <bean class="io.github.howiefh.jeews.test.config.TestHypermediaConfiguration" /> 
+  <bean class="io.github.howiefh.jeews.modules.sys.config.HypermediaConfiguration" /> 
 
   <!-- 采用注解方式配置MVC -->
   <!-- see http://stackoverflow.com/questions/22135002/spring-data-does-not-handle-pageable-action-argument-creation#22143995 -->
@@ -40,7 +40,7 @@
 
   <!-- 静态资源映射 -->
   <mvc:resources mapping="/static/**" location="/WEB-INF/static/" />
-  <mvc:resources mapping="/a/**" location="/WEB-INF/views/" />
+  <mvc:resources mapping="/views/**" location="/WEB-INF/views/" />
 
   <!-- 默认的视图解析器 (默认使用html)- -->
   <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:order="1">

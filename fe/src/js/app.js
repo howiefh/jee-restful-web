@@ -2,10 +2,10 @@
 
 /* App Module */
 
-var jeewsTest = angular.module('jeewsTest', [ 'ui.router', 'ui.bootstrap', 'restangular', 'ngTable',
-    'testControllers', 'testFilters', 'testServices', 'testDirectives' ]);
+var jeews = angular.module('jeews', [ 'ui.router', 'ui.bootstrap', 'restangular', 'ngTable',
+    'controllers', 'filters', 'services', 'directives' ]);
 
-jeewsTest.config([
+jeews.config([
     '$stateProvider',
     '$urlRouterProvider',
     'RestangularProvider',
