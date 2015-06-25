@@ -38,7 +38,7 @@ public class ShiroTestUtils {
 		Mockito.when(subject.hasRole(UserRealm.ADMIN)).thenReturn(isSuperAdmin);
 		bindSubject(subject);
 	}
-
+    
 	/**
 	 * 绑定Subject到当前线程.
 	 */

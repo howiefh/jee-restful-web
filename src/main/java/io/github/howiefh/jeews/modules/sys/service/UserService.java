@@ -10,6 +10,7 @@ import org.apache.shiro.crypto.hash.DefaultHashService;
 import org.apache.shiro.crypto.hash.HashRequest;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
 	@Autowired
     private UserDao userDao;
+    private final static String SEED = "abc";
+    @Value("${shiro.password.hashAlgorithmName}")
+    private String algorithmName = "md5";
+    @Value("${shiro.password.hashIterations}")
+    private int hashIterations = 2;
     
 	public int save(User user) {
         encryptPasswordAndGenSalt(user);
@@ -57,14 +63,26 @@ public class UserService {
 	}
     private void encryptPasswordAndGenSalt(User user) {
         SecureRandomNumberGenerator generator = new SecureRandomNumberGenerator();
-        generator.setSeed("abc".getBytes());
+        generator.setSeed(SEED.getBytes());
         String salt = generator.nextBytes().toHex();
         user.setSalt(salt);
         
         DefaultHashService hashService = new DefaultHashService();
 		HashRequest request = new HashRequest.Builder()  
-		            .setAlgorithmName("MD5").setSource(ByteSource.Util.bytes(user.getPassword()))  
-		            .setSalt(ByteSource.Util.bytes(salt)).setIterations(2).build();  
+		            .setAlgorithmName(algorithmName).setSource(ByteSource.Util.bytes(user.getPassword()))  
+		            .setSalt(ByteSource.Util.bytes(salt)).setIterations(hashIterations).build();  
         user.setPassword(hashService.computeHash(request).toHex());
+	}
+    
+    public boolean isValidUser(String username, String password) {
+		User user = findByName(username);
+        if (user == null) {
+			return false;
+		}
+        User checkedUser = new User();
+        checkedUser.setUsername(username);
+        checkedUser.setPassword(password);
+        encryptPasswordAndGenSalt(checkedUser);
+        return user.getPassword().equals(checkedUser.getPassword());
 	}
 }

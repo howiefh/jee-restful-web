@@ -17,8 +17,8 @@
 
   <!-- 凭证匹配器 -->
   <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-    <property name="hashAlgorithmName" value="md5" />
-    <property name="hashIterations" value="2" />
+    <property name="hashAlgorithmName" value="${shiro.password.hashAlgorithmName}" />
+    <property name="hashIterations" value="${shiro.password.hashIterations}" />
     <property name="storedCredentialsHexEncoded" value="true" />
   </bean>
   
@@ -94,6 +94,8 @@
     <property name="redirectUrl" value="${shiro.logout.success.url}" />
   </bean>
 
+  <bean id="tokenFilter" class="io.github.howiefh.jeews.modules.oauth2.shiro.filter.TokenFilter"/>
+  
   <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
     <property name="securityManager" ref="securityManager" />
     <property name="loginUrl" value="${shiro.login.url}" />
@@ -110,9 +112,13 @@
     <property name="filterChainDefinitions">
       <value>
         /static/** = anon
+        /views/login.html = anon
         /users/logout = logout
         /users/login = authc
-        /** = user
+        /authorize = anon
+        /accessToken = anon
+        /users/** = noSessionCreation, tokenFilter
+        /clients/** = noSessionCreation, tokenFilter
       </value>
     </property>
   </bean>

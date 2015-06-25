@@ -69,4 +69,6 @@ public interface CrudDao<T,ID extends Serializable> extends Repository<T, ID>{
 	 * @return
 	 */
 	int delete(ID id);
+    
+	int deleteBatch(@Param("ids") List<Long> ids);
 }
