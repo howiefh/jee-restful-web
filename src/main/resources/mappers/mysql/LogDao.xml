@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.github.howiefh.jeews.modules.sys.dao.LogDao" >
+  <resultMap id="BaseResultMap" type="Log" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="remote_addr" property="remoteAddr" jdbcType="VARCHAR" />
+    <result column="user_agent" property="userAgent" jdbcType="VARCHAR" />
+    <result column="request_uri" property="requestUri" jdbcType="VARCHAR" />
+    <result column="method" property="method" jdbcType="VARCHAR" />
+    <result column="exception" property="exception" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="Log" >
+    insert into sys_log (id, type, title, 
+      create_by, create_date, remote_addr, 
+      user_agent, request_uri, method, 
+      exception)
+    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{remoteAddr,jdbcType=VARCHAR}, 
+      #{userAgent,jdbcType=VARCHAR}, #{requestUri,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, 
+      #{exception,jdbcType=LONGVARCHAR})
+  </insert>
+  
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select * 
+    from sys_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" >
+    select *
+    from sys_log
+  </select>
+  
+  <select id="findPage" resultMap="BaseResultMap" >
+    select *
+    from sys_log
+    order by id
+    limit #{offset}, #{pageSize}
+  </select>
+  
+  <select id="findPageBy" resultMap="BaseResultMap" >
+    select *
+    from sys_log
+    <where>
+      <if test="param.type != null and param.type != ''">
+        type = #{param.type}
+      </if>
+    </where>
+    order by
+    <foreach item="item" collection="page.sort" separator=",">
+      ${item.property} ${item.direction}
+    </foreach>
+    limit #{page.offset}, #{page.pageSize}
+  </select>
+  
+  <select id="countBy" resultType="long">
+    select count(0)
+    from sys_log
+    <where>
+      <if test="param.type != null and param.type != ''">
+        type = #{param.type}
+      </if>
+    </where>
+  </select>
+  
+  <select id="count" resultType="long">
+    select count(0) from sys_log
+  </select>
+  
+  <update id="update" parameterType="Log" >
+    update sys_log
+    set type = #{type,jdbcType=CHAR},
+      title = #{title,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=BIGINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      remote_addr = #{remoteAddr,jdbcType=VARCHAR},
+      user_agent = #{userAgent,jdbcType=VARCHAR},
+      request_uri = #{requestUri,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      exception = #{exception,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from sys_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteBatch" parameterType="java.util.List">
+    delete from sys_log
+    where id in
+    <foreach item="item" index="index" collection="ids" open="("
+      separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>

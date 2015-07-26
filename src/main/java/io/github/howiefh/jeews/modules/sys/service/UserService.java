@@ -2,8 +2,10 @@ package io.github.howiefh.jeews.modules.sys.service;
 
 import java.util.List;
 
+import io.github.howiefh.jeews.common.service.ServiceException;
 import io.github.howiefh.jeews.modules.sys.dao.UserDao;
 import io.github.howiefh.jeews.modules.sys.entity.User;
+import io.github.howiefh.jeews.modules.sys.util.UserUtils;
 
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.DefaultHashService;
@@ -18,17 +20,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-	@Autowired
-    private UserDao userDao;
     private final static String SEED = "abc";
     @Value("${shiro.password.hashAlgorithmName}")
     private String algorithmName = "md5";
     @Value("${shiro.password.hashIterations}")
     private int hashIterations = 2;
     
-	public int save(User user) {
+	@Autowired
+    private UserDao userDao;
+    
+	public void save(User user) {
         encryptPasswordAndGenSalt(user);
-		return userDao.save(user);
+        UserUtils.genCommonFiled(user);
+        userDao.save(user);
+        if (user.getRoles() != null && user.getRoles().size() > 0) {
+            userDao.saveUserRole(user);
+		} else {
+			throw new ServiceException(user.getUsername() + "没有设置角色");
+		}
+        if (user.getOrganizations() != null && user.getOrganizations().size() > 0) {
+            userDao.saveUserOrganization(user);
+		}
 	}
     
 	public User findOne(long id) {
@@ -48,11 +60,21 @@ public class UserService {
         return new PageImpl<User>(users, pageable, count);
 	}
     
-    public int update(User user) {
+    public void update(User user) {
         if (user.getPassword()!=null) {
             encryptPasswordAndGenSalt(user);
 		}
-		return userDao.update(user);
+        userDao.deleteUserRole(user);
+        if (user.getRoles() != null && user.getRoles().size() > 0) {
+            userDao.saveUserRole(user);
+		} else {
+			throw new ServiceException(user.getUsername() + "没有设置角色");
+		} 
+        userDao.deleteUserOrganization(user);
+        if (user.getOrganizations() != null && user.getOrganizations().size() > 0) {
+            userDao.saveUserOrganization(user);
+		}
+		userDao.update(user);
 	}
     
     public int delete(Long id) {

@@ -1,95 +1,176 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.howiefh.jeews.modules.sys.dao.UserDao">
-  <!-- 加keyProperty和useGenerateKeys属性可以使返回主键值 -->
-  <insert id="save" useGeneratedKeys="true" keyProperty="id">
-    insert
-    into sys_user (id,username,password,email,salt,roles,locked)
-    values
-    (#{id},#{username},#{password},#{email},#{salt},#{roles},#{locked})
-  </insert>
-  
-  <select id="findOne" resultType="User">
-    select * from sys_user where
-    id = #{id}
-  </select>
-  
-  <select id="countBy" resultType="long">
-    <if test="param.username != null and param.username != ''">
-      <bind name="_username" value="'%' + param.username + '%'" />
-    </if>
-    <if test="param.email != null and param.email != ''">
-      <bind name="_email" value="'%' + param.email  + '%'" />
-    </if>
-    select count(0) from sys_user
+  <resultMap id="BaseResultMap" type="User">
+    <id column="u_id" property="id" jdbcType="BIGINT" />
+    <result column="u_username" property="username" jdbcType="VARCHAR" />
+    <result column="u_password" property="password" jdbcType="VARCHAR" />
+    <result column="u_salt" property="salt" jdbcType="VARCHAR" />
+    <result column="u_email" property="email" jdbcType="VARCHAR" />
+    <result column="u_mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="u_photo" property="photo" jdbcType="VARCHAR" />
+    <result column="u_login_ip" property="loginIp" jdbcType="VARCHAR" />
+    <result column="u_login_date" property="loginDate" jdbcType="TIMESTAMP" />
+    <result column="u_locked" property="locked" jdbcType="BIT" />
+    <result column="u_created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="u_updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <association property="createdBy" javaType="User">
+      <id property="id" column="u_created_by"/>
+    </association>
+    <association property="updatedBy" javaType="User">
+      <id property="id" column="u_updated_by"/>
+    </association>
+    <collection property="roles" ofType="Role"
+      resultMap="io.github.howiefh.jeews.modules.sys.dao.RoleDao.BaseResultMap" />
+    <collection property="organizations" ofType="Organization"
+      resultMap="io.github.howiefh.jeews.modules.sys.dao.OrganizationDao.BaseResultMap" />
+  </resultMap>
+
+  <sql id="userColumns">
+    u.id u_id,
+    u.username u_username,
+    u.password u_password,
+    u.salt u_salt,
+    u.email u_email,
+    u.mobile u_mobile,
+    u.photo u_photo,
+    u.login_ip u_login_ip,
+    u.login_date u_login_date,
+    u.locked u_locked,
+    u.created_by u_created_by,
+    u.created_at u_created_at,
+    u.updated_by u_updated_by,
+    u.updated_at u_updated_at,
+    <include
+      refid="io.github.howiefh.jeews.modules.sys.dao.RoleDao.roleColumns" />
+    ,
+    <include
+      refid="io.github.howiefh.jeews.modules.sys.dao.OrganizationDao.organizationColumns" />
+  </sql>
+
+  <sql id="userJoins">
+    left outer join sys_user_role ur on ur.user_id = u.id
+    left outer join sys_role r on r.id = ur.role_id
+    left outer join sys_role_menu rm on rm.role_id = r.id
+    left outer join sys_menu m on m.id = rm.menu_id
+    left outer join sys_user_organization uo on uo.user_id = u.id
+    left outer join sys_organization o on o.id = uo.organization_id
+  </sql>
+
+  <sql id="userWhere">
     <where>
       <if test="param.username != null and param.username != ''">
-        username like #{_username}
+        username like
+        CONCAT('%', #{param.username}, '%')
       </if>
       <if test="param.email != null and param.email != ''">
-        email like #{_email}
+        and email like
+        CONCAT('%', #{param.email}, '%')
       </if>
     </where>
-  </select>
+  </sql>
   
+  <!-- 加keyProperty和useGenerateKeys属性可以使返回主键值 -->
+  <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="User">
+    insert
+    into sys_user (id, username, password,
+    salt, email, mobile,
+    photo, login_ip, login_date,
+    created_by, created_at, updated_by, updated_at)
+    values (
+    #{id,jdbcType=BIGINT},
+    #{username,jdbcType=VARCHAR},
+    #{password,jdbcType=VARCHAR},
+    #{salt,jdbcType=VARCHAR},
+    #{email,jdbcType=VARCHAR},
+    #{mobile,jdbcType=VARCHAR},
+    #{photo,jdbcType=VARCHAR},
+    #{loginIp,jdbcType=VARCHAR},
+    #{loginDate,jdbcType=TIMESTAMP},
+    #{createdBy.id,jdbcType=BIGINT},
+    #{createdAt,jdbcType=TIMESTAMP},
+    #{updatedBy.id,jdbcType=BIGINT},
+    #{updatedAt,jdbcType=TIMESTAMP}
+    )
+  </insert>
+
+  <select id="findOne" resultMap="BaseResultMap">
+    select
+    <include refid="userColumns" />
+    from sys_user u
+    <include refid="userJoins" />
+    where u.id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="countBy" resultType="long">
+    select count(0) from sys_user
+    <include refid="userWhere"/>
+  </select>
+
   <select id="count" resultType="long">
     select count(0) from sys_user
   </select>
-  
-  <select id="findAll" resultType="User">
-    select * from sys_user
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="userColumns" />
+    from sys_user u
+    <include refid="userJoins" />
   </select>
-  
-  <select id="findPage" resultType="User">
-    select * from sys_user
-    order by id limit #{offset}, #{pageSize}
+
+  <select id="findPage" resultMap="BaseResultMap">
+    select
+    <include refid="userColumns" />
+    from sys_user u
+    <include refid="userJoins" />
+    order by u.id
+    limit #{offset}, #{pageSize}
   </select>
-  
-  <select id="findPageBy" resultType="User">
-    <if test="param.username != null and param.username != ''">
-      <bind name="_username" value="'%' + param.username + '%'" />
-    </if>
-    <if test="param.email != null and param.email != ''">
-      <bind name="_email" value="'%' + param.email  + '%'" />
-    </if>
-    select * from sys_user
-    <where>
-      <if test="param.username != null and param.username != ''">
-        username like #{_username}
-      </if>
-      <if test="param.email != null and param.email != ''">
-        email like #{_email}
-      </if>
-    </where>
+
+  <select id="findPageBy" resultMap="BaseResultMap">
+    select
+    <include refid="userColumns" />
+    from sys_user u
+    <include refid="userJoins" />
+    <include refid="userWhere"/>
     order by
     <foreach item="item" collection="page.sort" separator=",">
-      ${item.property} ${item.direction}
+      u.${item.property} ${item.direction}
     </foreach>
     limit #{page.offset}, #{page.pageSize}
   </select>
-  
-  <select id="findByName" resultType="User">
-    select * from sys_user
-    where username like #{username}
+
+  <select id="findByName" resultMap="BaseResultMap">
+    select
+    <include refid="userColumns" />
+    from sys_user u
+    <include refid="userJoins" />
+    where u.username like #{username}
   </select>
-  
-  <update id="update">
+
+  <update id="update" parameterType="User">
     update sys_user
     <set>
       <if test="username != null">username=#{username},</if>
       <if test="password != null">password=#{password},</if>
+      <if test="salt != null">salt=#{salt},</if>
       <if test="email != null">email=#{email},</if>
-      <if test="roles != null">roles=#{roles},</if>
-      <if test="locked != null">locked=#{locked}</if>
+      <if test="mobile != null">mobile=#{mobile},</if>
+      <if test="photo != null">photo=#{photo},</if>
+      <if test="loginIp != null">login_ip=#{loginIp},</if>
+      <if test="loginDate != null">login_date=#{loginDate},</if>
+      <if test="locked!= null">locked=#{locked},</if>
+      <if test="updatedBy != null">updated_by =#{updatedBy.id},</if>
+      <if test="updatedAt != null">updated_at=#{updatedAt},</if>
     </set>
-    where id = #{id}
+    where id = #{id,jdbcType=BIGINT}
   </update>
-  
-  <delete id="delete">
+
+  <delete id="delete" parameterType="java.lang.Long">
     delete from sys_user
-    where id = #{id}
+    where id = #{id,jdbcType=BIGINT}
   </delete>
-  
+
   <delete id="deleteBatch" parameterType="java.util.List">
     delete from sys_user
     where id in
@@ -98,4 +179,32 @@
       #{item}
     </foreach>
   </delete>
+
+  <delete id="deleteUserRole">
+    delete from sys_user_role where user_id = #{id}
+  </delete>
+
+  <insert id="saveUserRole">
+    insert
+    into sys_user_role(user_id, role_id)
+    values
+    <foreach collection="roles" item="role" open="" separator=","
+      close="">
+      (#{id}, #{role.id})
+    </foreach>
+  </insert>
+  
+  <delete id="deleteUserOrganization">
+    delete from sys_user_organization where user_id = #{id}
+  </delete>
+
+  <insert id="saveUserOrganization">
+    insert
+    into sys_user_organization(user_id, organization_id)
+    values
+    <foreach collection="organizations" item="organization" open="" separator=","
+      close="">
+      (#{id}, #{organization.id})
+    </foreach>
+  </insert>
 </mapper>

@@ -5,14 +5,17 @@
  */
 package io.github.howiefh.jeews.modules.oauth2.controller;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import io.github.howiefh.jeews.common.BaseSpringJUnit4Test;
 import io.github.howiefh.jeews.common.shiro.ShiroTestUtils;
 import io.github.howiefh.jeews.modules.oauth2.shiro.filter.TokenFilter;
 import io.github.howiefh.jeews.modules.sys.entity.User;
@@ -35,34 +38,21 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * 
+ *
  *
  * @author howiefh
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-// 默认是src/main/webapp
-@WebAppConfiguration(value = "src/main/webapp")
-@TransactionConfiguration
-@ContextHierarchy({
-		@ContextConfiguration(name = "parent", locations = "classpath:config/spring-config.xml"),
-		@ContextConfiguration(name = "child", locations = "classpath:config/spring-mvc.xml") })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class OAuthTest {
+public class OAuthTest extends BaseSpringJUnit4Test{
 	@Autowired
 	private WebApplicationContext wac;
 	private MockMvc mockMvc;
@@ -73,8 +63,8 @@ public class OAuthTest {
 				.getBean("tokenFilter");
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac)
 				.alwaysDo(print()) // 默认每次执行请求后都做的动作
-                // 这里不加shiro过滤器的话testAuth最后获取用户信息不会被过滤,尽管配置文件中有配置 
-                // 但是如果是添加		
+                // 这里不加shiro过滤器的话testAuth最后获取用户信息不会被过滤,尽管配置文件中有配置
+                // 但是如果是添加
 				// AbstractShiroFilter shiroFilter = (AbstractShiroFilter) wac.getBean("shiroFilter");这个过滤器的话
 				// 控制器里的@RequiresPermissions注解要去掉,否则抛异常.貌似ShiroTestUtils没起作用,运行过程中的DelegatingSubject和模拟的不是一个
                 //http://stackoverflow.com/questions/22152530/spring-end-to-end-test-including-filters-and-controller-method-using-mockhttpser
@@ -84,7 +74,7 @@ public class OAuthTest {
 		user.setUsername("root");
 		user.setLocked(false);
 		ShiroTestUtils.mockCurrentUser(user, true);
-        
+
         // 没有没有下面这几句,tokenfilter也不会工作
 		AbstractShiroFilter shiroFilter = (AbstractShiroFilter) wac
 				.getBean("shiroFilter");
@@ -164,7 +154,7 @@ public class OAuthTest {
 	}
     @Test
 	public void testTokenAuth() throws Exception {
-        responseType = ResponseType.TOKEN.toString(); 
+        responseType = ResponseType.TOKEN.toString();
 		MvcResult result = mockMvc.perform(get("/authentication")
                                         .param("client_id", clientID)
                                         .param("response_type", responseType)
@@ -182,7 +172,7 @@ public class OAuthTest {
 		if (matcher.find()) {
 			accessToken = matcher.group(1);
 		}
-        
+
 		mockMvc.perform(get("/users/1")
         						.header("Authorization","Bearer " + accessToken)
         						.accept(MediaTypes.HAL_JSON))

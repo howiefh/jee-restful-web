@@ -1,6 +1,5 @@
 package io.github.howiefh.jeews.common.shiro;
 import io.github.howiefh.jeews.modules.sys.entity.User;
-import io.github.howiefh.jeews.modules.sys.security.realm.UserRealm;
 
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
@@ -17,6 +16,8 @@ import org.mockito.Mockito;
 public class ShiroTestUtils {
 
 	private static ThreadState threadState;
+    
+    public final static String ADMIN = "admin";
 
 	/**
 	 * 用Mockito快速创建一个已经认证的用户
@@ -35,7 +36,7 @@ public class ShiroTestUtils {
 		SimplePrincipalCollection principals = new SimplePrincipalCollection(user.getUsername(), "root");
 		principals.add(user, "root");
 		Mockito.when(subject.getPrincipals()).thenReturn(principals);
-		Mockito.when(subject.hasRole(UserRealm.ADMIN)).thenReturn(isSuperAdmin);
+		Mockito.when(subject.hasRole(ADMIN)).thenReturn(isSuperAdmin);
 		bindSubject(subject);
 	}
     

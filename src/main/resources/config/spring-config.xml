@@ -101,7 +101,7 @@
     <property name="configLocation" value="classpath:config/mybatis-config.xml"></property>
   </bean>
 
-  <!-- 扫描basePackage下所有以@MyBatisDao注解的接口 并且使它们 autowired -->
+  <!-- 扫描basePackage下所有以@Repository注解的接口 并且使它们 autowired -->
   <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
     <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     <property name="basePackage" value="io.github.howiefh.jeews"/>

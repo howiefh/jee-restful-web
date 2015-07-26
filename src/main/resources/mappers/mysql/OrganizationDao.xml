@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.github.howiefh.jeews.modules.sys.dao.OrganizationDao">
+  <resultMap id="BaseResultMap" type="Organization">
+    <id column="o_id" property="id" jdbcType="BIGINT" />
+    <result column="o_name" property="name" jdbcType="VARCHAR" />
+    <result column="o_type" property="type" jdbcType="VARCHAR" />
+    <result column="o_parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="o_parent_ids" property="parentIds" jdbcType="VARCHAR" />
+    <result column="o_sort" property="sort" jdbcType="INTEGER" />
+    <result column="o_is_show" property="isShow" jdbcType="BIT" />
+    <result column="o_created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="o_updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <association property="createdBy" javaType="User">
+      <id property="id" column="o_created_by"/>
+    </association>
+    <association property="updatedBy" javaType="User">
+      <id property="id" column="o_updated_by"/>
+    </association>
+  </resultMap>
+  
+  <sql id="organizationColumns">
+    o.id o_id,
+    o.name o_name,
+    o.type o_type,
+    o.parent_id o_parent_id,
+    o.parent_ids o_parent_ids,
+    o.sort o_sort,
+    o.is_show o_is_show,
+    o.created_by o_created_by,
+    o.created_at o_created_at,
+    o.updated_by o_updated_by,
+    o.updated_at o_updated_at
+  </sql>
+  
+  <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="Organization">
+    insert
+    into sys_organization (id, name,
+    type, parent_id, parent_ids,
+    sort, is_show, created_by, 
+    created_at, updated_by, updated_at
+    )
+    values (
+    #{id,jdbcType=BIGINT},
+    #{name,jdbcType=VARCHAR},
+    #{type,jdbcType=VARCHAR},
+    #{parentId,jdbcType=BIGINT},
+    #{parentIds,jdbcType=VARCHAR},
+    #{sort,jdbcType=INTEGER},
+    #{isShow,jdbcType=BIT},
+    #{createdBy.id,jdbcType=BIGINT},
+    #{createdAt,jdbcType=TIMESTAMP},
+    #{updatedBy.id,jdbcType=BIGINT},
+    #{updatedAt,jdbcType=TIMESTAMP}
+    )
+  </insert>
+
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="organizationColumns" />
+    from sys_organization o
+    where o.id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="countBy" resultType="long">
+    select count(0) from sys_organization
+  </select>
+
+  <select id="count" resultType="long">
+    select count(0) from sys_organization
+  </select>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="organizationColumns" />
+    from sys_organization o
+  </select>
+
+  <update id="update" parameterType="Organization">
+    update
+    sys_organization
+    set name = #{name,jdbcType=VARCHAR},
+    type = #{type,jdbcType=VARCHAR},
+    parent_id = #{parentId,jdbcType=BIGINT},
+    parent_ids = #{parentIds,jdbcType=VARCHAR},
+    sort = #{sort,jdbcType=INTEGER},
+    is_show = #{isShow,jdbcType=BIT},
+    updated_by = #{updatedBy.id},
+    updated_at = #{updatedAt}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <delete id="delete" parameterType="java.lang.Long">
+    delete from
+    sys_organization
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteBatch" parameterType="java.util.List">
+    delete from sys_organization
+    where id in
+    <foreach item="item" index="index" collection="ids" open="("
+      separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>

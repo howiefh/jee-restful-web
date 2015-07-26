@@ -79,7 +79,7 @@
   <update id="update">
     update oauth2_client
     <set>
-      <if test="username != null">client_name=#{clientName}</if>
+      <if test="clientName != null">client_name=#{clientName}</if>
     </set>
     where id = #{id}
   </update>

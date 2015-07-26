@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.github.howiefh.jeews.modules.sys.dao.MenuDao">
+  <resultMap id="BaseResultMap" type="Menu">
+    <id column="m_id" property="id" jdbcType="BIGINT" />
+    <result column="m_name" property="name" jdbcType="VARCHAR" />
+    <result column="m_permission" property="permission" jdbcType="VARCHAR" />
+    <result column="m_url" property="url" jdbcType="VARCHAR" />
+    <result column="m_parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="m_parent_ids" property="parentIds" jdbcType="VARCHAR" />
+    <result column="m_sort" property="sort" jdbcType="INTEGER" />
+    <result column="m_icon" property="icon" jdbcType="VARCHAR" />
+    <result column="m_is_show" property="isShow" jdbcType="BIT" />
+    <result column="m_created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="m_updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <association property="createdBy" javaType="User">
+      <id property="id" column="m_created_by"/>
+    </association>
+    <association property="updatedBy" javaType="User">
+      <id property="id" column="m_updated_by"/>
+    </association>
+  </resultMap>
+
+  <sql id="menuColumns">
+    m.id m_id,
+    m.name m_name,
+    m.permission m_permission,
+    m.url m_url,
+    m.parent_id m_parent_id,
+    m.parent_ids m_parent_ids,
+    m.sort m_sort,
+    m.icon m_icon,
+    m.is_show m_is_show,
+    m.created_by m_created_by,
+    m.created_at m_created_at,
+    m.updated_by m_updated_by,
+    m.updated_at m_updated_at
+  </sql>
+
+  <insert id="save" useGeneratedKeys="true" keyProperty="id"
+    parameterType="Menu">
+    insert into sys_menu (id, name, permission,
+    url, parent_id, parent_ids, sort, icon,
+    is_show, created_by, created_at,
+    updated_by, updated_at)
+    values
+    (
+    #{id,jdbcType=BIGINT},
+    #{name,jdbcType=VARCHAR},
+    #{permission,jdbcType=VARCHAR},
+    #{url,jdbcType=VARCHAR},
+    #{parentId,jdbcType=BIGINT},
+    #{parentIds,jdbcType=VARCHAR},
+    #{sort,jdbcType=INTEGER},
+    #{icon,jdbcType=VARCHAR},
+    #{isShow,jdbcType=BIT},
+    #{createdBy.id,jdbcType=BIGINT},
+    #{createdAt,jdbcType=TIMESTAMP},
+    #{updatedBy.id,jdbcType=BIGINT},
+    #{updatedAt,jdbcType=TIMESTAMP}
+    )
+  </insert>
+
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="menuColumns" />
+    from sys_menu m
+    where m.id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="countBy" resultType="long">
+    select count(0) from sys_menu
+  </select>
+
+  <select id="count" resultType="long">
+    select count(0) from sys_menu
+  </select>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="menuColumns" />
+    from sys_menu m
+  </select>
+
+  <update id="update" parameterType="Menu">
+    update sys_menu
+    set
+    name = #{name,jdbcType=VARCHAR},
+    permission = #{permission,jdbcType=VARCHAR},
+    url = #{url,jdbcType=VARCHAR},
+    parent_id = #{parentId,jdbcType=BIGINT},
+    parent_ids = #{parentIds,jdbcType=VARCHAR},
+    sort = #{sort,jdbcType=INTEGER},
+    icon = #{icon,jdbcType=VARCHAR},
+    is_show = #{isShow,jdbcType=BIT},
+    updated_by = #{updatedBy.id},
+    updated_at = #{updatedAt}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <delete id="delete" parameterType="java.lang.Long">
+    delete from
+    sys_menu
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteBatch" parameterType="java.util.List">
+    delete from sys_menu
+    where id in
+    <foreach item="item" index="index" collection="ids" open="("
+      separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>
