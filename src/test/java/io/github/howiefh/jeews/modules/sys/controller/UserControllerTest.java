@@ -17,6 +17,7 @@ import io.github.howiefh.jeews.common.BaseSpringJUnit4Test;
 import io.github.howiefh.jeews.common.shiro.ShiroTestUtils;
 import io.github.howiefh.jeews.modules.sys.entity.User;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserControllerTest extends BaseSpringJUnit4Test{
 	@Autowired
@@ -50,6 +53,7 @@ public class UserControllerTest extends BaseSpringJUnit4Test{
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac)
 		        .alwaysDo(print())  //默认每次执行请求后都做的动作
 		        .build();
+
         User user = new User();
         user.setId(1L);
         user.setUsername("root");
@@ -166,6 +170,9 @@ public class UserControllerTest extends BaseSpringJUnit4Test{
 		assertThat(wac.getBean(RelProvider.class), is(notNullValue()));
 		assertThat(wac.getBean(CurieProvider.class), is(notNullValue()));
 		assertThat(wac.getBean(LinkDiscoverer.class), is(notNullValue()));
+        ObjectMapper objectMapper = (ObjectMapper)wac.getBean("_halObjectMapper");
+		assertThat(objectMapper, is(notNullValue()));
+        assertTrue(objectMapper.getDateFormat().equals(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")));
 	}
 
     private int getId(String location) {

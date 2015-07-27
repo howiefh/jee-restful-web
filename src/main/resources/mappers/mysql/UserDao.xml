@@ -48,15 +48,24 @@
       refid="io.github.howiefh.jeews.modules.sys.dao.OrganizationDao.organizationColumns" />
   </sql>
 
+  <sql id="userIncludeMenuColumns">
+    <include refid="userColumns"/>
+    ,
+    <include
+      refid="io.github.howiefh.jeews.modules.sys.dao.MenuDao.menuSimpleColumns" />
+  </sql>
   <sql id="userJoins">
     left outer join sys_user_role ur on ur.user_id = u.id
     left outer join sys_role r on r.id = ur.role_id
-    left outer join sys_role_menu rm on rm.role_id = r.id
-    left outer join sys_menu m on m.id = rm.menu_id
     left outer join sys_user_organization uo on uo.user_id = u.id
     left outer join sys_organization o on o.id = uo.organization_id
   </sql>
 
+  <sql id="userIncludeMenuJoins">
+    <include refid="userJoins"/>
+    left outer join sys_role_menu rm on rm.role_id = r.id
+    left outer join sys_menu m on m.id = rm.menu_id
+  </sql>
   <sql id="userWhere">
     <where>
       <if test="param.username != null and param.username != ''">
@@ -96,9 +105,9 @@
 
   <select id="findOne" resultMap="BaseResultMap">
     select
-    <include refid="userColumns" />
+    <include refid="userIncludeMenuColumns" />
     from sys_user u
-    <include refid="userJoins" />
+    <include refid="userIncludeMenuJoins" />
     where u.id = #{id,jdbcType=BIGINT}
   </select>
 
@@ -142,9 +151,9 @@
 
   <select id="findByName" resultMap="BaseResultMap">
     select
-    <include refid="userColumns" />
+    <include refid="userIncludeMenuColumns" />
     from sys_user u
-    <include refid="userJoins" />
+    <include refid="userIncludeMenuJoins" />
     where u.username like #{username}
   </select>
 

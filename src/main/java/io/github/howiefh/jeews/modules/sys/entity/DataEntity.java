@@ -9,13 +9,15 @@ import io.github.howiefh.jeews.common.entity.BasicEntity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  *
  *  @author howiefh
  */
 public class DataEntity extends BasicEntity {
 	private static final long serialVersionUID = 2480441011481699886L;
-    
+
 	/**
 	 * 创建者
 	 */
@@ -32,29 +34,33 @@ public class DataEntity extends BasicEntity {
 	 * 更新时间
 	 */
 	private Date updatedAt;
-    
+
+    @JsonIgnore
 	public User getCreatedBy() {
 		return createdBy;
 	}
 	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
+    @JsonIgnore
 	public Date getCreatedAt() {
 		return createdAt;
 	}
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+    @JsonIgnore
 	public User getUpdatedBy() {
 		return updatedBy;
 	}
 	public void setUpdatedBy(User updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+    @JsonIgnore
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
-	} 
+	}
 }

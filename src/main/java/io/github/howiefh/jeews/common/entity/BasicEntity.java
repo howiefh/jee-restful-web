@@ -5,6 +5,8 @@
  */
 package io.github.howiefh.jeews.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  *
  *  @author howiefh
@@ -12,7 +14,7 @@ package io.github.howiefh.jeews.common.entity;
 public class BasicEntity extends AbstractEntity<Long>{
 
 	private static final long serialVersionUID = 1575521071086410539L;
-	
+
 	@Override
 	public Long getId() {
         return super.getId();
@@ -21,5 +23,12 @@ public class BasicEntity extends AbstractEntity<Long>{
 	@Override
 	public void setId(Long id) {
         super.setId(id);
+	}
+
+	@Override
+    @JsonIgnore
+	public boolean isNew() {
+		// TODO Auto-generated method stub
+		return super.isNew();
 	}
 }

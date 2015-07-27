@@ -20,20 +20,20 @@
     <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
   </context:component-scan>
   
-  <!--  可以去掉context:annotation-config -->
-  <!-- for RESTful see https://github.com/spring-projects/spring-hateoas/issues/259-->
+  <!-- for RESTful @EnableHypermediaSupport see https://github.com/spring-projects/spring-hateoas/issues/259-->
   <bean class="io.github.howiefh.jeews.modules.sys.config.HypermediaConfiguration" /> 
+  
+  <!-- for PagedResourcesAssembler see https://github.com/spring-projects/spring-hateoas/issues/161 -->
+  <bean class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" />
 
   <!-- 采用注解方式配置MVC -->
-  <!-- see http://stackoverflow.com/questions/22135002/spring-data-does-not-handle-pageable-action-argument-creation#22143995 -->
   <mvc:annotation-driven>
     <mvc:argument-resolvers>
+      <!-- see http://stackoverflow.com/questions/22135002/spring-data-does-not-handle-pageable-action-argument-creation#22143995 -->
       <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" />
     </mvc:argument-resolvers>
   </mvc:annotation-driven>
-  <!-- see https://github.com/spring-projects/spring-hateoas/issues/161 -->
-  <bean class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" />
-
+  
   <!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
   <!-- 当在web.xml 中   DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
   <mvc:default-servlet-handler />

@@ -6,7 +6,6 @@
 package io.github.howiefh.jeews.modules.sys.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import io.github.howiefh.jeews.common.BaseSpringJUnit4Test;
@@ -48,7 +47,7 @@ public class UserDaoTest extends BaseSpringJUnit4Test {
     public void test2FindOne() {
         User user = userDao.findOne(1L);
         assertNotNull(user.getRoles());
-        assertNotEquals(user.getRoles().size(), 1);
+        assertEquals(user.getRoles().size(), 1);
 	}
 
     @Test

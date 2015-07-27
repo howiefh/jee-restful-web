@@ -36,6 +36,10 @@
     m.updated_by m_updated_by,
     m.updated_at m_updated_at
   </sql>
+  <sql id="menuSimpleColumns">
+    m.id m_id,
+    m.permission m_permission
+  </sql>
 
   <insert id="save" useGeneratedKeys="true" keyProperty="id"
     parameterType="Menu">

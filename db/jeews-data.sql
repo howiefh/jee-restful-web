@@ -34,7 +34,10 @@ VALUES (1, 5);
 INSERT INTO sys_role_menu(role_id, menu_id)
 VALUES (2, 2); 
 
-INSERT INTO sys_user_role
+INSERT INTO sys_user_role(user_id, role_id)
+VALUES (1, 1); 
+
+INSERT INTO sys_user_organization(user_id, organization_id)
 VALUES (1, 1); 
 
 INSERT INTO oauth2_client

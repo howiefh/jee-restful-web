@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.github.howiefh.jeews.modules.sys.dao.RoleDao">
   <resultMap id="BaseResultMap" type="Role">
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="cnname" property="cnname" jdbcType="VARCHAR" />
-    <result column="available" property="available" jdbcType="BIT" />
+    <id column="r_id" property="id" jdbcType="BIGINT" />
+    <result column="r_name" property="name" jdbcType="VARCHAR" />
+    <result column="r_cnname" property="cnname" jdbcType="VARCHAR" />
+    <result column="r_available" property="available" jdbcType="BIT" />
     <result column="r_created_at" property="createdAt" jdbcType="TIMESTAMP" />
     <result column="r_updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
     <association property="createdBy" javaType="User">
@@ -25,7 +25,10 @@
     r.created_by r_created_by,
     r.created_at r_created_at,
     r.updated_by r_updated_by,
-    r.updated_at r_updated_at,
+    r.updated_at r_updated_at
+  </sql>
+  <sql id="roleMenuColumns">
+    <include refid="roleColumns" />,
     <include refid="io.github.howiefh.jeews.modules.sys.dao.MenuDao.menuColumns" />
   </sql>
   <sql id="roleJoins">
@@ -51,7 +54,7 @@
 
   <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
     select
-    <include refid="roleColumns" />
+    <include refid="roleMenuColumns" />
     from sys_role r
     <include refid="roleJoins" />
     where r.id = #{id,jdbcType=BIGINT}
@@ -61,12 +64,11 @@
     select
     <include refid="roleColumns" />
     from sys_role r
-    <include refid="roleJoins" />
   </select>
 
   <select id="findByName" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
-    <include refid="roleColumns" />
+    <include refid="roleMenuColumns" />
     from sys_role r
     <include refid="roleJoins" />
     where r.name = #{name}
@@ -74,7 +76,7 @@
 
   <select id="findByCNName" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
-    <include refid="roleColumns" />
+    <include refid="roleMenuColumns" />
     from sys_role r
     <include refid="roleJoins" />
     where cnname = #{cnname}
