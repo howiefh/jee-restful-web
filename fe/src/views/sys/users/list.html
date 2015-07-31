@@ -1,7 +1,7 @@
 <div class="table-responsive">
   <div class="">
     <div class="table-toolbar">
-      <div class="columns columns-right btn-group pull-right">
+      <div class="btn-group pull-right columns">
         <button class="btn btn-default" type="button" name="refresh" ng-click="tableParams.sorting({})" title="刷新">
           <i class="glyphicon glyphicon-refresh icon-refresh"> </i>
         </button>
@@ -30,7 +30,7 @@
   </div>
   <table ng-table="tableParams" show-filter="true" class="table">
     <tbody>
-      <tr ng-repeat="user in $data">
+      <tr ng-repeat="user in $data" ng-form name="wsForm" xt-form novalidate>
         <td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
           <input type="checkbox" ng-model="checkboxes.items[user.id]" />
         </td>
@@ -38,39 +38,64 @@
         <td data-title="'用户名'" sortable="'username'" filter="{ 'username': 'text' }">
           <span ng-if="!user.$edit"><a href="#/users/update/{{user.id}}">{{user.username}}</a></span>
           <div ng-if="user.$edit">
-            <input class="form-control" type="text" ng-model="user.username" />
+            <input type="text" class="form-control" id="name" name="name" ng-model="user.username" placeholder="用户名由字母、数字、下划线组成，以字母开头，3-30个字符" required ng-pattern="/^[A-Za-z]{1}[0-9A-Za-z_]{2,29}$/" msg-pattern="手机号长度应该为11" xt-validation-tooltip>
           </div>
         </td>
         <td data-title="'邮箱'" sortable="'email'" filter="{ 'email': 'text' }">
           <span ng-if="!user.$edit">{{user.email}}</span>
           <div ng-if="user.$edit">
-            <input class="form-control" type="text" ng-model="user.email" />
+            <input type="email" class="form-control" id="email" name="email" ng-model="user.email" placeholder="邮箱:example@xx.com" required xt-validation-tooltip>
           </div>
         </td>
-        <td data-title="'用户角色'" filter="{ 'rolesList': 'text' }">
-          <span ng-if="!user.$edit">{{user.rolesList}}</span>
+        <td data-title="'手机'" sortable="'mobile'" filter="{ 'mobile': 'text' }">
+          <span ng-if="!user.$edit">{{user.mobile}}</span>
           <div ng-if="user.$edit">
-            <select ng-model="user.rolesList" multiple="multiple" class="form-control">
-              <option value="admin">admin</option>
-              <option value="user">user</option>
-            </select>
+            <input type="tel" class="form-control" id="mobile" name="mobile" ng-model="user.mobile" placeholder="手机号长度11位" required ng-pattern="/^[0-9]{11}$/" msg-pattern="手机号长度应该为11" xt-validation-tooltip>
+          </div>
+        </td>
+        <td data-title="'用户角色'">
+          <span ng-if="!user.$edit">{{user.roles | arrayField:'cnname'}}</span>
+          <div ng-if="user.$edit">
+          <ui-select class="form-control" multiple="true" id="role" name="role" ng-model="user.roles" theme="bootstrap" ng-disabled="disabled" ng-if="user.$edit" required>
+            <ui-select-match placeholder="请选择角色...">{{$item.name}}</ui-select-match>
+            <ui-select-choices repeat="role in roles | propsFilter: {name: $select.search, cnname: $select.search} track by role.id">
+              <div ng-bind-html="role.name | highlight: $select.search"></div>
+              <small> {{role.name}}: <span ng-bind-html="''+role.cnname | highlight: $select.search"></span>
+              </small>
+            </ui-select-choices>
+          </ui-select>
+          </div>
+        </td>
+        <td data-title="'组织'">
+          <span ng-if="!user.$edit">{{user.organizations | arrayField:'name'}}</span>
+          <div ng-if="user.$edit">
+          <ui-select class="form-control" multiple="true" id="org" name="org" ng-model="user.organizations" theme="bootstrap" ng-disabled="disabled" ng-if="user.$edit" required>
+            <ui-select-match placeholder="请选择组织...">{{$item.name}}</ui-select-match>
+            <ui-select-choices repeat="org in organizations | propsFilter: {name: $select.search} track by org.id">
+              <div ng-bind-html="org.name | highlight: $select.search"></div>
+              <small> {{org.name}} </small> 
+            </ui-select-choices>
+          </ui-select>
           </div>
         </td>
         <td data-title="'是否锁定'">
         <span ng-if="!user.$edit">{{user.locked | checkmark }}</span>
           <div ng-if="user.$edit">
-            <input class="form-control" type="checkbox" ng-model="user.locked" />
+            <input type="checkbox" id="locked" ng-model="user.locked" />
           </div>
         </td>
         <td data-title="'操作'">
-          <a ng-if="!user.$edit" href="" class="btn btn-info" ng-click="user.$edit = true">
+          <a ng-if="!user.$edit" href="" class="btn btn-info" ng-click="editUser(user)">
           <i class="icon-edit icon-white">编辑</i>
           </a>
-          <a ng-if="user.$edit" href="" class="btn btn-info" ng-click="updateUser(user)">
+          <a ng-if="user.$edit" href="" class="btn btn-info" ng-disabled="wsForm.$invalid" ng-click="wsForm.$valid && updateUser(user)">
           <i class="icon-edit icon-white">保存</i>
           </a>
-          <button class="btn btn-danger" ng-click="deleteUser(user)" title="删除">
-          <i class="glyphicon glyphicon-trash icon-trash"> </i>
+          <button ng-if="!user.$edit" class="btn btn-danger" ng-click="deleteUser(user)" title="删除">
+            <i class="glyphicon glyphicon-trash icon-trash"> </i>
+          </button>
+          <button ng-if="user.$edit" class="btn btn-danger" ng-click="user.$edit = false" title="取消">
+            <i class="glyphicon glyphicon-ban-circle icon-trash"> </i>
           </button>
         </td>
       </tr>

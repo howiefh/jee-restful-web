@@ -98,7 +98,8 @@ public class UserControllerTest extends BaseSpringJUnit4Test{
 
 	@Test
 	public void test1Create() throws Exception {
-	    String requestBody = "{\"username\":\"zs"+UUID.randomUUID()+"\",\"password\":\"123456\",\"roles\":[1, 2]}";
+	    String requestBody = "{\"username\":\"fh"+UUID.randomUUID()+"\",\"password\":\"123456\",\"email\":\"123@qq.om\",\"mobile\":"
+	    		+ "\"123123\",\"roles\":[1,2],\"organizations\":[1],\"locked\":true}";
 	    MvcResult result = mockMvc.perform(post("/users")
 	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)
 	            .accept(MediaTypes.HAL_JSON)) //执行请求

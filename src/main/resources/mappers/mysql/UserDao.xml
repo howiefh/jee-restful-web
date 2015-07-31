@@ -69,12 +69,16 @@
   <sql id="userWhere">
     <where>
       <if test="param.username != null and param.username != ''">
-        username like
+        u.username like
         CONCAT('%', #{param.username}, '%')
       </if>
       <if test="param.email != null and param.email != ''">
-        and email like
+        and u.email like
         CONCAT('%', #{param.email}, '%')
+      </if>
+      <if test="param.mobile != null and param.mobile != ''">
+        and u.mobile like
+        CONCAT('%', #{param.mobile}, '%')
       </if>
     </where>
   </sql>
@@ -84,7 +88,7 @@
     insert
     into sys_user (id, username, password,
     salt, email, mobile,
-    photo, login_ip, login_date,
+    photo, login_ip, login_date, locked,
     created_by, created_at, updated_by, updated_at)
     values (
     #{id,jdbcType=BIGINT},
@@ -96,6 +100,7 @@
     #{photo,jdbcType=VARCHAR},
     #{loginIp,jdbcType=VARCHAR},
     #{loginDate,jdbcType=TIMESTAMP},
+    #{locked,jdbcType=BIT},
     #{createdBy.id,jdbcType=BIGINT},
     #{createdAt,jdbcType=TIMESTAMP},
     #{updatedBy.id,jdbcType=BIGINT},
@@ -112,7 +117,7 @@
   </select>
 
   <select id="countBy" resultType="long">
-    select count(0) from sys_user
+    select count(0) from sys_user u
     <include refid="userWhere"/>
   </select>
 

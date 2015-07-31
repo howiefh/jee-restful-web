@@ -27,3 +27,7 @@
     * AngularJS
     * Restangular
     * AngularUI Router
+    * UI Bootstrap
+    * Angular-sanitize
+    * AngularJS ui-select
+    * xtform

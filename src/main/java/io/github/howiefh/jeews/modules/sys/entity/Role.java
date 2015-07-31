@@ -7,6 +7,9 @@ package io.github.howiefh.jeews.modules.sys.entity;
 
 import java.util.Set;
 
+import org.springframework.hateoas.core.Relation;
+
+@Relation(value = "role", collectionRelation = "roles")
 public class Role extends DataEntity {
 	private static final long serialVersionUID = 1744395330761664879L;
 
@@ -24,7 +27,7 @@ public class Role extends DataEntity {
      * 是否可用 - sys_role.available
      */
     private Boolean available;
-    
+
     /**
      * 角色可以访问的菜单
      */
@@ -32,7 +35,7 @@ public class Role extends DataEntity {
 
 	public Role() {
 	}
-    
+
     /**
 	 * 构造器，从json整型数据可以构造该对象
 	 */

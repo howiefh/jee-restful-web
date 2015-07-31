@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Relation(value = "user", collectionRelation = "users")
 public class User extends DataEntity {
 	private static final long serialVersionUID = 415987600518114093L;
-    
+
     /**
      * 用户名 - sys_user.username
      */
@@ -61,7 +61,7 @@ public class User extends DataEntity {
      * 用户角色
      */
     private Set<Role> roles;
-    
+
     /**
      * 用户所属组织
      */
@@ -229,7 +229,7 @@ public class User extends DataEntity {
      * @param locked 是否锁定
      */
     public void setLocked(Boolean locked) {
-        this.locked = locked;
+        this.locked = locked == null ? false : locked;
     }
 
     public Set<Role> getRoles() {

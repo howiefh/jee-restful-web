@@ -5,7 +5,10 @@
  */
 package io.github.howiefh.jeews.modules.sys.entity;
 
+import org.springframework.hateoas.core.Relation;
 
+
+@Relation(value = "organization", collectionRelation = "organizations")
 public class Organization extends DataEntity {
 	private static final long serialVersionUID = -5397696221970296107L;
 
@@ -41,7 +44,7 @@ public class Organization extends DataEntity {
 
     public Organization() {
 	}
-    
+
     /**
 	 * 构造器，从json整型数据可以构造该对象
 	 */

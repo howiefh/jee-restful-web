@@ -83,12 +83,13 @@
 
   <!-- filter -->
   <!-- 基于Form表单的身份验证过滤器 -->
-  <bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
+  <bean id="formAuthenticationFilter" class="io.github.howiefh.jeews.modules.sys.security.filter.RestFormAuthenticationFilter">
     <property name="usernameParam" value="username" />
     <property name="passwordParam" value="password" />
     <property name="rememberMeParam" value="rememberMe" />
     <property name="loginUrl" value="${shiro.authc.login.url}" />
   </bean>
+  
   <!-- 退出登录过滤器 -->
   <bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">
     <property name="redirectUrl" value="${shiro.logout.success.url}" />
@@ -115,10 +116,9 @@
         /views/login.html = anon
         /users/logout = logout
         /users/login = authc
-        /authorize = anon
+        /authentication = anon
         /accessToken = anon
-        /users/** = noSessionCreation, tokenFilter
-        /clients/** = noSessionCreation, tokenFilter
+        /** = user
       </value>
     </property>
   </bean>

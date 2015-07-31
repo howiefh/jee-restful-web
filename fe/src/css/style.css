@@ -1,10 +1,6 @@
 .ws-form {
     transition:0.5s linear all;
 }
-.ws-form.ng-invalid:after{
-    content: "请输入有效内容";
-    color: red;
-}
 .table-toolbar .btn-group > .btn-group {
     display: inline-block;
     margin-left: -1px !important;
@@ -40,4 +36,58 @@
     margin-top: 10px;
     margin-bottom: 10px;
     line-height: 34px;
+}
+
+/* Specify styling for tooltip contents */
+.tooltip.xtClass .tooltip-inner {
+    color: #f00;
+    background-color: #fff;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+/* chang arrow color */
+.tooltip.xtClass .tooltip-arrow {
+    border-top-color:#fff
+}
+.xt-validation-summary {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.xt-validation-inline {
+    color: red;
+    padding: 6px 12px;
+}
+.xt-validation-inline .xt-validation-item:before {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    content: "\e101";
+    margin-right: 5px;
+}
+/* ==== Utility classes ===== */
+input.ng-dirty.ng-invalid,
+select.ng-dirty.ng-invalid,
+textarea.ng-dirty.ng-invalid {
+    border: 1px solid red;
+}
+
+.ng-submitted input.ng-invalid,
+.ng-submitted select.ng-invalid,
+.ng-submitted textarea.ng-invalid {
+    border: 1px solid red;
+}
+
+input.ng-dirty.ng-valid,
+select.ng-dirty.ng-valid,
+textarea.ng-dirty.ng-valid {
+    border: 1px solid green;
+}
+/* fix toolbar search input display too long in chrome. */
+.table-toolbar .search .input-group-btn {
+	width:0;
 }

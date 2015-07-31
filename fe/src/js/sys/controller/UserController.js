@@ -1,18 +1,21 @@
 'use strict';
 
-/* Controllers */
+var sys = angular.module('sys');
 
-var controllers = angular.module('controllers', []);
-
-controllers.controller('UserListCtrl', [
+sys.controller('UserListCtrl', [
     '$scope',
     '$window',
     '$filter',
     'ngTableParams',
     'Users',
-    function($scope, $window, $filter, ngTableParams, Users) {
+    'orgsRes',
+    'rolesRes',
+    function($scope, $window, $filter, ngTableParams, Users, orgsRes, rolesRes) {
       // use in html like this ng-repeat="user in $data". see
       // https://github.com/esvit/ng-table/issues/464#issuecomment-64247038
+      $scope.roles = rolesRes;
+      $scope.organizations = orgsRes;
+      
       $scope.tableParams = new ngTableParams({
         page : 1, // show first page
         count : 10, // count per page
@@ -35,6 +38,8 @@ controllers.controller('UserListCtrl', [
                 query.username = $scope.search.query;
             } else if($scope.selectedKey.id == 'email') {
                 query.email = $scope.search.query;
+            } else if($scope.selectedKey.id == 'mobile') {
+                query.mobile = $scope.search.query;
             }
           }
           Users.getList(query).then(
@@ -101,6 +106,9 @@ controllers.controller('UserListCtrl', [
           $scope.tableParams.reload();
         });
       };
+      $scope.editUser = function(userToEdit) {
+        userToEdit.$edit = true;
+      }
       $scope.updateUser = function(userToUpdate) {
         userToUpdate.put().then(function() {
           $window.alert('用户 ' + userToUpdate.username + ' 已更新');
@@ -114,17 +122,19 @@ controllers.controller('UserListCtrl', [
         $scope.tableParams.reload();
       };
       //选择按什么关键字搜索
-      $scope.keys = [ {id: 'username', name: '用户名'}, {id: 'email', name: '邮箱'} ];
+      $scope.keys = [ {id: 'username', name: '用户名'}, {id: 'email', name: '邮箱'}, {id: 'mobile', name: '手机'}];
       $scope.selectedKey = $scope.keys[0];
       $scope.setKey = function(key) {
         $scope.selectedKey = key;
       };
     } ]);
 
-controllers.controller('UserDetailCtrl', [ '$scope', '$window',
-    '$stateParams', '$state', 'usersRes',
-    function($scope, $window, $stateParams, $state, usersRes) {
+sys.controller('UserDetailCtrl', [ '$scope', '$window',
+    '$stateParams', '$state', 'usersRes', 'orgsRes', 'rolesRes',
+    function($scope, $window, $stateParams, $state, usersRes, orgsRes, rolesRes) {
       $scope.user = usersRes;
+      $scope.roles = rolesRes;
+      $scope.organizations = orgsRes;
 
       $scope.deleteUser = function() {
         $scope.user.remove().then(function() {
@@ -143,9 +153,17 @@ controllers.controller('UserDetailCtrl', [ '$scope', '$window',
       };
     } ]);
 
-controllers.controller('UserCreationCtrl', [ '$scope', '$location',
-    '$window', 'Users', function($scope, $location, $window, Users) {
-
+sys.controller('UserCreationCtrl', [ '$scope', '$location',
+    '$window', 'Users', 'orgsRes', 'rolesRes', function($scope, $location, $window, Users, orgsRes, rolesRes) {
+      $scope.roles = rolesRes;
+      $scope.organizations = orgsRes;
+      //初始化
+      $scope.user = {
+          locked:false,
+          roles:[$scope.roles[0]],
+          organizations:[$scope.organizations[0]]
+      };
+      
       $scope.createUser = function() {
         Users.post($scope.user).then(function() {
           $window.alert('用户 ' + $scope.user.username + ' 已添加');
