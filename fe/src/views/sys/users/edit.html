@@ -12,7 +12,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label" for="password">密码 *</label>
     <div class="col-sm-6">
-      <input type="password" class="form-control" id="password" name="password" ng-model="user.password" placeholder="密码由字母、数字、下划线组成，以字母开头，6-18个字符" required  ng-pattern="/^[a-zA-Z]\w{5,17}$/" msg-pattern="输入字母、数字、下划线组成，以字母开头，6-18个字符">
+      <input type="password" class="form-control" id="password" name="password" ng-model="user.password" placeholder="密码由字母、数字、下划线组成，6-18个字符" required  ng-pattern="/^\w{5,17}$/" msg-pattern="输入字母、数字、下划线组成，6-18个字符">
     </div>
     <xt-validation-inline for="password"></xt-validation-inline>
   </div>
@@ -33,7 +33,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label" for="role">角色 *</label>
     <div class="col-sm-6">
-      <ui-select class="form-control" multiple="true" id="role" name="role" ng-model="user.roles" theme="bootstrap" ng-disabled="disabled" required>
+      <ui-select class="form-control" multiple="true" id="role" name="role" ng-model="user.roles" theme="bootstrap" ng-disabled="disabled" ud-required>
         <ui-select-match placeholder="请选择角色...">{{$item.name}}</ui-select-match>
         <ui-select-choices repeat="role in roles | propsFilter: {name: $select.search, cnname: $select.search} track by role.id">
           <div ng-bind-html="role.name | highlight: $select.search"></div>
@@ -47,8 +47,8 @@
   <div class="form-group">
     <label class="col-sm-2 control-label" for="org">组织 *</label>
     <div class="col-sm-6">
-      <ui-select class="form-control" multiple="true" id="org" name="org" ng-model="user.organizations" theme="bootstrap" ng-disabled="disabled" required>
-        <ui-select-match placeholder="Select roles...">{{$item.name}}</ui-select-match>
+      <ui-select class="form-control" multiple="true" id="org" name="org" ng-model="user.organizations" theme="bootstrap" ng-disabled="disabled" ud-required>
+        <ui-select-match placeholder="请选择组织...">{{$item.name}}</ui-select-match>
         <ui-select-choices repeat="org in organizations | propsFilter: {name: $select.search} track by org.id">
           <div ng-bind-html="org.name | highlight: $select.search"></div>
           <small> {{org.name}} </small> 
@@ -70,7 +70,8 @@
       <button class="btn btn-default" ng-click="deleteUser()">删除</button>
     </div>
     <div class="col-sm-offset-2 col-sm-10" ng-if="user.id == null">
-      <button type="submit" class="btn btn-primary" ng-disabled="wsForm.$invalid">保存</button>
+      <button type="button" class="btn btn-default" ng-disabled="isUnchanged()" ng-click="reset()">重置</button>
+      <button type="submit" class="btn btn-primary" ng-disabled="wsForm.$invalid || isUnchanged()">保存</button>
     </div>
   </div>
 </form>

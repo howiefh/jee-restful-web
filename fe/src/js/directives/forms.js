@@ -11,4 +11,14 @@ angular.module('directives')
       });
     }
   }
+})
+.directive('udRequired', function() {
+  return {
+    require : 'ngModel',
+    link : function(scope, element, attrs, ngModel) {
+      ngModel.$validators.required = function(modelValue, viewValue) {
+        return modelValue !== undefined && modelValue !== null && modelValue && modelValue.length > 0;
+      };
+    }
+  };
 });

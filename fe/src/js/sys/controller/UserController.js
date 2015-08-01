@@ -106,15 +106,27 @@ sys.controller('UserListCtrl', [
           $scope.tableParams.reload();
         });
       };
+      $scope.master = {};
       $scope.editUser = function(userToEdit) {
+        $scope.master = angular.copy(userToEdit);
         userToEdit.$edit = true;
       }
+
+      $scope.cancel = function(index) {
+        $scope.users[index] = angular.copy($scope.master);
+        $scope.users[index].$edit = false;
+      };
+
+      $scope.isUnchanged = function(user) {
+        return angular.equals(user, $scope.master);
+      };
+      
       $scope.updateUser = function(userToUpdate) {
         userToUpdate.put().then(function() {
           $window.alert('用户 ' + userToUpdate.username + ' 已更新');
-          $scope.tableParams.reload();
-        }, function(){
           userToUpdate.$edit = false;
+        }, function(){
+          $window.alert('用户 ' + userToUpdate.username + ' 更新失败');
         });
       };
       $scope.search = function() {
@@ -158,7 +170,7 @@ sys.controller('UserCreationCtrl', [ '$scope', '$location',
       $scope.roles = rolesRes;
       $scope.organizations = orgsRes;
       //初始化
-      $scope.user = {
+      $scope.master = {
           locked:false,
           roles:[$scope.roles[0]],
           organizations:[$scope.organizations[0]]
@@ -167,6 +179,21 @@ sys.controller('UserCreationCtrl', [ '$scope', '$location',
       $scope.createUser = function() {
         Users.post($scope.user).then(function() {
           $window.alert('用户 ' + $scope.user.username + ' 已添加');
+          $scope.master = angular.copy($scope.user);
         });
+      };
+      
+      $scope.reset = function() {
+        $scope.user = angular.copy($scope.master);
+        if('xtForm' in $scope) {
+          $scope.xtForm.form.$setPristine();
+          $scope.xtForm.form.$setValidity();
+          $scope.xtForm.form.$setUntouched();
+        }
+      };
+      $scope.reset();
+      
+      $scope.isUnchanged = function() {
+        return angular.equals($scope.user, $scope.master);
       };
     } ]);

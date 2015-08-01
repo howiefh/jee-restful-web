@@ -76,12 +76,14 @@ textarea.ng-dirty.ng-invalid {
     border: 1px solid red;
 }
 
+.ui-select-multiple.ui-select-bootstrap.ng-invalid,
 .ng-submitted input.ng-invalid,
 .ng-submitted select.ng-invalid,
 .ng-submitted textarea.ng-invalid {
     border: 1px solid red;
 }
 
+.ui-select-multiple.ui-select-bootstrap.ng-valid,
 input.ng-dirty.ng-valid,
 select.ng-dirty.ng-valid,
 textarea.ng-dirty.ng-valid {
