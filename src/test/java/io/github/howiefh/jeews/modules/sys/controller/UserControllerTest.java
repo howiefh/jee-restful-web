@@ -20,6 +20,7 @@ import io.github.howiefh.jeews.modules.sys.entity.User;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.junit.After;
@@ -98,8 +99,8 @@ public class UserControllerTest extends BaseSpringJUnit4Test{
 
 	@Test
 	public void test1Create() throws Exception {
-	    String requestBody = "{\"username\":\"fh"+UUID.randomUUID()+"\",\"password\":\"123456\",\"email\":\"123@qq.om\",\"mobile\":"
-	    		+ "\"123123\",\"roles\":[1,2],\"organizations\":[1],\"locked\":true}";
+	    String requestBody = "{\"username\":\"fh"+UUID.randomUUID()+"\",\"password\":\"123456\",\"email\":\""+UUID.randomUUID()+"@qq.om\",\"mobile\":"
+	    		+ "\""+new Random().nextInt()+"\",\"roles\":[1,2],\"organizations\":[1],\"locked\":true}";
 	    MvcResult result = mockMvc.perform(post("/users")
 	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)
 	            .accept(MediaTypes.HAL_JSON)) //执行请求
@@ -150,7 +151,7 @@ public class UserControllerTest extends BaseSpringJUnit4Test{
     @Test
 	public void test4DeleteAll() throws Exception {
         for (int i = 0; i < 3; i++) {
-    	    String requestBody = "{\"username\":\"u"+UUID.randomUUID()+"\",\"password\":\"123456\",\"roles\":[1, 2]}";
+    	    String requestBody = "{\"username\":\"u"+UUID.randomUUID()+"\",\"password\":\"123456\",\"roles\":[1, 2],\"locked\":true}";
     	    MvcResult result = mockMvc.perform(post("/users")
     	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)
     	            .accept(MediaTypes.HAL_JSON)) //执行请求

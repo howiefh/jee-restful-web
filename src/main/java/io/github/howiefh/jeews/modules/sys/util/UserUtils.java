@@ -11,7 +11,6 @@ import io.github.howiefh.jeews.modules.sys.entity.User;
 import java.util.Date;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
 /**
@@ -39,7 +38,6 @@ public class UserUtils {
 	 */
 	public static User getCurrentUser() {
         Subject subject = SecurityUtils.getSubject();
-        Object user = subject.getPrincipals().oneByType(SimplePrincipalCollection.class).oneByType(User.class);
-        return (User)user;
+        return (User) subject.getPrincipal();
 	}
 }

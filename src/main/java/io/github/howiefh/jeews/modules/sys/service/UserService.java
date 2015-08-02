@@ -1,11 +1,11 @@
 package io.github.howiefh.jeews.modules.sys.service;
 
-import java.util.List;
-
 import io.github.howiefh.jeews.common.service.ServiceException;
 import io.github.howiefh.jeews.modules.sys.dao.UserDao;
 import io.github.howiefh.jeews.modules.sys.entity.User;
 import io.github.howiefh.jeews.modules.sys.util.UserUtils;
+
+import java.util.List;
 
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.DefaultHashService;
@@ -25,10 +25,10 @@ public class UserService {
     private String algorithmName = "md5";
     @Value("${shiro.password.hashIterations}")
     private int hashIterations = 2;
-    
+
 	@Autowired
     private UserDao userDao;
-    
+
 	public void save(User user) {
         encryptPasswordAndGenSalt(user);
         UserUtils.genCommonFiled(user);
@@ -42,24 +42,24 @@ public class UserService {
             userDao.saveUserOrganization(user);
 		}
 	}
-    
+
 	public User findOne(long id) {
         return userDao.findOne(id);
 	}
 	public User findByName(String username) {
 		return userDao.findByName(username);
 	}
-    
+
 	public List<User> findAll() {
-		return (List<User>) userDao.findAll();
+		return userDao.findAll();
 	}
-    
+
 	public Page<User> findPageBy(Pageable pageable, User user) {
-        List<User> users = (List<User>) userDao.findPageBy(pageable, user);
+        List<User> users = userDao.findPageBy(pageable, user);
         long count = userDao.countBy(user);
         return new PageImpl<User>(users, pageable, count);
 	}
-    
+
     public void update(User user) {
         if (user.getPassword()!=null) {
             encryptPasswordAndGenSalt(user);
@@ -69,14 +69,14 @@ public class UserService {
             userDao.saveUserRole(user);
 		} else {
 			throw new ServiceException(user.getUsername() + "没有设置角色");
-		} 
+		}
         userDao.deleteUserOrganization(user);
         if (user.getOrganizations() != null && user.getOrganizations().size() > 0) {
             userDao.saveUserOrganization(user);
 		}
 		userDao.update(user);
 	}
-    
+
     public int delete(Long id) {
 		return userDao.delete(id);
 	}
@@ -88,14 +88,27 @@ public class UserService {
         generator.setSeed(SEED.getBytes());
         String salt = generator.nextBytes().toHex();
         user.setSalt(salt);
-        
+
         DefaultHashService hashService = new DefaultHashService();
-		HashRequest request = new HashRequest.Builder()  
-		            .setAlgorithmName(algorithmName).setSource(ByteSource.Util.bytes(user.getPassword()))  
-		            .setSalt(ByteSource.Util.bytes(salt)).setIterations(hashIterations).build();  
+		HashRequest request = new HashRequest.Builder()
+		            .setAlgorithmName(algorithmName).setSource(ByteSource.Util.bytes(user.getPassword()))
+		            .setSalt(ByteSource.Util.bytes(salt)).setIterations(hashIterations).build();
         user.setPassword(hashService.computeHash(request).toHex());
 	}
-    
+
+    public boolean passwordsMatch(User user, String password) {
+        SecureRandomNumberGenerator generator = new SecureRandomNumberGenerator();
+        generator.setSeed(SEED.getBytes());
+        String salt = user.getSalt();
+
+        DefaultHashService hashService = new DefaultHashService();
+		HashRequest request = new HashRequest.Builder()
+		            .setAlgorithmName(algorithmName).setSource(ByteSource.Util.bytes(password))
+		            .setSalt(ByteSource.Util.bytes(salt)).setIterations(hashIterations).build();
+
+        return user.getPassword().equals(hashService.computeHash(request).toHex());
+    }
+
     public boolean isValidUser(String username, String password) {
 		User user = findByName(username);
         if (user == null) {

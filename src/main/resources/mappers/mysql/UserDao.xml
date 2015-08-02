@@ -159,7 +159,7 @@
     <include refid="userIncludeMenuColumns" />
     from sys_user u
     <include refid="userIncludeMenuJoins" />
-    where u.username like #{username}
+    where u.username = #{username}
   </select>
 
   <update id="update" parameterType="User">

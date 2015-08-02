@@ -1,20 +1,17 @@
 package io.github.howiefh.jeews.modules.sys.controller;
 
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
-
 import io.github.howiefh.jeews.modules.sys.entity.User;
 import io.github.howiefh.jeews.modules.sys.resource.UserResource;
 import io.github.howiefh.jeews.modules.sys.resource.UserResourceAssembler;
 import io.github.howiefh.jeews.modules.sys.service.UserService;
 
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,15 +41,15 @@ public class UserController {
 
     @Autowired
     private EntityLinks entityLinks;
-    
+
     @Autowired
     private PagedResourcesAssembler<User> assembler;
-    
+
     @RequiresPermissions("user:view")
-    @RequestMapping(value = "", method = RequestMethod.GET) 
+    @RequestMapping(value = "", method = RequestMethod.GET)
 	public HttpEntity<PagedResources<UserResource>> getList(
             //@SortDefaults see http://terasolunaorg.github.io/guideline/1.0.x/en/ArchitectureInDetail/Pagination.html#implementation-of-application-layer
-	        @PageableDefault(size = 10, page = 0, sort = {"id"}, direction = Direction.ASC) Pageable pageable, 
+	        @PageableDefault(size = 10, page = 0, sort = {"id"}, direction = Direction.ASC) Pageable pageable,
 	        User user) {
         Page<User> users = userService.findPageBy(pageable, user);
 	    return new ResponseEntity<>(assembler.toResource(users, new UserResourceAssembler()), HttpStatus.OK);
@@ -80,36 +77,21 @@ public class UserController {
         userService.update(user);
         return new UserResourceAssembler().toResource(user);
 	}
-    
+
     @RequiresPermissions("user:delete")
 	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("id") Long id) {
 	    userService.delete(id);
 	}
-    
+
     @RequiresPermissions("user:delete")
 	@RequestMapping(value="", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteBatch(@RequestBody List<Long> ids) {
 	    userService.deleteBatch(ids);
 	}
-	@RequestMapping(value="/login", method = RequestMethod.POST)
-    public void showLoginForm(HttpServletRequest req) {
-        String exceptionClassName = (String)req.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
-        String error = "错误";
-        if(UnknownAccountException.class.getName().equals(exceptionClassName)) {
-            error = "用户名/密码错误";
-            throw new UnknownAccountException(error);
-        } else if(IncorrectCredentialsException.class.getName().equals(exceptionClassName)) {
-            error = "用户名/密码错误";
-            throw new IncorrectCredentialsException(error);
-        } else if(exceptionClassName != null) {
-            error = "其他错误：" + exceptionClassName;
-            throw new RuntimeException(error);
-        }
-	}
-    
+
     @RequiresPermissions("user:view")
     @RequestMapping(value="/{id}/educations", method = RequestMethod.POST)
     public List<String> educationInfo(@PathVariable("id") Long id) {

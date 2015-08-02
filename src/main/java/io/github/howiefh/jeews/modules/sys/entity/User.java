@@ -1,6 +1,7 @@
 package io.github.howiefh.jeews.modules.sys.entity;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.hateoas.core.Relation;
@@ -246,5 +247,29 @@ public class User extends DataEntity {
 
 	public void setOrganizations(Set<Organization> organizations) {
 		this.organizations = organizations;
+	}
+
+	public class RolePermission {
+
+        private Set<String> permissionSet = new HashSet<String>();
+		private Set<String> roleSet = new HashSet<String>();
+        public Set<String> getPermissionSet() {
+			return permissionSet;
+		}
+
+		public Set<String> getRoleSet() {
+			return roleSet;
+		}
+
+        public RolePermission() {
+    		Set<Role> roles = getRoles();
+            for (Role role : roles) {
+    			roleSet.add(role.getName());
+                Set<Menu> menus = role.getMenus();
+                for (Menu menu : menus) {
+                    permissionSet.add(menu.getPermission());
+    			}
+    		}
+        }
 	}
 }

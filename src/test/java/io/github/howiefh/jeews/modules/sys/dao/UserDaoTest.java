@@ -37,6 +37,7 @@ public class UserDaoTest extends BaseSpringJUnit4Test {
         user.setPassword("8eb86cd938cd1ecbe9b7316859d4da53");
         user.setSalt("b1c33fa8919f5f6378e4fc5e3eb839af");
         user.setEmail("user@gmail.com");
+        user.setLocked(false);
 
         userDao.save(user);
         id = user.getId();

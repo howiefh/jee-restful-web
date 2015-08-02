@@ -109,6 +109,6 @@
   </bean>
  
   <import resource="classpath:config/spring-config-cache.xml"/>
-  <import resource="classpath:config/spring-config-shiro.xml"/>
+  <import resource="classpath:config/spring-config-shiro-stateless.xml"/>
   <import resource="classpath:config/spring-config-captcha.xml"/>
 </beans> 

@@ -5,9 +5,8 @@
  */
 package io.github.howiefh.jeews.modules.sys.suite;
 
-import io.github.howiefh.jeews.modules.sys.controller.LoginControllerTest;
-import io.github.howiefh.jeews.modules.sys.controller.UserControllerTest;
-import io.github.howiefh.jeews.modules.sys.dao.UserDaoTest;
+import io.github.howiefh.jeews.modules.sys.controller.OrganizationControllerTest;
+import io.github.howiefh.jeews.modules.sys.controller.RoleControllerTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -19,10 +18,10 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    UserDaoTest.class,
-    UserControllerTest.class,
-    LoginControllerTest.class
+    UserTestSuite.class,
+    OrganizationControllerTest.class,
+    RoleControllerTest.class
 })
-public class UserTestSuite {
+public class SysTestSuite {
 
 }
