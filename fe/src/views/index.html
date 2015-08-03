@@ -11,11 +11,12 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <ul class="nav nav-pills pull-right">
+        <div class="header" ng-controller="NavCtrl">
+            <ul class="nav nav-pills pull-right" ng-if="isLoggedIn()">
                 <li><a ui-sref="home">主页</a></li>
                 <li><a ui-sref="users">用户列表</a></li>
-                <li><a ui-sref="usersCreate">添加用户</a></li>
+                <li><span class="label ng-binding label-info" ng-bind="currentUser.username"></span></li>
+                <li><a class="btn btn-default btn-sm" ng-click="logout()">注销</a></li>
             </ul>
             <h3 class="text-muted">JEE Web Site</h3>
         </div>

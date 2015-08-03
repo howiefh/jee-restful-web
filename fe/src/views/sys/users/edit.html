@@ -12,7 +12,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label" for="password">密码 *</label>
     <div class="col-sm-6">
-      <input type="password" class="form-control" id="password" name="password" ng-model="user.password" placeholder="密码由字母、数字、下划线组成，6-18个字符" required  ng-pattern="/^\w{5,17}$/" msg-pattern="输入字母、数字、下划线组成，6-18个字符">
+      <input type="password" class="form-control" id="password" name="password" ng-model="user.password" placeholder="密码由字母、数字、下划线组成，6-18个字符" required  ng-pattern="/^\w{6,18}$/" msg-pattern="输入字母、数字、下划线组成，6-18个字符">
     </div>
     <xt-validation-inline for="password"></xt-validation-inline>
   </div>

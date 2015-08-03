@@ -93,3 +93,7 @@ textarea.ng-dirty.ng-valid {
 .table-toolbar .search .input-group-btn {
 	width:0;
 }
+
+.login{
+  padding-top:25%;
+}

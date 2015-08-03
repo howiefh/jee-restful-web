@@ -48,6 +48,8 @@
     </property>
     <property name="filterChainDefinitions">
       <value>
+        /static/** = anon
+        /views/*.html = anon
         /**=noSessionCreation,statelessAuthc
       </value>
     </property>

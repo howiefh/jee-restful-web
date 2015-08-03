@@ -50,7 +50,7 @@
             <input type="email" class="form-control" id="email" name="email" ng-model="user.email" placeholder="邮箱:example@xx.com" required xt-validation-tooltip>
           </div>
         </td>
-        <td data-title="'手机'" sortable="'mobile'" filter="{ 'mobile': 'text' }" width="18%">
+        <td data-title="'手机'" sortable="'mobile'" filter="{ 'mobile': 'text' }" width="15%">
           <span ng-if="!user.$edit">{{user.mobile}}</span>
           <div ng-if="user.$edit">
             <input type="tel" class="form-control" id="mobile" name="mobile" ng-model="user.mobile" placeholder="手机号长度11位" required ng-pattern="/^[0-9]{11}$/" msg-pattern="手机号长度应该为11" xt-validation-tooltip>
@@ -87,7 +87,7 @@
             <input type="checkbox" id="locked" ng-model="user.locked" />
           </div>
         </td>
-        <td data-title="'操作'" width="11%">
+        <td data-title="'操作'" width="14%">
           <a ng-if="!user.$edit" href="" class="btn btn-info" ng-click="editUser(user)">
           <i class="icon-edit icon-white">编辑</i>
           </a>

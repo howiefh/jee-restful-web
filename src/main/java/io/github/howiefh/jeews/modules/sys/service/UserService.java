@@ -35,8 +35,6 @@ public class UserService {
         userDao.save(user);
         if (user.getRoles() != null && user.getRoles().size() > 0) {
             userDao.saveUserRole(user);
-		} else {
-			throw new ServiceException(user.getUsername() + "没有设置角色");
 		}
         if (user.getOrganizations() != null && user.getOrganizations().size() > 0) {
             userDao.saveUserOrganization(user);

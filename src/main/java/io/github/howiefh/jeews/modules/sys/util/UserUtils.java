@@ -24,12 +24,14 @@ public class UserUtils {
 	 * @param entity
 	 */
 	public static void genCommonFiled(DataEntity entity) {
-        User user = getCurrentUser();
         Date date = new Date();
         entity.setCreatedAt(date);
-        entity.setCreatedBy(user);
         entity.setUpdatedAt(date);
-        entity.setUpdatedBy(user);
+        User user = getCurrentUser();
+        if (user != null) {
+            entity.setCreatedBy(user);
+            entity.setUpdatedBy(user);
+		}
 	}
 
 	/**
@@ -38,6 +40,12 @@ public class UserUtils {
 	 */
 	public static User getCurrentUser() {
         Subject subject = SecurityUtils.getSubject();
-        return (User) subject.getPrincipal();
+        Object user = subject.getPrincipal();
+        //通过statelessFilter过滤，并且需要权限访问时，Principal为User，否则是用户名
+        if (user instanceof User) {
+			return (User)user;
+		} else {
+			return null;
+		}
 	}
 }

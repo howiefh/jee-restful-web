@@ -1,14 +1,24 @@
 'use strict';
 
-var jeews = angular.module('jeews', [ 'ui.router', 'ui.bootstrap', 'restangular', 'ngTable', 'xtForm', 'ui.select', 'ngSanitize',
-    'sys', 'filters', 'directives' ]);
+var jeews = angular.module('jeews', [ 'ui.router', 'ui.bootstrap', 'restangular', 
+                                      'ngTable', 'xtForm', 'ngSanitize',
+                                      'ui.select', 'angular-jwt', 'LocalStorageModule',
+                                      'sys', 'filters', 'directives' ]);
 
 jeews.config([
     '$stateProvider',
     '$urlRouterProvider',
+    '$httpProvider',
     'RestangularProvider',
     'xtFormConfigProvider',
-    function($stateProvider, $urlRouterProvider, RestangularProvider, xtFormConfigProvider) {
+    'jwtInterceptorProvider',
+    function($stateProvider, $urlRouterProvider, $httpProvider, RestangularProvider, xtFormConfigProvider, jwtInterceptorProvider) {
+      // jwt 配置，会在每次请求头部加上令牌
+      jwtInterceptorProvider.tokenGetter = function(Storage) {
+        return Storage.getToken();
+      }
+      $httpProvider.interceptors.push('jwtInterceptor');
+      
       // 全局配置
       xtFormConfigProvider.setErrorMessages({
         required: '该选项不能为空',
@@ -25,7 +35,8 @@ jeews.config([
         time: '输入时间的格式不正确',
         week: '输入周的格式不正确',
         month: '输入月的格式不正确',
-        $$server: '(⊙o⊙)哦，遇到错误了'
+        $$server: '(⊙o⊙)哦，遇到错误了',
+        match: '两次输入的密码不匹配'
       });
       // 给所有后端 API 请求设置 baseUrl
       RestangularProvider.setBaseUrl('/jeews');
@@ -74,9 +85,13 @@ jeews.config([
       $stateProvider.state('home', {
         url : '/',
         template : '<h1>Hello JEE Web Site!</h1>'
+      }).state('login', {
+        url : '/login',
+        templateUrl : 'login.html',
+        controller : 'LoginCtrl'
       }).state('users', {
         url : '/users',
-        templateUrl : 'users/list.html',
+        templateUrl : 'sys/users/list.html',
         controller : 'UserListCtrl',
         resolve : {
           rolesRes : function(Roles) {
@@ -88,7 +103,7 @@ jeews.config([
         }
       }).state('usersDetail', {
         url : '/users/update/:id',
-        templateUrl : 'users/edit.html',
+        templateUrl : 'sys/users/edit.html',
         controller : 'UserDetailCtrl',
         resolve : {
           usersRes : function(Users, $stateParams) {
@@ -103,7 +118,7 @@ jeews.config([
         }
       }).state('usersCreate', {
         url : '/users/create',
-        templateUrl : 'users/edit.html',
+        templateUrl : 'sys/users/edit.html',
         controller : 'UserCreationCtrl',
         resolve : {
           rolesRes : function(Roles) {
@@ -117,16 +132,20 @@ jeews.config([
 
     } ]);
 jeews.run([
-    'Restangular',
     '$window',
-    function(Restangular, $window) {
+    '$rootScope',
+    '$state',
+    'Restangular',
+    'jwtHelper',
+    'Storage',
+    function($window, $rootScope, $state, Restangular, jwtHelper, Storage) {
       //http://stackoverflow.com/questions/21445886/angularjs-change-url-in-module-config
       Restangular.setErrorInterceptor(function(response, deferred,
           responseHandler) {
-        if (response.status == 401) {
+        if (response.status == 401 || response.status == 403) {
           console.log("Login required... ");
-          var location = response.header;
-          $window.location.href = '/views/login.html';
+          Storage.clear();
+          $state.go('login');
         } else if (response.status == 404) {
           console.log("Resource not available...");
         } else {
@@ -134,4 +153,18 @@ jeews.run([
         }
         return false; // stop the promise chain
       });
+      $rootScope.$on('$stateChangeStart', function(e, to) {
+        if (to.data && to.data.requiresLogin) {
+          if (!Storage.getToken() || jwtHelper.isTokenExpired(Storage.getToken())) {
+            e.preventDefault();
+            $state.go('login');
+          }
+        }
+        //如果已经登录访问login时，跳转到home
+        if (to.name === 'login' && Storage.getToken() && !jwtHelper.isTokenExpired(Storage.getToken())) {
+          e.preventDefault();
+          $state.go('home');
+        }
+      });
+
     } ]);

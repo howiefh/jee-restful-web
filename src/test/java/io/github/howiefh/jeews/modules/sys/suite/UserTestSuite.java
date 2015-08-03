@@ -6,6 +6,7 @@
 package io.github.howiefh.jeews.modules.sys.suite;
 
 import io.github.howiefh.jeews.modules.sys.controller.LoginControllerTest;
+import io.github.howiefh.jeews.modules.sys.controller.SignupControllerTest;
 import io.github.howiefh.jeews.modules.sys.controller.UserControllerTest;
 import io.github.howiefh.jeews.modules.sys.dao.UserDaoTest;
 
@@ -21,7 +22,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     UserDaoTest.class,
     UserControllerTest.class,
-    LoginControllerTest.class
+    LoginControllerTest.class,
+    SignupControllerTest.class
 })
 public class UserTestSuite {
 

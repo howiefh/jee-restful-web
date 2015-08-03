@@ -7,20 +7,17 @@ package io.github.howiefh.jeews.modules.sys.controller;
 
 import io.github.howiefh.jeews.modules.sys.entity.User;
 import io.github.howiefh.jeews.modules.sys.entity.User.RolePermission;
-import io.github.howiefh.jeews.modules.sys.security.filter.StatelessAuthenticationFilter;
 import io.github.howiefh.jeews.modules.sys.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
-
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,9 +39,9 @@ public class LoginCotroller {
     private UserService userService;
 
 	@RequestMapping(value="", method = RequestMethod.POST)
-	public Map<String, Object> login(ServletRequest request) {
-        String username = getUsername(request);
-        String password = getPassword(request);
+	public Map<String, Object> login(@RequestBody User u) {
+        String username = u.getUsername();
+        String password = u.getPassword();
         if (username == null) {
 			throw new NullPointerException("用户名或密码错误！");
 		}
@@ -74,13 +71,12 @@ public class LoginCotroller {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("access_token", token);
+        Map<String, Object> userMap = new HashMap<String, Object>();
+        userMap.put("id", user.getId());
+        userMap.put("username", user.getUsername());
+        userMap.put("perms", rolePermission.getPermissionSet());
+        userMap.put("roles", rolePermission.getRoleSet());
+        map.put("user", userMap);
         return map;
 	}
-    protected String getUsername(ServletRequest request) {
-        return WebUtils.getCleanParam(request, StatelessAuthenticationFilter.DEFAULT_USERNAME_PARAM);
-    }
-
-    protected String getPassword(ServletRequest request) {
-        return WebUtils.getCleanParam(request, StatelessAuthenticationFilter.DEFAULT_PASSWORD_PARAM);
-    }
 }

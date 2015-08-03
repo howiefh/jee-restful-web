@@ -8,7 +8,9 @@ package io.github.howiefh.jeews.modules.sys.security.filter;
 import io.github.howiefh.jeews.modules.sys.security.token.JsonWebToken;
 import io.github.howiefh.jeews.modules.sys.security.token.TokenType;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -28,10 +30,9 @@ import org.slf4j.LoggerFactory;
  */
 public class StatelessAuthenticationFilter extends AuthenticatingFilter {
 
-    public static final String DEFAULT_USERNAME_PARAM = "username";
-    public static final String DEFAULT_PASSWORD_PARAM = "password";
-    public static final String DEFAULT_REMEMBER_ME_PARAM = "rememberMe";
-
+    protected static final String DEFAULT_LOGIN_URL= "/login";
+    protected static final String DEFAULT_SIGNUP_URL= "/signup";
+    protected static final String DEFAULT_FORGET_PASSWORD_URL= "/signup";
     /**
      * This class's private logger.
      */
@@ -46,10 +47,6 @@ public class StatelessAuthenticationFilter extends AuthenticatingFilter {
      * HTTP Authentication 头部, 值为<code>WWW-Authenticate</code>
      */
     protected static final String AUTHENTICATE_HEADER = "WWW-Authenticate";
-
-    private String usernameParam = DEFAULT_USERNAME_PARAM;
-    private String passwordParam = DEFAULT_PASSWORD_PARAM;
-    private String rememberMeParam = DEFAULT_REMEMBER_ME_PARAM;
 
     /**
      * 应用名将出现在查询令牌时，默认是<code>application</code>。
@@ -67,6 +64,13 @@ public class StatelessAuthenticationFilter extends AuthenticatingFilter {
      */
     private String authzScheme = TokenType.BEARER_AUTH;
 
+    private Set<String> ignoreUrls = new HashSet<String>();
+
+    {
+    	ignoreUrls.add(DEFAULT_LOGIN_URL);
+    	ignoreUrls.add(DEFAULT_SIGNUP_URL);
+    	ignoreUrls.add(DEFAULT_FORGET_PASSWORD_URL);
+    }
     /**
      * 在响应的头部<b><code>WWW-Authenticate</code></b>使用这个名称
      * <p/>
@@ -140,30 +144,6 @@ public class StatelessAuthenticationFilter extends AuthenticatingFilter {
         this.authcScheme = authcScheme;
     }
 
-    public String getUsernameParam() {
-		return usernameParam;
-	}
-
-	public void setUsernameParam(String usernameParam) {
-		this.usernameParam = usernameParam;
-	}
-
-	public String getPasswordParam() {
-		return passwordParam;
-	}
-
-	public void setPasswordParam(String passwordParam) {
-		this.passwordParam = passwordParam;
-	}
-
-	public String getRememberMeParam() {
-		return rememberMeParam;
-	}
-
-	public void setRememberMeParam(String rememberMeParam) {
-		this.rememberMeParam = rememberMeParam;
-	}
-
 	/**
      * 处理认证的请求、发送查询口令的响应
      *
@@ -177,7 +157,7 @@ public class StatelessAuthenticationFilter extends AuthenticatingFilter {
         if (isTokenLoginAttempt(request, response)) {
             loggedIn = executeLogin(request, response);
         }
-        if (!loggedIn && isFormLoginAttempt(request, response)) {
+        if (!loggedIn && canAccessPostRequest(request, response)) {
             // let login controller to handle the request
             return true;
 		}
@@ -201,10 +181,11 @@ public class StatelessAuthenticationFilter extends AuthenticatingFilter {
         return authzHeader != null && isTokenLoginAttempt(authzHeader);
     }
 
-    protected boolean isFormLoginAttempt(ServletRequest request, ServletResponse response) {
-        return (request instanceof HttpServletRequest) && WebUtils.toHttp(request).getMethod().equalsIgnoreCase(POST_METHOD)
-        		&& request.getParameter(usernameParam) != null
-        		&& request.getParameter(passwordParam) != null;
+    protected boolean canAccessPostRequest(ServletRequest request, ServletResponse response) {
+        HttpServletRequest httpRequest = WebUtils.toHttp(request);
+        String url = WebUtils.getPathWithinApplication(httpRequest);
+        return (request instanceof HttpServletRequest) && httpRequest.getMethod().equalsIgnoreCase(POST_METHOD)
+        		&& ignoreUrls.contains(url);
     }
     /**
      * 委派给 {@link #isTokenLoginAttempt(javax.servlet.ServletRequest, javax.servlet.ServletResponse) isTokenLoginAttempt}.
