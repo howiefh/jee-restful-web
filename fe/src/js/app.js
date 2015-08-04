@@ -154,14 +154,12 @@ jeews.run([
         return false; // stop the promise chain
       });
       $rootScope.$on('$stateChangeStart', function(e, to) {
-        if (to.data && to.data.requiresLogin) {
-          if (!Storage.getToken() || jwtHelper.isTokenExpired(Storage.getToken())) {
-            e.preventDefault();
-            $state.go('login');
-          }
+        if (to.name != 'login' && !Storage.isLoggedIn()) {
+          e.preventDefault();
+          $state.go('login');
         }
         //如果已经登录访问login时，跳转到home
-        if (to.name === 'login' && Storage.getToken() && !jwtHelper.isTokenExpired(Storage.getToken())) {
+        if (to.name === 'login' && Storage.isLoggedIn()) {
           e.preventDefault();
           $state.go('home');
         }

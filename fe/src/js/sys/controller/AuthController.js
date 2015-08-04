@@ -41,7 +41,5 @@ sys.controller('NavCtrl', [
         $state.go('login');
       };
       
-      $scope.isLoggedIn = function(){
-        return Storage.getToken() && !jwtHelper.isTokenExpired(Storage.getToken())
-      }
+      $scope.isLoggedIn = Storage.isLoggedIn;
   } ]);

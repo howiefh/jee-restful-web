@@ -2,7 +2,7 @@
 
 var sys = angular.module('sys');
 
-sys.factory('Storage',['localStorageService', function(localStorageService) {
+sys.factory('Storage',['localStorageService', 'jwtHelper', function(localStorageService, jwtHelper) {
   var storageKey = 'access_token';
   var userKey = "current_user";
   return {    
@@ -20,6 +20,10 @@ sys.factory('Storage',['localStorageService', function(localStorageService) {
     },
     clear : function() {
       return localStorageService.remove(storageKey, userKey);
+    },
+    isLoggedIn : function(){
+      var token = localStorageService.get(storageKey);
+      return token && !jwtHelper.isTokenExpired(token);
     }
   };
 }]);
