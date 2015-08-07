@@ -1,6 +1,6 @@
-# JEE Web Site
+# JEE RESTful Web
 
-构建 RESTful Web Service 的 Demo
+RESTful Web 服务的简单实现，目前实现了注册、认证、用户管理等简单功能。
 
 ## 技术
 
@@ -15,14 +15,13 @@
     * Alibaba Druid 1.0
     * Ehcache 2.6
     * SLF4J 1.7、Log4j 2.3
-    * Kaptcha 0.9
     * Spring HATEOAS 0.17
 
-2. 前端
+
+2. [前端](https://github.com/howiefh/restful-web-app)
 
     使用Gulp构建，Bower进行包管理，主要使用的框架
 
-    * jQuery
     * Bootstrap
     * AngularJS
     * Restangular
