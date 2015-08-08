@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>JEE RESTful Web by howiefh</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">JEE RESTful Web</h1>
+      <h2 class="project-tagline">JEE RESTful Web Services</h2>
+      <a href="https://github.com/howiefh/jee-restful-web" class="btn">View on GitHub</a>
+      <a href="https://github.com/howiefh/jee-restful-web/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/howiefh/jee-restful-web/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="jee-restful-web-services" class="anchor" href="#jee-restful-web-services" aria-hidden="true"><span class="octicon octicon-link"></span></a>JEE RESTful Web Services</h1>
+
+<p>RESTful Web 服务的简单实现，目前实现了注册、认证、用户管理等简单功能。</p>
+
+<h1>
+<a id="截图" class="anchor" href="#%E6%88%AA%E5%9B%BE" aria-hidden="true"><span class="octicon octicon-link"></span></a>截图</h1>
+
+<p><img src="http://fh-1.qiniudn.com/jee-restful-web-login.png" alt="登录界面">
+<img src="http://fh-1.qiniudn.com/jee-restful-web.png" alt="用户管理界面">
+<img src="http://fh-1.qiniudn.com/jee-restful-web-edit-inline.png" alt="行编辑"></p>
+
+<h1>
+<a id="技术" class="anchor" href="#%E6%8A%80%E6%9C%AF" aria-hidden="true"><span class="octicon octicon-link"></span></a>技术</h1>
+
+<ol>
+<li>
+<p>后端</p>
+
+<p>使用Maven构建，主要使用的框架、第三方库</p>
+
+<ul>
+<li>Spring Framework 4.1</li>
+<li>Apache Shiro 1.2</li>
+<li>Spring MVC 4.1</li>
+<li>MyBatis 3.3</li>
+<li>Alibaba Druid 1.0</li>
+<li>Ehcache 2.6</li>
+<li>SLF4J 1.7、Log4j 2.3</li>
+<li>Spring HATEOAS 0.17</li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/howiefh/restful-web-app">前端</a></p>
+
+<p>使用Gulp构建，Bower进行包管理，主要使用的框架、第三方库</p>
+
+<ul>
+<li>AngularJS</li>
+<li>Bootstrap</li>
+<li>UI Bootstrap</li>
+<li>Font Awesome</li>
+<li>Restangular</li>
+<li>ocLazyLoad</li>
+<li>AngularUI Router</li>
+<li>Angular-sanitize</li>
+<li>AngularJS ui-select</li>
+<li>xtform</li>
+<li>Angular Loading Bar</li>
+<li>Angular Chart</li>
+<li>ngTable</li>
+<li>angular-jwt</li>
+<li>angular-local-storage</li>
+</ul>
+</li>
+<li>
+<p>数据库</p>
+
+<p>mysql</p>
+</li>
+</ol>
+
+<h1>
+<a id="安装及运行" class="anchor" href="#%E5%AE%89%E8%A3%85%E5%8F%8A%E8%BF%90%E8%A1%8C" aria-hidden="true"><span class="octicon octicon-link"></span></a>安装及运行</h1>
+
+<pre><code>git clone https://github.com/howiefh/jee-restful-web.git
+cd jee-restful-web
+</code></pre>
+
+<p>运行前先导入db目录下的数据库</p>
+
+<p>之后执行<code>mvn tomcat7:run</code>即可</p>
+
+<p>安装<a href="https://github.com/howiefh/restful-web-app">前端</a>即可体验目前实现的简单功能</p>
+
+<h1>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://docs.jeerestfulweb.apiary.io">API</a>
+</h1>
+
+<h2>
+<a id="认证" class="anchor" href="#%E8%AE%A4%E8%AF%81" aria-hidden="true"><span class="octicon octicon-link"></span></a>认证</h2>
+
+<p>认证使用 Json Web Token，用户登录时提交用户名和密码，认证成功后会返回一个 <em>access_token</em>，之后的每次请求都需要在头部 <em>Authorization</em> 携带此token。</p>
+
+<h2>
+<a id="media-types" class="anchor" href="#media-types" aria-hidden="true"><span class="octicon octicon-link"></span></a>Media Types</h2>
+
+<p>使用 <a href="https://github.com/mikekelly/hal_specification/blob/master/hal_specification.md">HAL+JSON</a> media-type 来表现状态。</p>
+
+<p>请求使用最基本的JSON格式。</p>
+
+<h2>
+<a id="错误状态码" class="anchor" href="#%E9%94%99%E8%AF%AF%E7%8A%B6%E6%80%81%E7%A0%81" aria-hidden="true"><span class="octicon octicon-link"></span></a>错误状态码</h2>
+
+<p>如果发生错误，可能返回以下状态码：</p>
+
+<ul>
+<li>Response 400 请求错误</li>
+<li>Response 401 未认证</li>
+<li>Response 404 未找到页面</li>
+<li>Response 500 服务器错误</li>
+</ul>
+
+<h2>
+<a id="注册-signup" class="anchor" href="#%E6%B3%A8%E5%86%8C-signup" aria-hidden="true"><span class="octicon octicon-link"></span></a>注册 [/signup]</h2>
+
+<p>通过提交用户名、密码、邮箱可以注册一个账号</p>
+
+<h3>
+<a id="注册一个账号-post" class="anchor" href="#%E6%B3%A8%E5%86%8C%E4%B8%80%E4%B8%AA%E8%B4%A6%E5%8F%B7-post" aria-hidden="true"><span class="octicon octicon-link"></span></a>注册一个账号 [POST]</h3>
+
+<p>通过提交包含 <em>username</em> <em>password</em> <em>email</em> 字段的json数据可以注册一个账号</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<pre><code>{
+    "username":"test",
+    "password":"123456",
+    "email":"test@demo.com"
+}
+</code></pre>
+</li>
+<li><p>Response 201</p></li>
+</ul>
+
+<h2>
+<a id="登录-login" class="anchor" href="#%E7%99%BB%E5%BD%95-login" aria-hidden="true"><span class="octicon octicon-link"></span></a>登录 [/login]</h2>
+
+<p>通过提交用户名、密码可以登录系统</p>
+
+<h3>
+<a id="登录一个账号-post" class="anchor" href="#%E7%99%BB%E5%BD%95%E4%B8%80%E4%B8%AA%E8%B4%A6%E5%8F%B7-post" aria-hidden="true"><span class="octicon octicon-link"></span></a>登录一个账号 [POST]</h3>
+
+<p>通过提交包含 <em>username</em> <em>password</em> 字段的json数据可以登录一个账号</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<pre><code>{
+    "username":"test",
+    "password":"123456"
+}
+</code></pre>
+</li>
+<li>
+<p>Response 200</p>
+
+<ul>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "access_token": "json web token",
+    "user": {
+        "id": 8,
+        "username": "test",
+        "roles": ["admin"],
+        "perms": ["user:view","user:update","user:delete","user:create"]
+    }
+}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="用户列表-userspagesizesort" class="anchor" href="#%E7%94%A8%E6%88%B7%E5%88%97%E8%A1%A8-userspagesizesort" aria-hidden="true"><span class="octicon octicon-link"></span></a>用户列表 [/users{?page,size,sort}]</h2>
+
+<p>获取所有用户列表</p>
+
+<p>可以有以下参数：</p>
+
+<ul>
+<li>page</li>
+<li>size</li>
+<li>sort</li>
+</ul>
+
+<h3>
+<a id="获取用户列表-get" class="anchor" href="#%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E5%88%97%E8%A1%A8-get" aria-hidden="true"><span class="octicon octicon-link"></span></a>获取用户列表 [GET]</h3>
+
+<p>获取所有用户列表</p>
+
+<ul>
+<li>
+<p>Parameters</p>
+
+<ul>
+<li>page - 页码，从0开始计数</li>
+<li>size - 每页显示项数</li>
+<li>sort - 排序</li>
+</ul>
+</li>
+<li>
+<p>Request</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Authorization: Bearer jwt
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Etag: "0c78d24e41fec4bfdfa4e34193ca35bc8"
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "_links":
+    {
+        "self":
+        {
+            "href": "http://localhost:8080/jee-restful-web/users?page=0&amp;size=10&amp;sort=id,asc"
+        },
+        "next":
+        {
+            "href": "http://localhost:8080/jee-restful-web/users?page=1&amp;size=10&amp;sort=id,asc"
+        }
+    },
+    "_embedded":
+    {
+        "api:users":
+        [
+            {
+                "id": 1,
+                "username": "test",
+                "email": "test@demo.com",
+                "mobile": "13100000000",
+                "locked": false,
+                "roles":
+                [
+                    {
+                        "id": 1,
+                        "name": "admin",
+                        "cnname": "管理员",
+                        "available": true,
+                        "menus":
+                        [
+                        ]
+                    }
+                ],
+                "organizations":
+                [
+                    {
+                        "id": 1,
+                        "name": "总部",
+                        "parentId": 0,
+                        "parentIds": "0",
+                        "sort": 0,
+                        "isShow": true
+                    }
+                ],
+                "_links":
+                {
+                    "self":
+                    {
+                        "href": "http://localhost:8080/jee-restful-web/users/1"
+                    },
+                    "curies":
+                    [
+                        {
+                            "href": "http://localhost/rels/{rel}",
+                            "name": "api",
+                            "templated": true
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "page":
+    {
+        "size": 10,
+        "totalElements": 1,
+        "totalPages": 1,
+        "number": 0
+    }
+}
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<h3>
+<a id="删除多个用户-delete" class="anchor" href="#%E5%88%A0%E9%99%A4%E5%A4%9A%E4%B8%AA%E7%94%A8%E6%88%B7-delete" aria-hidden="true"><span class="octicon octicon-link"></span></a>删除多个用户 [DELETE]</h3>
+
+<p>请求内容为将要删除的用户id数组</p>
+
+<ul>
+<li>
+<p>Request</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Authorization: Bearer jwt
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>[1,2]
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>Response 204</p></li>
+</ul>
+
+<h3>
+<a id="创建用户-post" class="anchor" href="#%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7-post" aria-hidden="true"><span class="octicon octicon-link"></span></a>创建用户 [POST]</h3>
+
+<p>创建一个新的用户</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Authorization: Bearer jwt
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "username":"test",
+    "email":"us@demo.com",
+    "mobile":"13245678901",
+    "locked":false,
+    "roles":[
+        {
+            "id":2,
+            "name":"normal_user"
+        }
+    ],
+    "organizations":[
+        {
+            "id":1,
+            "name":"总部"
+        }
+    ]
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 201</p>
+
+<pre><code>{
+    "id": 1,
+    "username": "test",
+    "email": "us@demo.com",
+    "mobile": "13245678901",
+    "locked": false,
+    "roles":
+    [
+        {
+            "id": 2,
+            "name": "normal_user",
+            "cnname": "普通用户",
+            "available": true,
+            "menus":
+            [
+            ]
+        }
+    ],
+    "organizations":
+    [
+        {
+            "id": 1,
+            "name": "总部",
+            "parentId": 0,
+            "parentIds": "0",
+            "sort": 0,
+            "isShow": true
+        }
+    ],
+    "_links":
+    {
+        "self":
+        {
+            "href": "http://localhost:8080/jee-restful-web/users/1"
+        },
+        "curies":
+        [
+            {
+                "href": "http://localhost/rels/{rel}",
+                "name": "api",
+                "templated": true
+            }
+        ]
+    }
+}
+</code></pre>
+</li>
+</ul>
+
+<h2>
+<a id="单个用户-usersid" class="anchor" href="#%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7-usersid" aria-hidden="true"><span class="octicon octicon-link"></span></a>单个用户 [/users/{id}]</h2>
+
+<p>获取单个用户</p>
+
+<h3>
+<a id="获取单个用户-get" class="anchor" href="#%E8%8E%B7%E5%8F%96%E5%8D%95%E4%B8%AA%E7%94%A8%E6%88%B7-get" aria-hidden="true"><span class="octicon octicon-link"></span></a>获取单个用户 [GET]</h3>
+
+<ul>
+<li>
+<p>Request</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Authorization: Bearer jwt
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200</p>
+
+<pre><code>{
+    "id": 1,
+    "username": "test",
+    "email": "test@demo.com",
+    "mobile": "13100000000",
+    "locked": false,
+    "roles":
+    [
+        {
+            "id": 1,
+            "name": "admin",
+            "cnname": "管理员",
+            "available": true,
+            "menus":
+            [
+                {
+                    "id": 5,
+                    "permission": "user:delete"
+                },
+                {
+                    "id": 4,
+                    "permission": "user:update"
+                },
+                {
+                    "id": 3,
+                    "permission": "user:create"
+                },
+                {
+                    "id": 2,
+                    "permission": "user:view"
+                },
+                {
+                    "id": 1,
+                    "permission": "user"
+                }
+            ]
+        }
+    ],
+    "organizations":
+    [
+        {
+            "id": 1,
+            "name": "总部",
+            "parentId": 0,
+            "parentIds": "0",
+            "sort": 0,
+            "isShow": true
+        }
+    ],
+    "_links":
+    {
+        "self":
+        {
+            "href": "http://localhost:8080/jee-restful-web/users/1"
+        },
+        "curies":
+        [
+            {
+                "href": "http://localhost/rels/{rel}",
+                "name": "api",
+                "templated": true
+            }
+        ]
+    }
+}
+</code></pre>
+</li>
+</ul>
+
+<h3>
+<a id="更新用户-put" class="anchor" href="#%E6%9B%B4%E6%96%B0%E7%94%A8%E6%88%B7-put" aria-hidden="true"><span class="octicon octicon-link"></span></a>更新用户 [PUT]</h3>
+
+<p>更新一个用户，可以只提交部分数据</p>
+
+<ul>
+<li>
+<p>Request (application/json)</p>
+
+<ul>
+<li>
+<p>Headers</p>
+
+<pre><code>Authorization: Bearer jwt
+</code></pre>
+</li>
+<li>
+<p>Body</p>
+
+<pre><code>{
+    "id":1,
+    "username":"test",
+    "email":"us@demo.com",
+    "mobile":"13245678901",
+    "locked":false,
+    "roles":[
+        {
+            "id":2,
+            "name":"normal_user"
+        }
+    ],
+    "organizations":[
+        {
+            "id":1,
+            "name":"总部"
+        }
+    ]
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Response 200</p>
+
+<pre><code>{
+    "id": 1,
+    "username": "test",
+    "email": "us@demo.com",
+    "mobile": "13245678901",
+    "locked": false,
+    "roles":
+    [
+        {
+            "id": 2,
+            "name": "normal_user",
+            "cnname": "普通用户",
+            "available": true,
+            "menus":
+            [
+            ]
+        }
+    ],
+    "organizations":
+    [
+        {
+            "id": 1,
+            "name": "总部",
+            "parentId": 0,
+            "parentIds": "0",
+            "sort": 0,
+            "isShow": true
+        }
+    ],
+    "_links":
+    {
+        "self":
+        {
+            "href": "http://localhost:8080/jee-restful-web/users/1"
+        },
+        "curies":
+        [
+            {
+                "href": "http://localhost/rels/{rel}",
+                "name": "api",
+                "templated": true
+            }
+        ]
+    }
+}
+</code></pre>
+</li>
+</ul>
+
+<h3>
+<a id="删除用户-delete" class="anchor" href="#%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7-delete" aria-hidden="true"><span class="octicon octicon-link"></span></a>删除用户 [DELETE]</h3>
+
+<ul>
+<li>Response 204</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/howiefh/jee-restful-web">JEE RESTful Web</a> is maintained by <a href="https://github.com/howiefh">howiefh</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
