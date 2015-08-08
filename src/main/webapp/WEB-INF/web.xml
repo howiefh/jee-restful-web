@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE web-app>
-<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-  <display-name>JEE Web Site</display-name>
-
-  <!-- 跨域资源共享 -->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+  <display-name>JEE RESTful Web Services</display-name>
   <filter>
     <filter-name>CORS Filter</filter-name>
     <filter-class>io.github.howiefh.jeews.common.filter.cors.CORSFilter</filter-class>
@@ -49,8 +44,6 @@
     <filter-name>CORS Filter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  
-  <!-- 字符编码过滤器 应该放在所有过滤器前 -->
   <filter>
     <filter-name>encodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -67,8 +60,6 @@
     <filter-name>encodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  
-  <!-- 提供ETag（实体标记）缓存机制 -->
   <filter>
     <filter-name>etagFilter</filter-name>
     <filter-class>org.springframework.web.filter.ShallowEtagHeaderFilter</filter-class>
@@ -77,8 +68,6 @@
     <filter-name>etagFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-
-  <!-- shiro 安全过滤器 -->
   <filter>
     <filter-name>shiroFilter</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -93,8 +82,6 @@
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
-
-  <!-- Spring 容器加载 -->
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
@@ -102,8 +89,6 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath:config/spring-config.xml</param-value>
   </context-param>
-
-  <!-- MVC Servlet -->
   <servlet>
     <servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -117,13 +102,9 @@
     <servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-
-  <!-- 欢迎页面 -->
   <welcome-file-list>
     <welcome-file>index</welcome-file>
   </welcome-file-list>
-
-  <!-- 错误页面映射 -->
   <error-page>
     <error-code>404</error-code>
     <location>/WEB-INF/views/error/error.jsp</location>
