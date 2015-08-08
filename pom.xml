@@ -3,10 +3,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.howiefh</groupId>
-  <artifactId>jeews</artifactId>
+  <artifactId>jee-restful-web</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <name>JEE Web Site</name>
+  <name>JEE RESTful Web Services</name>
   <url>http://maven.apache.org</url>
   <properties>
     <spring.version>4.1.6.RELEASE</spring.version>
@@ -357,7 +357,7 @@
   </dependencies>
 
   <build>
-    <finalName>jeews</finalName>
+    <finalName>jee-restful-web</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

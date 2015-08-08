@@ -6,7 +6,7 @@
         <property name="LOG_HOME">log</property>
         <!-- 日志备份目录 -->
         <property name="BACKUP_HOME">${LOG_HOME}/backup</property>
-        <property name="APP">jeews</property>
+        <property name="APP">jee-restful-web</property>
     </properties>
     <!--定义所有的appender-->
     <appenders>
