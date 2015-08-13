@@ -13,7 +13,7 @@ public class UserResourceAssembler extends ResourceAssemblerSupport<User, UserRe
 
     @Override
     public UserResource toResource(User entity) {
-    	UserResource resource = createResourceWithId(entity.getId(), entity);
+        UserResource resource = createResourceWithId(entity.getId(), entity);
         return resource;
     }
 

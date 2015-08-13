@@ -10,11 +10,11 @@ import io.github.howiefh.jeews.modules.oauth2.entity.Client;
 import org.springframework.hateoas.Resource;
 
 /**
- *  
+ * 
  *
- *  @author howiefh
+ * @author howiefh
  */
-public class ClientResource extends Resource<Client>{
+public class ClientResource extends Resource<Client> {
     public ClientResource(Client client) {
         super(client);
     }

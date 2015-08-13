@@ -13,54 +13,61 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class DataEntity extends BasicEntity {
-	private static final long serialVersionUID = 2480441011481699886L;
+    private static final long serialVersionUID = 2480441011481699886L;
 
-	/**
-	 * 创建者
-	 */
-	private User createdBy;
-	/**
-	 * 创建时间
-	 */
-	private Date createdAt;
-	/**
-	 * 更新者
-	 */
-	private User updatedBy;
-	/**
-	 * 更新时间
-	 */
-	private Date updatedAt;
+    /**
+     * 创建者
+     */
+    private User createdBy;
+    /**
+     * 创建时间
+     */
+    private Date createdAt;
+    /**
+     * 更新者
+     */
+    private User updatedBy;
+    /**
+     * 更新时间
+     */
+    private Date updatedAt;
 
     @JsonIgnore
-	public User getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
-	}
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
     @JsonIgnore
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @JsonIgnore
-	public User getUpdatedBy() {
-		return updatedBy;
-	}
-	public void setUpdatedBy(User updatedBy) {
-		this.updatedBy = updatedBy;
-	}
+    public User getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(User updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
     @JsonIgnore
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

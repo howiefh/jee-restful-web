@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 @RestController
 @RequestMapping("/roles")
@@ -49,48 +49,51 @@ public class RoleController {
 
     @RequiresPermissions("role:view")
     @RequestMapping(value = "", method = RequestMethod.GET)
-	public HttpEntity<Resources<RoleResource>> getList() {
+    public HttpEntity<Resources<RoleResource>> getList() {
         List<Role> roles = roleService.findAll();
-        Resources<RoleResource> resources = ResourcesAssembler.toResources(roles, new RoleResourceAssembler(), RoleController.class);
-	    return new ResponseEntity<>(resources, HttpStatus.OK);
-	}
+        Resources<RoleResource> resources = ResourcesAssembler.toResources(roles, new RoleResourceAssembler(),
+                RoleController.class);
+        return new ResponseEntity<>(resources, HttpStatus.OK);
+    }
 
-	@RequiresPermissions("role:view")
-    @RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public RoleResource get(@PathVariable long id) {
+    @RequiresPermissions("role:view")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public RoleResource get(@PathVariable long id) {
         return new RoleResourceAssembler().toResource(roleService.findOne(id));
-	}
+    }
 
     @RequiresPermissions("role:create")
-	@RequestMapping(value="", method = RequestMethod.POST)
-	public ResponseEntity<RoleResource> create(HttpEntity<Role> entity, HttpServletRequest request) throws URISyntaxException {
-	    Role role = entity.getBody();
-	    roleService.save(role);
-	    HttpHeaders headers = new HttpHeaders();
-	    RoleResource roleResource = new RoleResourceAssembler().toResource(role);
-	    headers.setLocation(entityLinks.linkForSingleResource(Role.class, role.getId()).toUri());
-	    ResponseEntity<RoleResource> responseEntity = new ResponseEntity<RoleResource>(roleResource, headers, HttpStatus.CREATED);
-	    return responseEntity;
-	}
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<RoleResource> create(HttpEntity<Role> entity, HttpServletRequest request)
+            throws URISyntaxException {
+        Role role = entity.getBody();
+        roleService.save(role);
+        HttpHeaders headers = new HttpHeaders();
+        RoleResource roleResource = new RoleResourceAssembler().toResource(role);
+        headers.setLocation(entityLinks.linkForSingleResource(Role.class, role.getId()).toUri());
+        ResponseEntity<RoleResource> responseEntity = new ResponseEntity<RoleResource>(roleResource, headers,
+                HttpStatus.CREATED);
+        return responseEntity;
+    }
 
-	@RequiresPermissions("role:update")
-    @RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public RoleResource update(@RequestBody Role role) {
+    @RequiresPermissions("role:update")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public RoleResource update(@RequestBody Role role) {
         roleService.update(role);
         return new RoleResourceAssembler().toResource(role);
-	}
+    }
 
     @RequiresPermissions("role:delete")
-	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable("id") Long id) {
-	    roleService.delete(id);
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") Long id) {
+        roleService.delete(id);
+    }
 
     @RequiresPermissions("role:delete")
-	@RequestMapping(value="", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteBatch(@RequestBody List<Long> ids) {
-	    roleService.deleteBatch(ids);
-	}
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBatch(@RequestBody List<Long> ids) {
+        roleService.deleteBatch(ids);
+    }
 }

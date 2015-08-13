@@ -23,13 +23,14 @@ import org.springframework.data.domain.Sort.Direction;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserDaoTest extends BaseSpringJUnit4Test {
     @Autowired
     private UserDao userDao;
     private static Long id;
+
     @Test
     public void test1Save() {
         User user = new User();
@@ -49,7 +50,7 @@ public class UserDaoTest extends BaseSpringJUnit4Test {
         User user = userDao.findOne(1L);
         assertNotNull(user.getRoles());
         assertEquals(user.getRoles().size(), 1);
-	}
+    }
 
     @Test
     public void test2FindByPage() {
@@ -58,7 +59,7 @@ public class UserDaoTest extends BaseSpringJUnit4Test {
         u.setEmail("1");
         List<User> users = userDao.findPageBy(new PageRequest(0, 10, Direction.ASC, "id"), u);
         assertEquals(users.size(), 1);
-	}
+    }
 
     @Test
     public void test3Update() {
@@ -69,12 +70,12 @@ public class UserDaoTest extends BaseSpringJUnit4Test {
         user.setEmail(email);
         userDao.update(user);
         assertEquals(user.getEmail(), email);
-	}
+    }
 
     @Test
     public void test4Delete() {
         userDao.delete(id);
         User user = userDao.findOne(id);
         assertNull(user);
-	}
+    }
 }

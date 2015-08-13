@@ -16,34 +16,34 @@ import org.springframework.stereotype.Service;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 @Service
 public class OrganizationService {
     @Autowired
     private OrganizationDao organizationDao;
 
-	public void save(Organization organization) {
+    public void save(Organization organization) {
         organizationDao.save(organization);
-	}
+    }
 
-	public Organization findOne(long id) {
+    public Organization findOne(long id) {
         return organizationDao.findOne(id);
-	}
+    }
 
-	public List<Organization> findAll() {
-		return organizationDao.findAll();
-	}
+    public List<Organization> findAll() {
+        return organizationDao.findAll();
+    }
 
     public void update(Organization organization) {
-		organizationDao.update(organization);
-	}
+        organizationDao.update(organization);
+    }
 
     public int delete(Long id) {
-		return organizationDao.delete(id);
-	}
+        return organizationDao.delete(id);
+    }
 
     public int deleteBatch(List<Long> ids) {
-		return organizationDao.deleteBatch(ids);
-	}
+        return organizationDao.deleteBatch(ids);
+    }
 }

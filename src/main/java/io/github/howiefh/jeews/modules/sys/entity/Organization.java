@@ -7,10 +7,9 @@ package io.github.howiefh.jeews.modules.sys.entity;
 
 import org.springframework.hateoas.core.Relation;
 
-
 @Relation(value = "organization", collectionRelation = "organizations")
 public class Organization extends DataEntity {
-	private static final long serialVersionUID = -5397696221970296107L;
+    private static final long serialVersionUID = -5397696221970296107L;
 
     /**
      * 名称 - sys_organization.name
@@ -43,14 +42,15 @@ public class Organization extends DataEntity {
     private Boolean isShow;
 
     public Organization() {
-	}
+    }
 
     /**
-	 * 构造器，从json整型数据可以构造该对象
-	 */
-	public Organization(Long id) {
+     * 构造器，从json整型数据可以构造该对象
+     */
+    public Organization(Long id) {
         this.id = id;
-	}
+    }
+
     /**
      * Gets the value of the database column sys_organization.name
      *
@@ -63,7 +63,8 @@ public class Organization extends DataEntity {
     /**
      * Sets the value of the database column sys_organization.name
      *
-     * @param name 名称
+     * @param name
+     *            名称
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
@@ -81,7 +82,8 @@ public class Organization extends DataEntity {
     /**
      * Sets the value of the database column sys_organization.type
      *
-     * @param type 类型
+     * @param type
+     *            类型
      */
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
@@ -99,7 +101,8 @@ public class Organization extends DataEntity {
     /**
      * Sets the value of the database column sys_organization.parent_id
      *
-     * @param parentId 父级编号
+     * @param parentId
+     *            父级编号
      */
     public void setParentId(Long parentId) {
         this.parentId = parentId;
@@ -117,7 +120,8 @@ public class Organization extends DataEntity {
     /**
      * Sets the value of the database column sys_organization.parent_ids
      *
-     * @param parentIds 所有父级编号
+     * @param parentIds
+     *            所有父级编号
      */
     public void setParentIds(String parentIds) {
         this.parentIds = parentIds == null ? null : parentIds.trim();
@@ -135,7 +139,8 @@ public class Organization extends DataEntity {
     /**
      * Sets the value of the database column sys_organization.sort
      *
-     * @param sort 排序
+     * @param sort
+     *            排序
      */
     public void setSort(Integer sort) {
         this.sort = sort;
@@ -153,7 +158,8 @@ public class Organization extends DataEntity {
     /**
      * Sets the value of the database column sys_organization.is_show
      *
-     * @param isShow 是否显示
+     * @param isShow
+     *            是否显示
      */
     public void setIsShow(Boolean isShow) {
         this.isShow = isShow;

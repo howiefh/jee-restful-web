@@ -16,15 +16,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
-//默认是src/main/webapp
+// 默认是src/main/webapp
 @WebAppConfiguration(value = "src/main/webapp")
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration
-@ContextHierarchy({
-		@ContextConfiguration(name = "parent", locations = "classpath:config/spring-config.xml"),
-		@ContextConfiguration(name = "child", locations = "classpath:config/spring-mvc.xml") })
+@ContextHierarchy({ @ContextConfiguration(name = "parent", locations = "classpath:config/spring-config.xml"),
+        @ContextConfiguration(name = "child", locations = "classpath:config/spring-mvc.xml") })
 public class BaseSpringJUnit4Test extends AbstractJUnit4SpringContextTests {
 
 }

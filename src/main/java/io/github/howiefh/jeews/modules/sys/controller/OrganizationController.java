@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 @RestController
 @RequestMapping("/organizations")
@@ -49,49 +49,51 @@ public class OrganizationController {
 
     @RequiresPermissions("organization:view")
     @RequestMapping(value = "", method = RequestMethod.GET)
-	public HttpEntity<Resources<OrganizationResource>> getList() {
+    public HttpEntity<Resources<OrganizationResource>> getList() {
         List<Organization> organizations = organizationService.findAll();
         Resources<OrganizationResource> resources = ResourcesAssembler.toResources(organizations,
-        		new OrganizationResourceAssembler(), OrganizationController.class);
-	    return new ResponseEntity<>(resources, HttpStatus.OK);
-	}
+                new OrganizationResourceAssembler(), OrganizationController.class);
+        return new ResponseEntity<>(resources, HttpStatus.OK);
+    }
 
-	@RequiresPermissions("organization:view")
-    @RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public OrganizationResource get(@PathVariable long id) {
+    @RequiresPermissions("organization:view")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public OrganizationResource get(@PathVariable long id) {
         return new OrganizationResourceAssembler().toResource(organizationService.findOne(id));
-	}
+    }
 
     @RequiresPermissions("organization:create")
-	@RequestMapping(value="", method = RequestMethod.POST)
-	public ResponseEntity<OrganizationResource> create(HttpEntity<Organization> entity, HttpServletRequest request) throws URISyntaxException {
-	    Organization organization = entity.getBody();
-	    organizationService.save(organization);
-	    HttpHeaders headers = new HttpHeaders();
-	    OrganizationResource organizationResource = new OrganizationResourceAssembler().toResource(organization);
-	    headers.setLocation(entityLinks.linkForSingleResource(Organization.class, organization.getId()).toUri());
-	    ResponseEntity<OrganizationResource> responseEntity = new ResponseEntity<OrganizationResource>(organizationResource, headers, HttpStatus.CREATED);
-	    return responseEntity;
-	}
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<OrganizationResource> create(HttpEntity<Organization> entity, HttpServletRequest request)
+            throws URISyntaxException {
+        Organization organization = entity.getBody();
+        organizationService.save(organization);
+        HttpHeaders headers = new HttpHeaders();
+        OrganizationResource organizationResource = new OrganizationResourceAssembler().toResource(organization);
+        headers.setLocation(entityLinks.linkForSingleResource(Organization.class, organization.getId()).toUri());
+        ResponseEntity<OrganizationResource> responseEntity = new ResponseEntity<OrganizationResource>(
+                organizationResource, headers, HttpStatus.CREATED);
+        return responseEntity;
+    }
 
-	@RequiresPermissions("organization:update")
-    @RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public OrganizationResource update(@RequestBody Organization organization) {
+    @RequiresPermissions("organization:update")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public OrganizationResource update(@RequestBody Organization organization) {
         organizationService.update(organization);
         return new OrganizationResourceAssembler().toResource(organization);
-	}
+    }
 
     @RequiresPermissions("organization:delete")
-	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable("id") Long id) {
-	    organizationService.delete(id);
-	}
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") Long id) {
+        organizationService.delete(id);
+    }
 
     @RequiresPermissions("organization:delete")
-	@RequestMapping(value="", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteBatch(@RequestBody List<Long> ids) {
-	    organizationService.deleteBatch(ids);
-	}
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBatch(@RequestBody List<Long> ids) {
+        organizationService.deleteBatch(ids);
+    }
 }

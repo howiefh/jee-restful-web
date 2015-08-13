@@ -18,11 +18,11 @@ import org.apache.shiro.web.util.WebUtils;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class RestFormAuthenticationFilter extends FormAuthenticationFilter {
-	@Override
-    //http://stackoverflow.com/questions/7906647/override-shiro-unauthorized-page
+    @Override
+    // http://stackoverflow.com/questions/7906647/override-shiro-unauthorized-page
     protected void saveRequestAndRedirectToLogin(ServletRequest request, ServletResponse response) throws IOException {
         saveRequest(request);
         sendChallenge(request, response);
@@ -30,11 +30,13 @@ public class RestFormAuthenticationFilter extends FormAuthenticationFilter {
 
     protected void sendChallenge(ServletRequest request, ServletResponse response) throws IOException {
         HttpServletResponse httpResponse = WebUtils.toHttp(response);
-        HttpServletRequest httpRequest= WebUtils.toHttp(request);
+        HttpServletRequest httpRequest = WebUtils.toHttp(request);
         String loginUrl = getLoginUrl();
 
-        // org.apache.shiro.web.util.WebUtils.issueRedirect(ServletRequest, ServletResponse, String, Map, boolean, boolean)
-        // org.apache.shiro.web.util.RedirectView.renderMergedOutputModel(Map, HttpServletRequest, HttpServletResponse)
+        // org.apache.shiro.web.util.WebUtils.issueRedirect(ServletRequest,
+        // ServletResponse, String, Map, boolean, boolean)
+        // org.apache.shiro.web.util.RedirectView.renderMergedOutputModel(Map,
+        // HttpServletRequest, HttpServletResponse)
         // Prepare name URL.
         StringBuilder targetUrl = new StringBuilder();
         if (loginUrl.startsWith("/")) {
@@ -47,4 +49,5 @@ public class RestFormAuthenticationFilter extends FormAuthenticationFilter {
         url = httpResponse.encodeRedirectURL(url);
         httpResponse.setHeader("Location", url);
         httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    }}
+    }
+}

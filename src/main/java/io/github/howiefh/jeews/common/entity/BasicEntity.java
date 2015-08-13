@@ -9,26 +9,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *
- *  @author howiefh
+ * @author howiefh
  */
-public class BasicEntity extends AbstractEntity<Long>{
+public class BasicEntity extends AbstractEntity<Long> {
 
-	private static final long serialVersionUID = 1575521071086410539L;
+    private static final long serialVersionUID = 1575521071086410539L;
 
-	@Override
-	public Long getId() {
+    @Override
+    public Long getId() {
         return super.getId();
-	}
+    }
 
-	@Override
-	public void setId(Long id) {
+    @Override
+    public void setId(Long id) {
         super.setId(id);
-	}
+    }
 
-	@Override
+    @Override
     @JsonIgnore
-	public boolean isNew() {
-		// TODO Auto-generated method stub
-		return super.isNew();
-	}
+    public boolean isNew() {
+        // TODO Auto-generated method stub
+        return super.isNew();
+    }
 }

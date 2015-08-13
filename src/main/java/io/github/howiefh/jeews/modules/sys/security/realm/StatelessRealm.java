@@ -24,20 +24,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class StatelessRealm extends AuthorizingRealm {
     @Autowired
     private UserService userService;
 
     @Override
-	public boolean supports(AuthenticationToken token) {
-        //仅支持JsonWebToken类型的Token
+    public boolean supports(AuthenticationToken token) {
+        // 仅支持JsonWebToken类型的Token
         return token instanceof JsonWebToken;
     }
+
     @Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        //根据用户名查找角色，请根据需求实现
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        // 根据用户名查找角色，请根据需求实现
         String username = (String) principals.getPrimaryPrincipal();
 
         User user = userService.findByName(username);
@@ -52,14 +53,12 @@ public class StatelessRealm extends AuthorizingRealm {
         authorizationInfo.setStringPermissions(rolePermission.getPermissionSet());
         return authorizationInfo;
     }
+
     @Override
-	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-    	JsonWebToken jsonWebToken = (JsonWebToken) token;
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+        JsonWebToken jsonWebToken = (JsonWebToken) token;
         String jwt = jsonWebToken.getToken();
-        //然后进行客户端消息摘要和服务器端消息摘要的匹配
-        return new SimpleAuthenticationInfo(
-                "",
-                jwt,
-                getName());
+        // 然后进行客户端消息摘要和服务器端消息摘要的匹配
+        return new SimpleAuthenticationInfo("", jwt, getName());
     }
 }

@@ -5,9 +5,8 @@
  */
 package io.github.howiefh.jeews.modules.sys.entity;
 
-
 public class Menu extends DataEntity {
-	private static final long serialVersionUID = -8621378366479658296L;
+    private static final long serialVersionUID = -8621378366479658296L;
 
     /**
      * 名称 - sys_menu.name
@@ -61,7 +60,8 @@ public class Menu extends DataEntity {
     /**
      * Sets the value of the database column sys_menu.name
      *
-     * @param name 名称
+     * @param name
+     *            名称
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
@@ -79,7 +79,8 @@ public class Menu extends DataEntity {
     /**
      * Sets the value of the database column sys_menu.permission
      *
-     * @param permission 权限标识
+     * @param permission
+     *            权限标识
      */
     public void setPermission(String permission) {
         this.permission = permission == null ? null : permission.trim();
@@ -97,7 +98,8 @@ public class Menu extends DataEntity {
     /**
      * Sets the value of the database column sys_menu.url
      *
-     * @param url 链接
+     * @param url
+     *            链接
      */
     public void setUrl(String url) {
         this.url = url == null ? null : url.trim();
@@ -115,7 +117,8 @@ public class Menu extends DataEntity {
     /**
      * Sets the value of the database column sys_menu.parent_id
      *
-     * @param parentId 父级编号
+     * @param parentId
+     *            父级编号
      */
     public void setParentId(Long parentId) {
         this.parentId = parentId;
@@ -133,7 +136,8 @@ public class Menu extends DataEntity {
     /**
      * Sets the value of the database column sys_menu.parent_ids
      *
-     * @param parentIds 所有父级编号
+     * @param parentIds
+     *            所有父级编号
      */
     public void setParentIds(String parentIds) {
         this.parentIds = parentIds == null ? null : parentIds.trim();
@@ -151,7 +155,8 @@ public class Menu extends DataEntity {
     /**
      * Sets the value of the database column sys_menu.sort
      *
-     * @param sort 排序
+     * @param sort
+     *            排序
      */
     public void setSort(Integer sort) {
         this.sort = sort;
@@ -169,7 +174,8 @@ public class Menu extends DataEntity {
     /**
      * Sets the value of the database column sys_menu.icon
      *
-     * @param icon 图标
+     * @param icon
+     *            图标
      */
     public void setIcon(String icon) {
         this.icon = icon == null ? null : icon.trim();
@@ -187,7 +193,8 @@ public class Menu extends DataEntity {
     /**
      * Sets the value of the database column sys_menu.is_show
      *
-     * @param isShow 是否显示
+     * @param isShow
+     *            是否显示
      */
     public void setIsShow(Boolean isShow) {
         this.isShow = isShow;

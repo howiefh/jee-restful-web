@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Relation(value = "user", collectionRelation = "users")
 public class User extends DataEntity {
-	private static final long serialVersionUID = 415987600518114093L;
+    private static final long serialVersionUID = 415987600518114093L;
 
     /**
      * 用户名 - sys_user.username
@@ -80,7 +80,8 @@ public class User extends DataEntity {
     /**
      * Sets the value of the database column sys_user.username
      *
-     * @param username 用户名
+     * @param username
+     *            用户名
      */
     public void setUsername(String username) {
         this.username = username == null ? null : username.trim();
@@ -99,7 +100,8 @@ public class User extends DataEntity {
     /**
      * Sets the value of the database column sys_user.password
      *
-     * @param password 密码
+     * @param password
+     *            密码
      */
     @JsonProperty
     public void setPassword(String password) {
@@ -119,7 +121,8 @@ public class User extends DataEntity {
     /**
      * Sets the value of the database column sys_user.salt
      *
-     * @param salt 盐
+     * @param salt
+     *            盐
      */
     public void setSalt(String salt) {
         this.salt = salt == null ? null : salt.trim();
@@ -137,7 +140,8 @@ public class User extends DataEntity {
     /**
      * Sets the value of the database column sys_user.email
      *
-     * @param email 邮箱
+     * @param email
+     *            邮箱
      */
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
@@ -155,7 +159,8 @@ public class User extends DataEntity {
     /**
      * Sets the value of the database column sys_user.mobile
      *
-     * @param mobile 手机号码
+     * @param mobile
+     *            手机号码
      */
     public void setMobile(String mobile) {
         this.mobile = mobile == null ? null : mobile.trim();
@@ -173,7 +178,8 @@ public class User extends DataEntity {
     /**
      * Sets the value of the database column sys_user.photo
      *
-     * @param photo 用户头像
+     * @param photo
+     *            用户头像
      */
     public void setPhoto(String photo) {
         this.photo = photo == null ? null : photo.trim();
@@ -191,7 +197,8 @@ public class User extends DataEntity {
     /**
      * Sets the value of the database column sys_user.login_ip
      *
-     * @param loginIp 最后登陆IP
+     * @param loginIp
+     *            最后登陆IP
      */
     public void setLoginIp(String loginIp) {
         this.loginIp = loginIp == null ? null : loginIp.trim();
@@ -209,7 +216,8 @@ public class User extends DataEntity {
     /**
      * Sets the value of the database column sys_user.login_date
      *
-     * @param loginDate 最后登陆时间
+     * @param loginDate
+     *            最后登陆时间
      */
     public void setLoginDate(Date loginDate) {
         this.loginDate = loginDate;
@@ -227,49 +235,51 @@ public class User extends DataEntity {
     /**
      * Sets the value of the database column sys_user.locked
      *
-     * @param locked 是否锁定
+     * @param locked
+     *            是否锁定
      */
     public void setLocked(Boolean locked) {
         this.locked = locked == null ? false : locked;
     }
 
     public Set<Role> getRoles() {
-		return roles;
-	}
+        return roles;
+    }
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
-	public Set<Organization> getOrganizations() {
-		return organizations;
-	}
+    public Set<Organization> getOrganizations() {
+        return organizations;
+    }
 
-	public void setOrganizations(Set<Organization> organizations) {
-		this.organizations = organizations;
-	}
+    public void setOrganizations(Set<Organization> organizations) {
+        this.organizations = organizations;
+    }
 
-	public class RolePermission {
+    public class RolePermission {
 
         private Set<String> permissionSet = new HashSet<String>();
-		private Set<String> roleSet = new HashSet<String>();
-        public Set<String> getPermissionSet() {
-			return permissionSet;
-		}
+        private Set<String> roleSet = new HashSet<String>();
 
-		public Set<String> getRoleSet() {
-			return roleSet;
-		}
+        public Set<String> getPermissionSet() {
+            return permissionSet;
+        }
+
+        public Set<String> getRoleSet() {
+            return roleSet;
+        }
 
         public RolePermission() {
-    		Set<Role> roles = getRoles();
+            Set<Role> roles = getRoles();
             for (Role role : roles) {
-    			roleSet.add(role.getName());
+                roleSet.add(role.getName());
                 Set<Menu> menus = role.getMenus();
                 for (Menu menu : menus) {
                     permissionSet.add(menu.getPermission());
-    			}
-    		}
+                }
+            }
         }
-	}
+    }
 }

@@ -28,7 +28,7 @@ import com.auth0.jwt.JWTSigner.Options;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 @RestController
 @RequestMapping("/login")
@@ -38,30 +38,30 @@ public class LoginCotroller {
     @Autowired
     private UserService userService;
 
-	@RequestMapping(value="", method = RequestMethod.POST)
-	public Map<String, Object> login(@RequestBody User u) {
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Map<String, Object> login(@RequestBody User u) {
         String username = u.getUsername();
         String password = u.getPassword();
         if (username == null) {
-			throw new NullPointerException("用户名或密码错误！");
-		}
+            throw new NullPointerException("用户名或密码错误！");
+        }
         User user = userService.findByName(username);
 
-        if(user == null) {
-            throw new UnknownAccountException("该用户不存在！");//没找到帐号
+        if (user == null) {
+            throw new UnknownAccountException("该用户不存在！");// 没找到帐号
         }
 
-        if(Boolean.TRUE.equals(user.getLocked())) {
-            throw new LockedAccountException("账号已被锁定！"); //帐号锁定
+        if (Boolean.TRUE.equals(user.getLocked())) {
+            throw new LockedAccountException("账号已被锁定！"); // 帐号锁定
         }
 
         if (!userService.passwordsMatch(user, password)) {
-			throw new IncorrectCredentialsException("用户名或密码错误！");
-		}
+            throw new IncorrectCredentialsException("用户名或密码错误！");
+        }
 
         JWTSigner signer = new JWTSigner(secret);
         Options options = new Options();
-        //7 * 24 * 60 * 60 = 604800
+        // 7 * 24 * 60 * 60 = 604800
         options.setExpirySeconds(604800);
         Map<String, Object> claims = new HashMap<String, Object>();
         RolePermission rolePermission = user.new RolePermission();
@@ -78,5 +78,5 @@ public class LoginCotroller {
         userMap.put("roles", rolePermission.getRoleSet());
         map.put("user", userMap);
         return map;
-	}
+    }
 }

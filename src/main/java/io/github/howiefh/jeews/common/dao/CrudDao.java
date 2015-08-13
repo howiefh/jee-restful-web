@@ -12,63 +12,75 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.data.repository.Repository;
 
 /**
- *
+ * 增删改查的基本接口
+ * 
  * @author howiefh
  */
-public interface CrudDao<T,ID extends Serializable> extends Repository<T, ID>{
-	/**
-	 * Saves a given entity. 
-	 * 
-	 * @param entity
-	 * @return
-	 */
-	<S extends T> int save(S entity);
+public interface CrudDao<T, ID extends Serializable> extends Repository<T, ID> {
+    /**
+     * 将实体存入数据库
+     *
+     * @param entity
+     *            保存的实体
+     * @return 返回实体id
+     */
+    <S extends T> int save(S entity);
 
-	/**
-	 * Retrieves an entity by its id.
-	 * 
-	 * @param id must not be {@literal null}.
-	 * @return the entity with the given id or {@literal null} if none found
-	 */
-	T findOne(ID id);
+    /**
+     * 根据id查找实体
+     *
+     * @param id
+     *            不能为 {@literal null}.
+     * @return id对应的实体，如果没有找到返回{@literal null}
+     */
+    T findOne(ID id);
 
-	/**
-	 * Returns all instances of the type.
-	 * 
-	 * @return all entities
-	 */
-	List<T> findAll();
+    /**
+     * 返回找到的所有实体的集合
+     *
+     * @return 所有实体
+     */
+    List<T> findAll();
 
-	/**
-	 * Returns the number of entities available.
-	 * 
-	 * @return the number of entities
-	 */
-	long count();
-    
-	/**
-	 * Returns the number of entities available.
-     * 
-	 * @param entity
-	 * @return the number of entities
-	 */
-	long countBy(@Param("param") T entity);
+    /**
+     * 找到所有可用的实体的个数
+     *
+     * @return 实体的个数
+     */
+    long count();
 
-	/**
-	 * Updates a given entity.
-	 * 
-	 * @param entity
-	 * @return
-	 */
-	int update(T entity);
-    
-	/**
-	 * Deletes the entity with the given id.
-	 * 
-	 * @param id must not be {@literal null}.
-	 * @return
-	 */
-	int delete(ID id);
-    
-	int deleteBatch(@Param("ids") List<Long> ids);
+    /**
+     * 找到所有符合条件的实体的个数
+     *
+     * @param entity
+     *            该实体的属性即为条件
+     * @return 实体的个数
+     */
+    long countBy(@Param("param") T entity);
+
+    /**
+     * 更新一个实体
+     *
+     * @param entity
+     * @return
+     */
+    int update(T entity);
+
+    /**
+     * 删除id所对应的实体
+     *
+     * @param id
+     *            不能为 {@literal null}.
+     * @return
+     */
+    int delete(ID id);
+
+    /**
+     * 批量删除实体
+     *
+     * @param ids
+     *            要删除的实体id集合，不能为 {@literal null}.
+     * @return
+     */
+    int deleteBatch(@Param("ids") List<Long> ids);
 }

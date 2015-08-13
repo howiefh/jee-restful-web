@@ -13,6 +13,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DictDao extends PagingAndSortingDao<Dict, Long>{
-	public List<String> findTypes(Dict dict);
+public interface DictDao extends PagingAndSortingDao<Dict, Long> {
+    public List<String> findTypes(Dict dict);
 }

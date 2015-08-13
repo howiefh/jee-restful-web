@@ -12,12 +12,12 @@ import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class StatelessDefaultSubjectFactory extends DefaultWebSubjectFactory {
     @Override
-	public Subject createSubject(SubjectContext context) {
-        //不创建session
+    public Subject createSubject(SubjectContext context) {
+        // 不创建session
         context.setSessionCreationEnabled(false);
         return super.createSubject(context);
     }

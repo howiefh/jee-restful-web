@@ -13,7 +13,7 @@ public class OrganizationResourceAssembler extends ResourceAssemblerSupport<Orga
 
     @Override
     public OrganizationResource toResource(Organization entity) {
-    	OrganizationResource resource = createResourceWithId(entity.getId(), entity);
+        OrganizationResource resource = createResourceWithId(entity.getId(), entity);
         return resource;
     }
 

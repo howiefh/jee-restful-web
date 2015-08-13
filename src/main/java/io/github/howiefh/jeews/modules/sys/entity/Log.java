@@ -10,7 +10,7 @@ import io.github.howiefh.jeews.common.entity.BasicEntity;
 import java.util.Date;
 
 public class Log extends BasicEntity {
-	private static final long serialVersionUID = 450382404560336502L;
+    private static final long serialVersionUID = 450382404560336502L;
 
     /**
      * 日志类型 - sys_log.type
@@ -69,7 +69,8 @@ public class Log extends BasicEntity {
     /**
      * Sets the value of the database column sys_log.type
      *
-     * @param type 日志类型
+     * @param type
+     *            日志类型
      */
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
@@ -87,7 +88,8 @@ public class Log extends BasicEntity {
     /**
      * Sets the value of the database column sys_log.title
      *
-     * @param title 日志标题
+     * @param title
+     *            日志标题
      */
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
@@ -105,7 +107,8 @@ public class Log extends BasicEntity {
     /**
      * Sets the value of the database column sys_log.create_by
      *
-     * @param createBy 创建者编号
+     * @param createBy
+     *            创建者编号
      */
     public void setCreateBy(Long createBy) {
         this.createBy = createBy;
@@ -123,7 +126,8 @@ public class Log extends BasicEntity {
     /**
      * Sets the value of the database column sys_log.create_date
      *
-     * @param createDate 创建时间
+     * @param createDate
+     *            创建时间
      */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
@@ -141,7 +145,8 @@ public class Log extends BasicEntity {
     /**
      * Sets the value of the database column sys_log.remote_addr
      *
-     * @param remoteAddr 操作IP地址
+     * @param remoteAddr
+     *            操作IP地址
      */
     public void setRemoteAddr(String remoteAddr) {
         this.remoteAddr = remoteAddr == null ? null : remoteAddr.trim();
@@ -159,7 +164,8 @@ public class Log extends BasicEntity {
     /**
      * Sets the value of the database column sys_log.user_agent
      *
-     * @param userAgent 用户代理
+     * @param userAgent
+     *            用户代理
      */
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent == null ? null : userAgent.trim();
@@ -177,7 +183,8 @@ public class Log extends BasicEntity {
     /**
      * Sets the value of the database column sys_log.request_uri
      *
-     * @param requestUri 请求URI
+     * @param requestUri
+     *            请求URI
      */
     public void setRequestUri(String requestUri) {
         this.requestUri = requestUri == null ? null : requestUri.trim();
@@ -195,7 +202,8 @@ public class Log extends BasicEntity {
     /**
      * Sets the value of the database column sys_log.method
      *
-     * @param method 操作方式
+     * @param method
+     *            操作方式
      */
     public void setMethod(String method) {
         this.method = method == null ? null : method.trim();
@@ -213,7 +221,8 @@ public class Log extends BasicEntity {
     /**
      * Sets the value of the database column sys_log.exception
      *
-     * @param exception 异常信息
+     * @param exception
+     *            异常信息
      */
     public void setException(String exception) {
         this.exception = exception == null ? null : exception.trim();

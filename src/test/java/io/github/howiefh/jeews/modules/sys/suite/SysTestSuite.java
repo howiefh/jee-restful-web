@@ -14,14 +14,10 @@ import org.junit.runners.Suite;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({
-    UserTestSuite.class,
-    OrganizationControllerTest.class,
-    RoleControllerTest.class
-})
+@Suite.SuiteClasses({ UserTestSuite.class, OrganizationControllerTest.class, RoleControllerTest.class })
 public class SysTestSuite {
 
 }

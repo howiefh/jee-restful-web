@@ -13,7 +13,7 @@ public class RoleResourceAssembler extends ResourceAssemblerSupport<Role, RoleRe
 
     @Override
     public RoleResource toResource(Role entity) {
-    	RoleResource resource = createResourceWithId(entity.getId(), entity);
+        RoleResource resource = createResourceWithId(entity.getId(), entity);
         return resource;
     }
 

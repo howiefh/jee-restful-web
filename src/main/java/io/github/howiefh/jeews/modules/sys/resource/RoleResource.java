@@ -12,7 +12,7 @@ import org.springframework.hateoas.Resource;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class RoleResource extends Resource<Role> {
 

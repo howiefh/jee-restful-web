@@ -11,9 +11,9 @@ import org.springframework.hateoas.core.Relation;
 
 @Relation(value = "role", collectionRelation = "roles")
 public class Role extends DataEntity {
-	private static final long serialVersionUID = 1744395330761664879L;
+    private static final long serialVersionUID = 1744395330761664879L;
 
-	/**
+    /**
      * 名称 - sys_role.name
      */
     private String name;
@@ -33,15 +33,16 @@ public class Role extends DataEntity {
      */
     private Set<Menu> menus;
 
-	public Role() {
-	}
+    public Role() {
+    }
 
     /**
-	 * 构造器，从json整型数据可以构造该对象
-	 */
-	public Role(Long id) {
+     * 构造器，从json整型数据可以构造该对象
+     */
+    public Role(Long id) {
         this.id = id;
-	}
+    }
+
     /**
      * Gets the value of the database column sys_role.name
      *
@@ -54,7 +55,8 @@ public class Role extends DataEntity {
     /**
      * Sets the value of the database column sys_role.name
      *
-     * @param name 名称
+     * @param name
+     *            名称
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
@@ -72,7 +74,8 @@ public class Role extends DataEntity {
     /**
      * Sets the value of the database column sys_role.cnname
      *
-     * @param cnname 中文名称
+     * @param cnname
+     *            中文名称
      */
     public void setCnname(String cnname) {
         this.cnname = cnname == null ? null : cnname.trim();
@@ -90,17 +93,18 @@ public class Role extends DataEntity {
     /**
      * Sets the value of the database column sys_role.available
      *
-     * @param available 是否可用
+     * @param available
+     *            是否可用
      */
     public void setAvailable(Boolean available) {
         this.available = available;
     }
 
-	public Set<Menu> getMenus() {
-		return menus;
-	}
+    public Set<Menu> getMenus() {
+        return menus;
+    }
 
-	public void setMenus(Set<Menu> menus) {
-		this.menus = menus;
-	}
+    public void setMenus(Set<Menu> menus) {
+        this.menus = menus;
+    }
 }

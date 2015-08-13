@@ -47,54 +47,62 @@ public class UserController {
 
     @RequiresPermissions("user:view")
     @RequestMapping(value = "", method = RequestMethod.GET)
-	public HttpEntity<PagedResources<UserResource>> getList(
-            //@SortDefaults see http://terasolunaorg.github.io/guideline/1.0.x/en/ArchitectureInDetail/Pagination.html#implementation-of-application-layer
-	        @PageableDefault(size = 10, page = 0, sort = {"id"}, direction = Direction.ASC) Pageable pageable,
-	        User user) {
+    public HttpEntity<PagedResources<UserResource>> getList(
+            // @SortDefaults see
+            // http://terasolunaorg.github.io/guideline/1.0.x/en/ArchitectureInDetail/Pagination.html#implementation-of-application-layer
+            @PageableDefault(size = 10, page = 0, sort = { "id" }, direction = Direction.ASC) Pageable pageable,
+            User user) {
         Page<User> users = userService.findPageBy(pageable, user);
-	    return new ResponseEntity<>(assembler.toResource(users, new UserResourceAssembler()), HttpStatus.OK);
-	}
-	@RequiresPermissions("user:view")
-    @RequestMapping(value="/{id}", method = RequestMethod.GET)
-	public UserResource get(@PathVariable long id) {
-        return new UserResourceAssembler().toResource(userService.findOne(id));
-	}
-    @RequiresPermissions("user:create")
-	@RequestMapping(value="", method = RequestMethod.POST)
-	public ResponseEntity<UserResource> create(HttpEntity<User> entity, HttpServletRequest request) throws URISyntaxException {
-	    User user = entity.getBody();
-	    userService.save(user);
-	    HttpHeaders headers = new HttpHeaders();
-	    UserResource userResource = new UserResourceAssembler().toResource(user);
-	    //为了 linkForSingleResource 方法可以正常工作，控制器类中需要包含访问单个资源的方法，而且其“@RequestMapping”是类似“/{id}”这样的形式 不是"{id}"这样
-	    headers.setLocation(entityLinks.linkForSingleResource(User.class, user.getId()).toUri());
-	    ResponseEntity<UserResource> responseEntity = new ResponseEntity<UserResource>(userResource, headers, HttpStatus.CREATED);
-	    return responseEntity;
-	}
-	@RequiresPermissions("user:update")
-    @RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public UserResource update(@RequestBody User user) {
-        userService.update(user);
-        return new UserResourceAssembler().toResource(user);
-	}
-
-    @RequiresPermissions("user:delete")
-	@RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable("id") Long id) {
-	    userService.delete(id);
-	}
-
-    @RequiresPermissions("user:delete")
-	@RequestMapping(value="", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteBatch(@RequestBody List<Long> ids) {
-	    userService.deleteBatch(ids);
-	}
+        return new ResponseEntity<>(assembler.toResource(users, new UserResourceAssembler()), HttpStatus.OK);
+    }
 
     @RequiresPermissions("user:view")
-    @RequestMapping(value="/{id}/educations", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public UserResource get(@PathVariable long id) {
+        return new UserResourceAssembler().toResource(userService.findOne(id));
+    }
+
+    @RequiresPermissions("user:create")
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<UserResource> create(HttpEntity<User> entity, HttpServletRequest request)
+            throws URISyntaxException {
+        User user = entity.getBody();
+        userService.save(user);
+        HttpHeaders headers = new HttpHeaders();
+        UserResource userResource = new UserResourceAssembler().toResource(user);
+        // 为了 linkForSingleResource
+        // 方法可以正常工作，控制器类中需要包含访问单个资源的方法，而且其“@RequestMapping”是类似“/{id}”这样的形式
+        // 不是"{id}"这样
+        headers.setLocation(entityLinks.linkForSingleResource(User.class, user.getId()).toUri());
+        ResponseEntity<UserResource> responseEntity = new ResponseEntity<UserResource>(userResource, headers,
+                HttpStatus.CREATED);
+        return responseEntity;
+    }
+
+    @RequiresPermissions("user:update")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public UserResource update(@RequestBody User user) {
+        userService.update(user);
+        return new UserResourceAssembler().toResource(user);
+    }
+
+    @RequiresPermissions("user:delete")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") Long id) {
+        userService.delete(id);
+    }
+
+    @RequiresPermissions("user:delete")
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBatch(@RequestBody List<Long> ids) {
+        userService.deleteBatch(ids);
+    }
+
+    @RequiresPermissions("user:view")
+    @RequestMapping(value = "/{id}/educations", method = RequestMethod.POST)
     public List<String> educationInfo(@PathVariable("id") Long id) {
-		return Arrays.asList("XD","TZ");
-	}
+        return Arrays.asList("XD", "TZ");
+    }
 }

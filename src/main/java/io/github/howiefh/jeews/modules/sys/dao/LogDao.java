@@ -11,5 +11,5 @@ import io.github.howiefh.jeews.common.dao.PagingAndSortingDao;
 import io.github.howiefh.jeews.modules.sys.entity.Log;
 
 @Repository
-public interface LogDao extends PagingAndSortingDao<Log, Long>{
+public interface LogDao extends PagingAndSortingDao<Log, Long> {
 }

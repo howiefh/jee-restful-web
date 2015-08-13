@@ -16,38 +16,38 @@ import org.springframework.stereotype.Service;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 @Service
 public class RoleService {
     @Autowired
     private RoleDao roleDao;
 
-	public void save(Role role) {
+    public void save(Role role) {
         roleDao.save(role);
-	}
+    }
 
-	public Role findOne(long id) {
+    public Role findOne(long id) {
         return roleDao.findOne(id);
-	}
+    }
 
-	public Role findByName(String rolename) {
-		return roleDao.findByName(rolename);
-	}
+    public Role findByName(String rolename) {
+        return roleDao.findByName(rolename);
+    }
 
-	public List<Role> findAll() {
-		return roleDao.findAll();
-	}
+    public List<Role> findAll() {
+        return roleDao.findAll();
+    }
 
     public void update(Role role) {
-		roleDao.update(role);
-	}
+        roleDao.update(role);
+    }
 
     public int delete(Long id) {
-		return roleDao.delete(id);
-	}
+        return roleDao.delete(id);
+    }
 
     public int deleteBatch(List<Long> ids) {
-		return roleDao.deleteBatch(ids);
-	}
+        return roleDao.deleteBatch(ids);
+    }
 }

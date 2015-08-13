@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Map<String, String>> handleNotFoundException(
-			HttpServletRequest request, Exception ex) {
-		Map<String, String> errorMap = new HashMap<String, String>();
-		errorMap.put("code", HttpStatus.INTERNAL_SERVER_ERROR.toString());
-		errorMap.put("url", request.getRequestURL().toString());
-		errorMap.put("message", ex.toString());
-		return new ResponseEntity<Map<String,String>>(errorMap, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleNotFoundException(HttpServletRequest request, Exception ex) {
+        Map<String, String> errorMap = new HashMap<String, String>();
+        errorMap.put("code", HttpStatus.INTERNAL_SERVER_ERROR.toString());
+        errorMap.put("url", request.getRequestURL().toString());
+        errorMap.put("message", ex.toString());
+        return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

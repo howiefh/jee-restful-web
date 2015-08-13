@@ -34,9 +34,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *  
+ * 
  *
- *  @author howiefh
+ * @author howiefh
  */
 @RestController
 public class AccessTokenController {
@@ -48,17 +48,16 @@ public class AccessTokenController {
     private UserService userService;
 
     @RequestMapping("/accessToken")
-    public HttpEntity<String> token(HttpServletRequest request)
-            throws URISyntaxException, OAuthSystemException {
+    public HttpEntity<String> token(HttpServletRequest request) throws URISyntaxException, OAuthSystemException {
 
         try {
-            //构建OAuth请求
+            // 构建OAuth请求
             OAuthTokenRequest oauthRequest = new OAuthTokenRequest(request);
 
-            //检查提交的客户端id是否正确
+            // 检查提交的客户端id是否正确
             if (!oAuthService.checkClientId(oauthRequest.getClientId())) {
-            	return buildInvalidClientIdResponse();
-                
+                return buildInvalidClientIdResponse();
+
             }
 
             // 检查客户端安全KEY是否正确
@@ -70,41 +69,37 @@ public class AccessTokenController {
             // 检查验证类型，此处只检查AUTHORIZATION_CODE类型，其他的还有PASSWORD或REFRESH_TOKEN
             if (oauthRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(GrantType.AUTHORIZATION_CODE.toString())) {
                 if (!oAuthService.checkAuthCode(authCode)) {
-                	return buildBadAuthCodeResponse();
+                    return buildBadAuthCodeResponse();
                 }
-                //TODO 后两种未测试
+                // TODO 后两种未测试
             } else if (oauthRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(GrantType.PASSWORD.toString())) {
                 if (!checkUserPassword(oauthRequest.getUsername(), oauthRequest.getPassword())) {
                     return buildInvalidUserPassResponse();
                 }
             } else if (oauthRequest.getParam(OAuth.OAUTH_GRANT_TYPE).equals(GrantType.REFRESH_TOKEN.toString())) {
-                //https://github.com/zhouyongtao/homeinns-web
-                if (!oAuthService.checkAuthCode(authCode)) { 
+                // https://github.com/zhouyongtao/homeinns-web
+                if (!oAuthService.checkAuthCode(authCode)) {
                     return buildInvalidRefreshTokenResponse();
                 }
             }
 
-            //生成Access Token
+            // 生成Access Token
             OAuthIssuer oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
             final String accessToken = oauthIssuerImpl.accessToken();
             oAuthService.addAccessToken(accessToken, oAuthService.getUsernameByAuthCode(authCode));
             final String refreshToken = oauthIssuerImpl.refreshToken();
             oAuthService.addAccessToken(refreshToken, oAuthService.getUsernameByAuthCode(authCode));
 
-            //生成OAuth响应
-            OAuthResponse response = OAuthASResponse
-                    .tokenResponse(HttpServletResponse.SC_OK)
-                    .setAccessToken(accessToken)
-                    .setExpiresIn(String.valueOf(oAuthService.getExpireIn()))
-                    .setTokenType(TokenType.BEARER.toString())
-                    .setRefreshToken(refreshToken)
-                    .buildJSONMessage();
+            // 生成OAuth响应
+            OAuthResponse response = OAuthASResponse.tokenResponse(HttpServletResponse.SC_OK)
+                    .setAccessToken(accessToken).setExpiresIn(String.valueOf(oAuthService.getExpireIn()))
+                    .setTokenType(TokenType.BEARER.toString()).setRefreshToken(refreshToken).buildJSONMessage();
 
-            //根据OAuthResponse生成ResponseEntity
+            // 根据OAuthResponse生成ResponseEntity
             return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
 
         } catch (OAuthProblemException e) {
-            //构建错误响应
+            // 构建错误响应
             OAuthResponse res = OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST).error(e)
                     .buildJSONMessage();
             return new ResponseEntity<String>(res.getBody(), HttpStatus.valueOf(res.getResponseStatus()));
@@ -112,49 +107,40 @@ public class AccessTokenController {
     }
 
     private HttpEntity<String> buildInvalidClientIdResponse() throws OAuthSystemException {
-    	OAuthResponse response =
-                OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
-                        .setError(OAuthError.TokenResponse.INVALID_CLIENT)
-                        .setErrorDescription(Constants.INVALID_CLIENT_DESCRIPTION)
-                        .buildJSONMessage();
+        OAuthResponse response = OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                .setError(OAuthError.TokenResponse.INVALID_CLIENT)
+                .setErrorDescription(Constants.INVALID_CLIENT_DESCRIPTION).buildJSONMessage();
         return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
     }
 
     private HttpEntity<String> buildInvalidClientSecretResponse() throws OAuthSystemException {
-    	OAuthResponse response =
-                OAuthASResponse.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-                        .setError(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT)
-                        .setErrorDescription(Constants.INVALID_CLIENT_DESCRIPTION)
-                        .buildJSONMessage();
+        OAuthResponse response = OAuthASResponse.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
+                .setError(OAuthError.TokenResponse.UNAUTHORIZED_CLIENT)
+                .setErrorDescription(Constants.INVALID_CLIENT_DESCRIPTION).buildJSONMessage();
         return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
     }
 
     private HttpEntity<String> buildBadAuthCodeResponse() throws OAuthSystemException {
-        OAuthResponse response = OAuthASResponse
-                .errorResponse(HttpServletResponse.SC_BAD_REQUEST)
-                .setError(OAuthError.TokenResponse.INVALID_GRANT)
-                .setErrorDescription(Constants.INVALID_OAUTH_CODE)
+        OAuthResponse response = OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                .setError(OAuthError.TokenResponse.INVALID_GRANT).setErrorDescription(Constants.INVALID_OAUTH_CODE)
                 .buildJSONMessage();
         return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
     }
 
     private HttpEntity<String> buildInvalidUserPassResponse() throws OAuthSystemException {
-        OAuthResponse response = OAuthASResponse
-                .errorResponse(HttpServletResponse.SC_BAD_REQUEST)
-                .setError(OAuthError.TokenResponse.INVALID_GRANT)
-                .setErrorDescription(Constants.INVALID_USER_PASSWORD)
+        OAuthResponse response = OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                .setError(OAuthError.TokenResponse.INVALID_GRANT).setErrorDescription(Constants.INVALID_USER_PASSWORD)
                 .buildJSONMessage();
         return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
     }
 
     private HttpEntity<String> buildInvalidRefreshTokenResponse() throws OAuthSystemException {
-        OAuthResponse response = OAuthASResponse
-                .errorResponse(HttpServletResponse.SC_BAD_REQUEST)
-                .setError(OAuthError.TokenResponse.INVALID_GRANT)
-                .setErrorDescription(Constants.INVALID_REFRESH_TOKEN)
+        OAuthResponse response = OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
+                .setError(OAuthError.TokenResponse.INVALID_GRANT).setErrorDescription(Constants.INVALID_REFRESH_TOKEN)
                 .buildJSONMessage();
         return new ResponseEntity<String>(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
     }
+
     private boolean checkUserPassword(String username, String password) {
         return userService.isValidUser(username, password);
     }

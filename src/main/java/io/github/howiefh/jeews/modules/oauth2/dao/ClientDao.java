@@ -11,13 +11,15 @@ import io.github.howiefh.jeews.common.dao.PagingAndSortingDao;
 import io.github.howiefh.jeews.modules.oauth2.entity.Client;
 
 /**
- *  
+ * 
  *
- *  @author howiefh
+ * @author howiefh
  */
 @Repository
-public interface ClientDao extends PagingAndSortingDao<Client, Long>{
+public interface ClientDao extends PagingAndSortingDao<Client, Long> {
     Client findByClientName(String clientName);
+
     Client findByClientId(String clientId);
+
     Client findByClientSecret(String clientSecret);
 }

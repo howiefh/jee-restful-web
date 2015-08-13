@@ -29,74 +29,69 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author howiefh
  */
-public class TokenFilter extends AccessControlFilter{
+public class TokenFilter extends AccessControlFilter {
 
-	@Autowired
-	private OAuthService oAuthService;
+    @Autowired
+    private OAuthService oAuthService;
 
-	@Override
-	protected boolean onAccessDenied(ServletRequest req, ServletResponse resp)
-			throws Exception {
-		HttpServletRequest request = (HttpServletRequest) req;
-		HttpServletResponse response = (HttpServletResponse) resp;
-		try {
-			// 构建OAuth资源请求
-			OAuthAccessResourceRequest oauthRequest = new OAuthAccessResourceRequest(
-					request, ParameterStyle.HEADER);
-			// 获取Access Token
-			String accessToken = oauthRequest.getAccessToken();
+    @Override
+    protected boolean onAccessDenied(ServletRequest req, ServletResponse resp) throws Exception {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) resp;
+        try {
+            // 构建OAuth资源请求
+            OAuthAccessResourceRequest oauthRequest = new OAuthAccessResourceRequest(request, ParameterStyle.HEADER);
+            // 获取Access Token
+            String accessToken = oauthRequest.getAccessToken();
 
-			// 验证Access Token
-			if (!oAuthService.checkAccessToken(accessToken)) {
-				// 如果不存在/过期了，返回未验证错误，需重新验证
-				OAuthResponse oauthResponse = OAuthRSResponse
-						.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-						.setRealm(Constants.RESOURCE_SERVER_NAME)
-						.setError(OAuthError.ResourceResponse.INVALID_TOKEN)
-						.buildHeaderMessage();
+            // 验证Access Token
+            if (!oAuthService.checkAccessToken(accessToken)) {
+                // 如果不存在/过期了，返回未验证错误，需重新验证
+                OAuthResponse oauthResponse = OAuthRSResponse.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
+                        .setRealm(Constants.RESOURCE_SERVER_NAME).setError(OAuthError.ResourceResponse.INVALID_TOKEN)
+                        .buildHeaderMessage();
 
-				response.addHeader(OAuth.HeaderType.WWW_AUTHENTICATE,
-						oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE));
-				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				return false;
-			}
-			return true;
-		} catch (OAuthProblemException e) {
-			// 检查是否设置了错误码
-			String errorCode = e.getError();
-			if (OAuthUtils.isEmpty(errorCode)) {
-				OAuthResponse oauthResponse = OAuthRSResponse
-						.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-						.setRealm(Constants.RESOURCE_SERVER_NAME)
-						.buildHeaderMessage();
+                response.addHeader(OAuth.HeaderType.WWW_AUTHENTICATE,
+                        oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE));
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return false;
+            }
+            return true;
+        } catch (OAuthProblemException e) {
+            // 检查是否设置了错误码
+            String errorCode = e.getError();
+            if (OAuthUtils.isEmpty(errorCode)) {
+                OAuthResponse oauthResponse = OAuthRSResponse.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
+                        .setRealm(Constants.RESOURCE_SERVER_NAME).buildHeaderMessage();
 
-				response.addHeader(OAuth.HeaderType.WWW_AUTHENTICATE,
-						oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE));
-				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				return false;
-			}
+                response.addHeader(OAuth.HeaderType.WWW_AUTHENTICATE,
+                        oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE));
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return false;
+            }
 
-			OAuthResponse oauthResponse = OAuthRSResponse
-					.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
-					.setRealm(Constants.RESOURCE_SERVER_NAME)
-					.setError(e.getError())
-					.setErrorDescription(e.getDescription())
-					.setErrorUri(e.getUri()).buildHeaderMessage();
+            OAuthResponse oauthResponse = OAuthRSResponse.errorResponse(HttpServletResponse.SC_UNAUTHORIZED)
+                    .setRealm(Constants.RESOURCE_SERVER_NAME).setError(e.getError())
+                    .setErrorDescription(e.getDescription()).setErrorUri(e.getUri()).buildHeaderMessage();
 
-			response.addHeader(OAuth.HeaderType.WWW_AUTHENTICATE,
-					oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE));
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return false;
-		}
+            response.addHeader(OAuth.HeaderType.WWW_AUTHENTICATE,
+                    oauthResponse.getHeader(OAuth.HeaderType.WWW_AUTHENTICATE));
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return false;
+        }
 
-	}
+    }
 
-	/* (non-Javadoc)
-	 * @see org.apache.shiro.web.filter.AccessControlFilter#isAccessAllowed(javax.servlet.ServletRequest, javax.servlet.ServletResponse, java.lang.Object)
-	 */
-	@Override
-	protected boolean isAccessAllowed(ServletRequest request,
-			ServletResponse response, Object mappedValue) throws Exception {
-		return false;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.shiro.web.filter.AccessControlFilter#isAccessAllowed(javax
+     * .servlet.ServletRequest, javax.servlet.ServletResponse, java.lang.Object)
+     */
+    @Override
+    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)
+            throws Exception {
+        return false;
+    }
 }
