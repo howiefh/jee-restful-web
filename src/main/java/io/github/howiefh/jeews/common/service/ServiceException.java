@@ -6,25 +6,25 @@
 package io.github.howiefh.jeews.common.service;
 
 /**
- *  
- *  @author howiefh
+ * 
+ * @author howiefh
  */
 public class ServiceException extends RuntimeException {
-	private static final long serialVersionUID = 5350333247438281040L;
-    
-	public ServiceException() {
-		super();
-	}
+    private static final long serialVersionUID = 5350333247438281040L;
 
-	public ServiceException(String message) {
-		super(message);
-	}
+    public ServiceException() {
+        super();
+    }
 
-	public ServiceException(Throwable cause) {
-		super(cause);
-	}
+    public ServiceException(String message) {
+        super(message);
+    }
 
-	public ServiceException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    public ServiceException(Throwable cause) {
+        super(cause);
+    }
+
+    public ServiceException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

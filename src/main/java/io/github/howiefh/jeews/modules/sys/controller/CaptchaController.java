@@ -20,49 +20,48 @@ import com.google.code.kaptcha.Producer;
 @RequestMapping("static")
 public class CaptchaController {
 
-	@Autowired
-	private Producer captchaProducer = null;
+    @Autowired
+    private Producer captchaProducer = null;
 
-	@RequestMapping(value = "captcha.jpg")
-	public ModelAndView handleRequest(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		// Set to expire far in the past.
-		response.setDateHeader("Expires", 0);
-		// Set standard HTTP/1.1 no-cache headers.
-		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-		// Set IE extended HTTP/1.1 no-cache headers (use addHeader).
-		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-		// Set standard HTTP/1.0 no-cache header.
-		response.setHeader("Pragma", "no-cache");
+    @RequestMapping(value = "captcha.jpg")
+    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // Set to expire far in the past.
+        response.setDateHeader("Expires", 0);
+        // Set standard HTTP/1.1 no-cache headers.
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+        // Set standard HTTP/1.0 no-cache header.
+        response.setHeader("Pragma", "no-cache");
 
-		// return a jpeg
-		response.setContentType("image/jpeg");
+        // return a jpeg
+        response.setContentType("image/jpeg");
 
-		// create the text for the image
-		String capText = captchaProducer.createText();
+        // create the text for the image
+        String capText = captchaProducer.createText();
 
-		// store the text in the session
-		request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, capText);
+        // store the text in the session
+        request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, capText);
 
-		// create the image with the text
-		BufferedImage bi = captchaProducer.createImage(capText);
+        // create the image with the text
+        BufferedImage bi = captchaProducer.createImage(capText);
 
-		ServletOutputStream out = response.getOutputStream();
+        ServletOutputStream out = response.getOutputStream();
 
-		// write the data out
-		ImageIO.write(bi, "jpg", out);
-		try {
-			out.flush();
-		} finally {
-			out.close();
-		}
-		return null;
-	}
-    
+        // write the data out
+        ImageIO.write(bi, "jpg", out);
+        try {
+            out.flush();
+        } finally {
+            out.close();
+        }
+        return null;
+    }
+
     @ResponseBody
     @RequestMapping("validateCode")
-	public static String validate(HttpServletRequest request, String validateCode){
-		String code = (String)request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
-		return String.valueOf(validateCode.toUpperCase().equals(code)); 
-	}
+    public static String validate(HttpServletRequest request, String validateCode) {
+        String code = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
+        return String.valueOf(validateCode.toUpperCase().equals(code));
+    }
 }

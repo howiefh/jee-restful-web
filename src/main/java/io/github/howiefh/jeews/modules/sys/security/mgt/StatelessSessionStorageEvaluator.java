@@ -11,16 +11,20 @@ import org.apache.shiro.subject.Subject;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class StatelessSessionStorageEvaluator implements SessionStorageEvaluator {
 
-	/* (non-Javadoc)
-	 * @see org.apache.shiro.mgt.SessionStorageEvaluator#isSessionStorageEnabled(org.apache.shiro.subject.Subject)
-	 */
-	@Override
-	public boolean isSessionStorageEnabled(Subject subject) {
-		return false;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.shiro.mgt.SessionStorageEvaluator#isSessionStorageEnabled(
+     * org.apache.shiro.subject.Subject)
+     */
+    @Override
+    public boolean isSessionStorageEnabled(Subject subject) {
+        return false;
+    }
 
 }

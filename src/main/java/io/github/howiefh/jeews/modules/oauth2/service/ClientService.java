@@ -17,11 +17,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
 /**
- *  
+ * 
  *
- *  @author howiefh
+ * @author howiefh
  */
 @Service
 public class ClientService {
@@ -41,6 +40,7 @@ public class ClientService {
     public int delete(Long id) {
         return clientDao.delete(id);
     }
+
     public int deleteBatch(List<Long> ids) {
         return clientDao.deleteBatch(ids);
     }
@@ -52,17 +52,17 @@ public class ClientService {
     public List<Client> findAll() {
         return clientDao.findAll();
     }
-    
-	public Page<Client> findPageBy(Pageable pageable, Client client) {
+
+    public Page<Client> findPageBy(Pageable pageable, Client client) {
         List<Client> clients = (List<Client>) clientDao.findPageBy(pageable, client);
         long count = clientDao.countBy(client);
         return new PageImpl<Client>(clients, pageable, count);
-	}
+    }
 
     public Client findByClientName(String clientName) {
         return clientDao.findByClientName(clientName);
     }
-    
+
     public Client findByClientId(String clientId) {
         return clientDao.findByClientId(clientId);
     }

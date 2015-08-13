@@ -15,19 +15,21 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class ResourcesAssembler {
-	/**
+    /**
      * 将实体集entities转化为Resources
-	 * @param entities
-	 * @param assembler
-	 * @param clazz
-	 * @return
-	 */
-	public static <T, D extends ResourceSupport> Resources<D> toResources(Iterable<T> entities, ResourceAssemblerSupport<T, D> assembler, Class<?> clazz) {
-		Link link = linkTo(clazz).withSelfRel();
+     * 
+     * @param entities
+     * @param assembler
+     * @param clazz
+     * @return
+     */
+    public static <T, D extends ResourceSupport> Resources<D> toResources(Iterable<T> entities,
+            ResourceAssemblerSupport<T, D> assembler, Class<?> clazz) {
+        Link link = linkTo(clazz).withSelfRel();
         Resources<D> resources = new Resources<>(assembler.toResources(entities), link);
         return resources;
-	}
+    }
 }

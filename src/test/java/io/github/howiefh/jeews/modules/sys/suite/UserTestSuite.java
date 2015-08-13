@@ -16,15 +16,11 @@ import org.junit.runners.Suite;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({
-    UserDaoTest.class,
-    UserControllerTest.class,
-    LoginControllerTest.class,
-    SignupControllerTest.class
-})
+@Suite.SuiteClasses({ UserDaoTest.class, UserControllerTest.class, LoginControllerTest.class,
+        SignupControllerTest.class })
 public class UserTestSuite {
 
 }

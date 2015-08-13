@@ -2,6 +2,12 @@
 
 RESTful Web 服务的简单实现，目前实现了注册、认证、用户管理等简单功能。
 
+# 截图
+
+![登录界面](http://fh-1.qiniudn.com/jee-restful-web-login.png "登录界面")
+![用户管理界面](http://fh-1.qiniudn.com/jee-restful-web.png "用户管理界面")
+![行编辑](http://fh-1.qiniudn.com/jee-restful-web-edit-inline.png "行编辑")
+
 # 技术
 
 1. 后端
@@ -54,10 +60,13 @@ cd jee-restful-web
 
 安装[前端](https://github.com/howiefh/restful-web-app)即可体验目前实现的简单功能
 
-# API
+# [API]
 
 ## 认证
-认证使用 Json Web Token，用户登录时提交用户名和密码，认证成功后会返回一个 *access_token*，之后的每次请求都需要在头部 *Authorization* 携带此token。
+认证使用 Json Web Token，用户登录时提交用户名和密码，认证成功后会返回一个 *access_token* 以及必要的用户信息，服务器端并不保存状态，客户端保存状态并且之后的每次请求都应该在头部 *Authorization* 携带 *access_token*。
+
+## 缓存
+服务器返回资源时会设置`Etag`头部，客户端应该在请求资源时携带`If-None-Match`头部。
 
 ## Media Types
 使用 [HAL+JSON](https://github.com/mikekelly/hal_specification/blob/master/hal_specification.md) media-type 来表现状态。
@@ -473,4 +482,4 @@ cd jee-restful-web
 ### 删除用户 [DELETE]
 + Response 204
 
-[API](http://docs.jeerestfulweb.apiary.io)
+[API]: http://docs.jeerestfulweb.apiary.io

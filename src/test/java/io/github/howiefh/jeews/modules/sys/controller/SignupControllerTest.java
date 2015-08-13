@@ -29,31 +29,29 @@ import org.springframework.web.context.WebApplicationContext;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class SignupControllerTest extends BaseSpringJUnit4Test {
-	@Autowired
-	private WebApplicationContext wac;
-	private MockMvc mockMvc;
+    @Autowired
+    private WebApplicationContext wac;
+    private MockMvc mockMvc;
 
-	@Before
-	public void setUp() throws ServletException {
-		AbstractShiroFilter shiroFilter = (AbstractShiroFilter) wac.getBean("shiroFilter");
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-				.alwaysDo(print()) // 默认每次执行请求后都做的动作
-                .addFilter(shiroFilter, "/*")
-				.build();
-	}
+    @Before
+    public void setUp() throws ServletException {
+        AbstractShiroFilter shiroFilter = (AbstractShiroFilter) wac.getBean("shiroFilter");
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).alwaysDo(print()) // 默认每次执行请求后都做的动作
+                .addFilter(shiroFilter, "/*").build();
+    }
 
     @Test
     public void testLogin() throws Exception {
-        String requestBody = "{\"username\":\"fh"+UUID.randomUUID()+"\",\"password\":\"123456\",\"email\":\""+UUID.randomUUID()+"@qq.om\"}";
-	    mockMvc.perform(post("/signup")
-	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)
-	            .accept(MediaTypes.HAL_JSON)) //执行请求
-	            .andExpect(status().isCreated()) //201
-	            .andExpect(jsonPath("$.msg").exists()) //使用Json path验证JSON
-	            .andExpect(content().contentType(MediaTypes.HAL_JSON))
-	            .andReturn();
+        String requestBody = "{\"username\":\"fh" + UUID.randomUUID() + "\",\"password\":\"123456\",\"email\":\""
+                + UUID.randomUUID() + "@qq.om\"}";
+        mockMvc.perform(
+                post("/signup").contentType(MediaType.APPLICATION_JSON).content(requestBody)
+                        .accept(MediaTypes.HAL_JSON)) // 执行请求
+                .andExpect(status().isCreated()) // 201
+                .andExpect(jsonPath("$.msg").exists()) // 使用Json path验证JSON
+                .andExpect(content().contentType(MediaTypes.HAL_JSON)).andReturn();
     }
 }

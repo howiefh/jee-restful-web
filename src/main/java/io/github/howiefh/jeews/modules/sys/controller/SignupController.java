@@ -22,20 +22,20 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 @RestController
 @RequestMapping("signup")
 public class SignupController {
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@RequestMapping(value="", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Map<String, Object> signup(@RequestBody User u) {
         u.setLocked(true);
 
-	    userService.save(u);
+        userService.save(u);
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("msg", "谢谢您注册，目前新用户账号暂时被锁定，可以联系管理员解锁！");

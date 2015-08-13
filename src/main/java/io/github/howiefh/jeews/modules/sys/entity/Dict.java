@@ -5,9 +5,8 @@
  */
 package io.github.howiefh.jeews.modules.sys.entity;
 
-
 public class Dict extends DataEntity {
-	private static final long serialVersionUID = -8773829955526770483L;
+    private static final long serialVersionUID = -8773829955526770483L;
 
     /**
      * 数据值 - sys_dict.value
@@ -41,7 +40,8 @@ public class Dict extends DataEntity {
     /**
      * Sets the value of the database column sys_dict.value
      *
-     * @param value 数据值
+     * @param value
+     *            数据值
      */
     public void setValue(String value) {
         this.value = value == null ? null : value.trim();
@@ -59,7 +59,8 @@ public class Dict extends DataEntity {
     /**
      * Sets the value of the database column sys_dict.label
      *
-     * @param label 标签名
+     * @param label
+     *            标签名
      */
     public void setLabel(String label) {
         this.label = label == null ? null : label.trim();
@@ -77,7 +78,8 @@ public class Dict extends DataEntity {
     /**
      * Sets the value of the database column sys_dict.type
      *
-     * @param type 类型
+     * @param type
+     *            类型
      */
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
@@ -95,7 +97,8 @@ public class Dict extends DataEntity {
     /**
      * Sets the value of the database column sys_dict.description
      *
-     * @param description 描述
+     * @param description
+     *            描述
      */
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();

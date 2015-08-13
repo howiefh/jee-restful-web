@@ -11,11 +11,11 @@ import io.github.howiefh.jeews.modules.oauth2.entity.Client;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 /**
- *  
+ * 
  *
- *  @author howiefh
+ * @author howiefh
  */
-public class ClientResourceAssembler  extends ResourceAssemblerSupport<Client, ClientResource> {
+public class ClientResourceAssembler extends ResourceAssemblerSupport<Client, ClientResource> {
 
     public ClientResourceAssembler() {
         super(ClientController.class, ClientResource.class);
@@ -23,7 +23,7 @@ public class ClientResourceAssembler  extends ResourceAssemblerSupport<Client, C
 
     @Override
     public ClientResource toResource(Client entity) {
-    	ClientResource resource = createResourceWithId(entity.getId(), entity);
+        ClientResource resource = createResourceWithId(entity.getId(), entity);
         return resource;
     }
 

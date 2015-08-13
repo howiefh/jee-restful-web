@@ -16,14 +16,15 @@ import org.apache.shiro.subject.Subject;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class UserUtils {
-	/**
+    /**
      * 生成DataEntity类中的公共字段
-	 * @param entity
-	 */
-	public static void genCommonFiled(DataEntity entity) {
+     * 
+     * @param entity
+     */
+    public static void genCommonFiled(DataEntity entity) {
         Date date = new Date();
         entity.setCreatedAt(date);
         entity.setUpdatedAt(date);
@@ -31,21 +32,22 @@ public class UserUtils {
         if (user != null) {
             entity.setCreatedBy(user);
             entity.setUpdatedBy(user);
-		}
-	}
+        }
+    }
 
-	/**
+    /**
      * 获取当前登陆用户
-	 * @return
-	 */
-	public static User getCurrentUser() {
+     * 
+     * @return
+     */
+    public static User getCurrentUser() {
         Subject subject = SecurityUtils.getSubject();
         Object user = subject.getPrincipal();
-        //通过statelessFilter过滤，并且需要权限访问时，Principal为User，否则是用户名
+        // 通过statelessFilter过滤，并且需要权限访问时，Principal为User，否则是用户名
         if (user instanceof User) {
-			return (User)user;
-		} else {
-			return null;
-		}
-	}
+            return (User) user;
+        } else {
+            return null;
+        }
+    }
 }

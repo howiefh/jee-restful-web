@@ -11,5 +11,5 @@ import io.github.howiefh.jeews.common.dao.CrudDao;
 import io.github.howiefh.jeews.modules.sys.entity.Organization;
 
 @Repository
-public interface OrganizationDao extends CrudDao<Organization, Long>{
+public interface OrganizationDao extends CrudDao<Organization, Long> {
 }

@@ -33,55 +33,46 @@ import org.springframework.web.context.WebApplicationContext;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class LoginControllerTest extends BaseSpringJUnit4Test {
-	@Autowired
-	private WebApplicationContext wac;
-	private MockMvc mockMvc;
+    @Autowired
+    private WebApplicationContext wac;
+    private MockMvc mockMvc;
 
-	@Before
-	public void setUp() throws ServletException {
-		AbstractShiroFilter shiroFilter = (AbstractShiroFilter) wac.getBean("shiroFilter");
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-				.alwaysDo(print()) // 默认每次执行请求后都做的动作
-                .addFilter(shiroFilter, "/*")
-				.build();
-	}
+    @Before
+    public void setUp() throws ServletException {
+        AbstractShiroFilter shiroFilter = (AbstractShiroFilter) wac.getBean("shiroFilter");
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).alwaysDo(print()) // 默认每次执行请求后都做的动作
+                .addFilter(shiroFilter, "/*").build();
+    }
 
     @Test
     public void testLogin() throws Exception {
         String user = "{\"username\":\"root\",\"password\":\"u12345\"}";
-    	MvcResult result = mockMvc.perform(post("/login")
-	            .contentType(MediaType.APPLICATION_JSON)
-                .content(user)
-                .accept(MediaTypes.HAL_JSON))
-                .andExpect(status().isOk()) //200
-                .andExpect(jsonPath("$.access_token").exists())
-                .andExpect(jsonPath("$.user.id").exists())
-                .andReturn();
+        MvcResult result = mockMvc
+                .perform(
+                        post("/login").contentType(MediaType.APPLICATION_JSON).content(user)
+                                .accept(MediaTypes.HAL_JSON)).andExpect(status().isOk()) // 200
+                .andExpect(jsonPath("$.access_token").exists()).andExpect(jsonPath("$.user.id").exists()).andReturn();
         String content = result.getResponse().getContentAsString();
         JSONObject json = new JSONObject(content);
-		String accessToken = json.get("access_token").toString();
+        String accessToken = json.get("access_token").toString();
 
-		mockMvc.perform(get("/users/1")
-				.header("Authorization","Bearer " + accessToken)
-				.accept(MediaTypes.HAL_JSON))
-				.andExpect(status().isOk()) // 200
-				.andExpect(content().contentType(MediaTypes.HAL_JSON)) // 验证响应contentType
-				.andReturn();
-        mockMvc.perform(get("/users/1"))
-        		.andExpect(status().isUnauthorized()) // 401
-        		.andReturn();
-        String requestBody = "{\"username\":\"fh"+UUID.randomUUID()+"\",\"password\":\"123456\",\"email\":\""+UUID.randomUUID()+"@qq.om\",\"mobile\":"
-	    		+ "\""+new Random().nextInt()+"\",\"roles\":[1,2],\"organizations\":[1],\"locked\":true}";
-	    mockMvc.perform(post("/users")
-				.header("Authorization","Bearer " + accessToken)
-	            .contentType(MediaType.APPLICATION_JSON).content(requestBody)
-	            .accept(MediaTypes.HAL_JSON)) //执行请求
-	            .andExpect(status().isCreated()) //201
-	            .andExpect(jsonPath("$.id").exists()) //使用Json path验证JSON
-	            .andExpect(content().contentType(MediaTypes.HAL_JSON))
-	            .andReturn();
+        mockMvc.perform(get("/users/1").header("Authorization", "Bearer " + accessToken).accept(MediaTypes.HAL_JSON))
+                .andExpect(status().isOk()) // 200
+                .andExpect(content().contentType(MediaTypes.HAL_JSON)) // 验证响应contentType
+                .andReturn();
+        mockMvc.perform(get("/users/1")).andExpect(status().isUnauthorized()) // 401
+                .andReturn();
+        String requestBody = "{\"username\":\"fh" + UUID.randomUUID() + "\",\"password\":\"123456\",\"email\":\""
+                + UUID.randomUUID() + "@qq.om\",\"mobile\":" + "\"" + new Random().nextInt()
+                + "\",\"roles\":[1,2],\"organizations\":[1],\"locked\":true}";
+        mockMvc.perform(
+                post("/users").header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody).accept(MediaTypes.HAL_JSON)) // 执行请求
+                .andExpect(status().isCreated()) // 201
+                .andExpect(jsonPath("$.id").exists()) // 使用Json path验证JSON
+                .andExpect(content().contentType(MediaTypes.HAL_JSON)).andReturn();
     }
 }

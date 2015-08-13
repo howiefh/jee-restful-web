@@ -25,36 +25,34 @@ import org.springframework.web.context.WebApplicationContext;
 /**
  *
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class OrganizationControllerTest extends BaseSpringJUnit4Test {
-	@Autowired
-	private WebApplicationContext wac;
-	private MockMvc mockMvc;
+    @Autowired
+    private WebApplicationContext wac;
+    private MockMvc mockMvc;
 
-	@Before
-	public void setUp() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac)
-		        .alwaysDo(print())  //默认每次执行请求后都做的动作
-		        .build();
+    @Before
+    public void setUp() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).alwaysDo(print()) // 默认每次执行请求后都做的动作
+                .build();
 
         User user = new User();
         user.setId(1L);
         user.setUsername("root");
         user.setLocked(false);
         ShiroTestUtils.mockSubject(user);
-	}
+    }
 
-	@After
-	public void tearDown() {
-		ShiroTestUtils.clearSubject();
-	}
+    @After
+    public void tearDown() {
+        ShiroTestUtils.clearSubject();
+    }
 
-	@Test
-	public void testGetList() throws Exception {
-	    mockMvc.perform(get("/organizations")
-	            .accept(MediaTypes.HAL_JSON)) //执行请求
-	            .andExpect(status().isOk()) //200
-	            .andExpect(content().contentType(MediaTypes.HAL_JSON));
-	}
+    @Test
+    public void testGetList() throws Exception {
+        mockMvc.perform(get("/organizations").accept(MediaTypes.HAL_JSON)) // 执行请求
+                .andExpect(status().isOk()) // 200
+                .andExpect(content().contentType(MediaTypes.HAL_JSON));
+    }
 }

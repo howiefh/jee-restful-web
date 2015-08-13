@@ -6,9 +6,9 @@
 package io.github.howiefh.jeews.modules.oauth2;
 
 /**
- *  
+ * 
  *
- *  @author howiefh
+ * @author howiefh
  */
 public class Constants {
     public static final String RESOURCE_SERVER_NAME = "jeews-server";

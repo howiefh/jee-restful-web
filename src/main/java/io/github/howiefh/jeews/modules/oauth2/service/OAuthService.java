@@ -11,9 +11,9 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 /**
- *  
+ * 
  *
- *  @author howiefh
+ * @author howiefh
  */
 @Service
 public class OAuthService {
@@ -39,13 +39,13 @@ public class OAuthService {
     public void addRefreshToken(String refreshToken, String username) {
         cache.put(refreshToken, username);
     }
-    
+
     public String getUsernameByAuthCode(String authCode) {
-        return (String)cache.get(authCode).get();
+        return (String) cache.get(authCode).get();
     }
 
     public String getUsernameByAccessToken(String accessToken) {
-        return (String)cache.get(accessToken).get();
+        return (String) cache.get(accessToken).get();
     }
 
     public boolean checkAuthCode(String authCode) {
@@ -59,7 +59,7 @@ public class OAuthService {
     public boolean checkRefreshToken(String refreshToken) {
         return cache.get(refreshToken) != null;
     }
-    
+
     public boolean checkClientId(String clientId) {
         return clientService.findByClientId(clientId) != null;
     }

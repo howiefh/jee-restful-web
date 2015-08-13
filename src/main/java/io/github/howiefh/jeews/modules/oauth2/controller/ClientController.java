@@ -45,64 +45,62 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/clients")
 @ExposesResourceFor(Client.class)
 public class ClientController {
-	@Autowired
-	private ClientService clientService;
+    @Autowired
+    private ClientService clientService;
 
-	@Autowired
-	private EntityLinks entityLinks;
+    @Autowired
+    private EntityLinks entityLinks;
 
-	@Autowired
-	private PagedResourcesAssembler<Client> assembler;
+    @Autowired
+    private PagedResourcesAssembler<Client> assembler;
 
-	@RequiresPermissions("clients:view")
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public HttpEntity<PagedResources<ClientResource>> getList(
-			@PageableDefault(size = 10, page = 0, sort = { "id" }, direction = Direction.ASC) Pageable pageable,
-			Client Client) {
-		Page<Client> Clients = clientService.findPageBy(pageable, Client);
-		return new ResponseEntity<>(assembler.toResource(Clients, new ClientResourceAssembler()), HttpStatus.OK);
-	}
+    @RequiresPermissions("clients:view")
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public HttpEntity<PagedResources<ClientResource>> getList(
+            @PageableDefault(size = 10, page = 0, sort = { "id" }, direction = Direction.ASC) Pageable pageable,
+            Client Client) {
+        Page<Client> Clients = clientService.findPageBy(pageable, Client);
+        return new ResponseEntity<>(assembler.toResource(Clients, new ClientResourceAssembler()), HttpStatus.OK);
+    }
 
-	@RequiresPermissions("clients:view")
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ClientResource get(@PathVariable long id) {
-		return new ClientResourceAssembler().toResource(clientService.findOne(id));
-	}
+    @RequiresPermissions("clients:view")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ClientResource get(@PathVariable long id) {
+        return new ClientResourceAssembler().toResource(clientService.findOne(id));
+    }
 
-	@RequiresPermissions("clients:create")
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<ClientResource> create(HttpEntity<Client> entity,
-			HttpServletRequest request) throws URISyntaxException {
-		Client Client = entity.getBody();
-		clientService.save(Client);
-		HttpHeaders headers = new HttpHeaders();
-		ClientResource ClientResource = new ClientResourceAssembler()
-				.toResource(Client);
-		headers.setLocation(entityLinks.linkForSingleResource(Client.class,
-				Client.getId()).toUri());
-		ResponseEntity<ClientResource> responseEntity = new ResponseEntity<ClientResource>(
-				ClientResource, headers, HttpStatus.CREATED);
-		return responseEntity;
-	}
+    @RequiresPermissions("clients:create")
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<ClientResource> create(HttpEntity<Client> entity, HttpServletRequest request)
+            throws URISyntaxException {
+        Client Client = entity.getBody();
+        clientService.save(Client);
+        HttpHeaders headers = new HttpHeaders();
+        ClientResource ClientResource = new ClientResourceAssembler().toResource(Client);
+        headers.setLocation(entityLinks.linkForSingleResource(Client.class, Client.getId()).toUri());
+        ResponseEntity<ClientResource> responseEntity = new ResponseEntity<ClientResource>(ClientResource, headers,
+                HttpStatus.CREATED);
+        return responseEntity;
+    }
 
-	@RequiresPermissions("clients:update")
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ClientResource update(@RequestBody Client client) {
-		clientService.update(client);
-		return new ClientResourceAssembler().toResource(client);
-	}
+    @RequiresPermissions("clients:update")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ClientResource update(@RequestBody Client client) {
+        clientService.update(client);
+        return new ClientResourceAssembler().toResource(client);
+    }
 
-	@RequiresPermissions("clients:delete")
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable("id") Long id) {
-		clientService.delete(id);
-	}
+    @RequiresPermissions("clients:delete")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") Long id) {
+        clientService.delete(id);
+    }
 
-	@RequiresPermissions("clients:delete")
-	@RequestMapping(value = "", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteBatch(@RequestBody List<Long> ids) {
-		clientService.deleteBatch(ids);
-	}
+    @RequiresPermissions("clients:delete")
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBatch(@RequestBody List<Long> ids) {
+        clientService.deleteBatch(ids);
+    }
 }

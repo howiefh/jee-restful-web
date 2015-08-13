@@ -9,7 +9,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 public class UserResource extends Resource<User> {
-    
+
     public UserResource(User user) {
         super(user);
         Long userId = user.getId();
