@@ -45,8 +45,8 @@ RESTful Web 服务的简单实现，目前实现了注册、认证、用户管�
 
 3. 数据库
 
-    mysql
-    flyway - 数据库版本管理
+    * mysql
+    * flyway - 数据库版本管理
 
 # 安装及运行
 
