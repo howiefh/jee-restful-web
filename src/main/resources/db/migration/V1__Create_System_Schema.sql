@@ -164,13 +164,12 @@ DROP TRIGGER IF EXISTS tgr_sys_user_role_delete;
 DROP TRIGGER IF EXISTS tgr_sys_role_menu_delete;
 -- 角色菜单审计表，存放删除的数据记录
 CREATE TABLE sys_role_menu_audit SELECT * FROM sys_role_menu WHERE 1 = 2;
-ALTER TABLE sys_role_menu_audit ADD PRIMARY KEY (id);
 ALTER TABLE sys_role_menu_audit ADD deleted_at datetime NOT NULL COMMENT '删除时间';
 
 -- 删除角色菜单表的数据后触发此触发器，将删除的数据以及当前时间加入审计表中
 DELIMITER $$
 CREATE TRIGGER tgr_sys_role_menu_delete
-AFTER DELETE ON sys_role_menu 
+AFTER DELETE ON sys_role_menu
 FOR EACH ROW
 BEGIN
     INSERT INTO sys_role_menu_audit (role_id, menu_id, deleted_at)
@@ -181,13 +180,12 @@ DELIMITER ;
 
 -- 用户角色审计表，存放删除的数据记录
 CREATE TABLE sys_user_role_audit SELECT * FROM sys_user_role WHERE 1 = 2;
-ALTER TABLE sys_user_role_audit ADD PRIMARY KEY (id);
 ALTER TABLE sys_user_role_audit ADD deleted_at datetime NOT NULL COMMENT '删除时间';
 
 -- 删除用户角色表的数据后触发此触发器，将删除的数据以及当前时间加入审计表中
 DELIMITER $$
 CREATE TRIGGER tgr_sys_user_role_delete
-AFTER DELETE ON sys_user_role 
+AFTER DELETE ON sys_user_role
 FOR EACH ROW
 BEGIN
     INSERT INTO sys_user_role_audit (user_id, role_id, deleted_at)
@@ -198,13 +196,12 @@ DELIMITER ;
 
 -- 用户组织审计表，存放删除的数据记录
 CREATE TABLE sys_user_organization_audit SELECT * FROM sys_user_organization WHERE 1 = 2;
-ALTER TABLE sys_user_organization_audit ADD PRIMARY KEY (id);
 ALTER TABLE sys_user_organization_audit ADD deleted_at datetime NOT NULL COMMENT '删除时间';
 
 -- 删除用户组织表的数据后触发此触发器，将删除的数据以及当前时间加入审计表中
 DELIMITER $$
 CREATE TRIGGER tgr_sys_user_organization_delete
-AFTER DELETE ON sys_user_organization 
+AFTER DELETE ON sys_user_organization
 FOR EACH ROW
 BEGIN
     INSERT INTO sys_user_organization_audit (user_id, organization_id, deleted_at)
@@ -221,7 +218,7 @@ ALTER TABLE sys_organization_audit ADD deleted_at datetime NOT NULL COMMENT '删
 -- 删除组织表的数据后触发此触发器，将删除的数据以及当前时间加入审计表中
 DELIMITER $$
 CREATE TRIGGER tgr_sys_organization_delete
-AFTER DELETE ON sys_organization 
+AFTER DELETE ON sys_organization
 FOR EACH ROW
 BEGIN
     INSERT INTO sys_organization_audit (id, name, type, parent_id, parent_ids, sort, is_show, created_by, created_at, updated_by, updated_at, deleted_at)
@@ -238,7 +235,7 @@ ALTER TABLE sys_menu_audit ADD deleted_at datetime NOT NULL COMMENT '删除时�
 -- 删除菜单表的数据后触发此触发器，将删除的数据以及当前时间加入审计表中
 DELIMITER $$
 CREATE TRIGGER tgr_sys_menu_delete
-AFTER DELETE ON sys_menu 
+AFTER DELETE ON sys_menu
 FOR EACH ROW
 BEGIN
     INSERT INTO sys_menu_audit (id, name, permission, url, parent_id, parent_ids, sort, icon, is_show, created_by, created_at, updated_by, updated_at, deleted_at)
@@ -255,7 +252,7 @@ ALTER TABLE sys_role_audit ADD deleted_at datetime NOT NULL COMMENT '删除时�
 -- 删除角色表的数据后触发此触发器，将删除的数据以及当前时间加入审计表中
 DELIMITER $$
 CREATE TRIGGER tgr_sys_role_delete
-AFTER DELETE ON sys_role 
+AFTER DELETE ON sys_role
 FOR EACH ROW
 BEGIN
     INSERT INTO sys_role_audit (id, name, cnname, available, created_by, created_at, updated_by, updated_at, deleted_at)
@@ -272,7 +269,7 @@ ALTER TABLE sys_user_audit ADD deleted_at datetime NOT NULL COMMENT '删除时�
 -- 删除用户表的数据后触发此触发器，将删除的数据以及当前时间加入审计表中
 DELIMITER $$
 CREATE TRIGGER tgr_sys_user_delete
-AFTER DELETE ON sys_user 
+AFTER DELETE ON sys_user
 FOR EACH ROW
 BEGIN
     INSERT INTO sys_user_audit (id, username, password, salt, email, mobile, photo, login_ip, login_date, locked, created_by, created_at, updated_by, updated_at, deleted_at)
@@ -289,7 +286,7 @@ ALTER TABLE sys_dict_audit ADD deleted_at datetime NOT NULL COMMENT '删除时�
 -- 删除字典表的数据后触发此触发器，将删除的数据以及当前时间加入审计表中
 DELIMITER $$
 CREATE TRIGGER tgr_sys_dict_delete
-AFTER DELETE ON sys_dict 
+AFTER DELETE ON sys_dict
 FOR EACH ROW
 BEGIN
     INSERT INTO sys_dict_audit (id, value, label, type, description, created_by, created_at, updated_by, updated_at, deleted_at)

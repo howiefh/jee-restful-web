@@ -23,7 +23,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration
 @ContextHierarchy({ @ContextConfiguration(name = "parent", locations = "classpath:config/spring-config.xml"),
-        @ContextConfiguration(name = "child", locations = "classpath:config/spring-mvc.xml") })
-public class BaseSpringJUnit4Test extends AbstractJUnit4SpringContextTests {
+    @ContextConfiguration(name = "child", locations = "classpath:config/spring-mvc.xml") })
+public abstract class BaseSpringJUnit4Test extends AbstractJUnit4SpringContextTests {
 
 }

@@ -386,6 +386,11 @@
           <warName>${project.artifactId}</warName>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>3.2.1</version>
+      </plugin>
       <!-- Eclipse project -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
