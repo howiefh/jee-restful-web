@@ -12,7 +12,7 @@
     <spring.version>5.2.6.RELEASE</spring.version>
     <hateoas.version>0.17.0.RELEASE</hateoas.version>
     <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
-    <spring.data.commons.version>1.13.11.RELEASE</spring.data.commons.version>
+    <spring.data.commons.version>1.13.12.RELEASE</spring.data.commons.version>
 
     <aspectj.version>1.8.5</aspectj.version>
     <cglib.version>3.1</cglib.version>
