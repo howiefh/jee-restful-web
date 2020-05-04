@@ -4,9 +4,9 @@ RESTful Web 服务的简单实现，目前实现了注册、认证、用户管�
 
 # 截图
 
-![登录界面](http://fh-1.qiniudn.com/jee-restful-web-login.png "登录界面")
-![用户管理界面](http://fh-1.qiniudn.com/jee-restful-web.png "用户管理界面")
-![行编辑](http://fh-1.qiniudn.com/jee-restful-web-edit-inline.png "行编辑")
+![登录界面](img/jee-restful-web-login.png "登录界面")
+![用户管理界面](img/jee-restful-web.png "用户管理界面")
+![行编辑](img/jee-restful-web-edit-inline.png "行编辑")
 
 # 技术
 

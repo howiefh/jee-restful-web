@@ -9,10 +9,10 @@
   <name>JEE RESTful Web Services</name>
   <url>http://maven.apache.org</url>
   <properties>
-    <spring.version>4.1.6.RELEASE</spring.version>
+    <spring.version>5.2.6.RELEASE</spring.version>
     <hateoas.version>0.17.0.RELEASE</hateoas.version>
     <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
-    <spring.data.commons.version>1.10.0.RELEASE</spring.data.commons.version>
+    <spring.data.commons.version>1.13.11.RELEASE</spring.data.commons.version>
 
     <aspectj.version>1.8.5</aspectj.version>
     <cglib.version>3.1</cglib.version>
@@ -35,14 +35,14 @@
     <slf4j.version>1.7.12</slf4j.version>
     <log4j.version>2.3</log4j.version>
 
-    <shiro.version>1.2.3</shiro.version>
+    <shiro.version>1.5.3</shiro.version>
 
     <ehcache.version>2.6.11</ehcache.version>
     <ehcache-web.version>2.0.4</ehcache-web.version>
 
     <kaptcha.version>0.0.9</kaptcha.version>
 
-    <jackson.version>2.5.3</jackson.version>
+    <jackson.version>2.11.0</jackson.version>
 
     <oltu.version>1.0.0</oltu.version>
 

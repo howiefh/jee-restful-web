@@ -10,7 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
@@ -21,7 +20,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 // 默认是src/main/webapp
 @WebAppConfiguration(value = "src/main/webapp")
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration
 @ContextHierarchy({ @ContextConfiguration(name = "parent", locations = "classpath:config/spring-config.xml"),
     @ContextConfiguration(name = "child", locations = "classpath:config/spring-mvc.xml") })
 public abstract class BaseSpringJUnit4Test extends AbstractJUnit4SpringContextTests {
