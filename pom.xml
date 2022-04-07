@@ -42,7 +42,7 @@
 
     <kaptcha.version>0.0.9</kaptcha.version>
 
-    <jackson.version>2.11.0</jackson.version>
+    <jackson.version>2.12.6.1</jackson.version>
 
     <oltu.version>1.0.0</oltu.version>
 
