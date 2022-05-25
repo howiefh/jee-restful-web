@@ -9,7 +9,7 @@
   <name>JEE RESTful Web Services</name>
   <url>http://maven.apache.org</url>
   <properties>
-    <spring.version>5.3.19</spring.version>
+    <spring.version>5.3.20</spring.version>
     <hateoas.version>0.17.0.RELEASE</hateoas.version>
     <spring-plugin.version>1.2.0.RELEASE</spring-plugin.version>
     <spring.data.commons.version>1.13.13.RELEASE</spring.data.commons.version>
