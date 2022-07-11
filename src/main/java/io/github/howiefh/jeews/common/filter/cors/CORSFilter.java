@@ -1,12 +1,12 @@
 /**
  * Copyright 2012-2013 eBay Software Foundation, All Rights Reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -133,7 +133,7 @@ public final class CORSFilter implements Filter {
     // --------------------------------------------------------- Public methods
     @Override
     public void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse,
-            final FilterChain filterChain) throws IOException, ServletException {
+                         final FilterChain filterChain) throws IOException, ServletException {
         if (!(servletRequest instanceof HttpServletRequest) || !(servletResponse instanceof HttpServletResponse)) {
             String message = "CORS doesn't support non-HTTP request or response.";
             throw new ServletException(message);
@@ -201,6 +201,7 @@ public final class CORSFilter implements Filter {
     }
 
     // --------------------------------------------------------------- Handlers
+
     /**
      * Handles a CORS request of type {@link CORSRequestType}.SIMPLE.
      *
@@ -216,7 +217,7 @@ public final class CORSFilter implements Filter {
      *      Cross-Origin Request, Actual Request, and Redirects</a>
      */
     public void handleSimpleCORS(final HttpServletRequest request, final HttpServletResponse response,
-            final FilterChain filterChain) throws IOException, ServletException {
+                                 final FilterChain filterChain) throws IOException, ServletException {
         CORSFilter.CORSRequestType requestType = checkRequestType(request);
         if (!(requestType == CORSFilter.CORSRequestType.SIMPLE || requestType == CORSFilter.CORSRequestType.ACTUAL)) {
             String message = "Expects a HttpServletRequest object of type " + CORSFilter.CORSRequestType.SIMPLE
@@ -285,7 +286,7 @@ public final class CORSFilter implements Filter {
      * @throws ServletException
      */
     public void handlePreflightCORS(final HttpServletRequest request, final HttpServletResponse response,
-            final FilterChain filterChain) throws IOException, ServletException {
+                                    final FilterChain filterChain) throws IOException, ServletException {
         CORSRequestType requestType = checkRequestType(request);
         if (requestType != CORSRequestType.PRE_FLIGHT) {
             throw new IllegalArgumentException("Expects a HttpServletRequest object of type "
@@ -379,7 +380,7 @@ public final class CORSFilter implements Filter {
      * @throws ServletException
      */
     public void handleNonCORS(final HttpServletRequest request, final HttpServletResponse response,
-            final FilterChain filterChain) throws IOException, ServletException {
+                              final FilterChain filterChain) throws IOException, ServletException {
         // Let request pass.
         filterChain.doFilter(request, response);
     }
@@ -397,7 +398,7 @@ public final class CORSFilter implements Filter {
      * @throws ServletException
      */
     public void handleInvalidCORS(final HttpServletRequest request, final HttpServletResponse response,
-            final FilterChain filterChain) {
+                                  final FilterChain filterChain) {
         String origin = request.getHeader(CORSFilter.REQUEST_HEADER_ORIGIN);
         String method = request.getMethod();
         String accessControlRequestHeaders = request.getHeader(REQUEST_HEADER_ACCESS_CONTROL_REQUEST_HEADERS);
@@ -419,6 +420,7 @@ public final class CORSFilter implements Filter {
     }
 
     // -------------------------------------------------------- Utility methods
+
     /**
      * Decorates the {@link HttpServletRequest}, with CORS attributes.
      * <ul>
@@ -622,8 +624,8 @@ public final class CORSFilter implements Filter {
      * @throws ServletException
      */
     private void parseAndStore(final String allowedOrigins, final String allowedHttpMethods,
-            final String allowedHttpHeaders, final String exposedHeaders, final String supportsCredentials,
-            final String preflightMaxAge, final String loggingEnabled, final String decorateRequest)
+                               final String allowedHttpHeaders, final String exposedHeaders, final String supportsCredentials,
+                               final String preflightMaxAge, final String loggingEnabled, final String decorateRequest)
             throws ServletException {
         if (allowedOrigins != null) {
             if (allowedOrigins.trim().equals("*")) {
@@ -700,7 +702,7 @@ public final class CORSFilter implements Filter {
         if (data != null && data.length() > 0) {
             splits = data.split(",");
         } else {
-            splits = new String[] {};
+            splits = new String[]{};
         }
 
         Set<String> set = new HashSet<String>();
@@ -743,6 +745,7 @@ public final class CORSFilter implements Filter {
     }
 
     // -------------------------------------------------------------- Accessors
+
     /**
      * Determines if logging is enabled or not.
      *
@@ -906,6 +909,7 @@ public final class CORSFilter implements Filter {
             + "request.headers";
 
     // -------------------------------------------------------------- Constants
+
     /**
      * Enumerates varies types of CORS requests. Also, provides utility methods
      * to determine the request type.

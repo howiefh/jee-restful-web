@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
-@EnableHypermediaSupport(type = { HypermediaType.HAL })
+@EnableHypermediaSupport(type = {HypermediaType.HAL})
 public class HypermediaConfiguration {
     private static final String HAL_OBJECT_MAPPER_BEAN_NAME = "_halObjectMapper";
 

@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.modules.sys.controller;
@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import io.github.howiefh.jeews.common.BaseSpringJUnit4Test;
 
 import java.util.UUID;
@@ -48,8 +49,8 @@ public class SignupControllerTest extends BaseSpringJUnit4Test {
         String requestBody = "{\"username\":\"fh" + UUID.randomUUID() + "\",\"password\":\"123456\",\"email\":\""
                 + UUID.randomUUID() + "@qq.om\"}";
         mockMvc.perform(
-                post("/signup").contentType(MediaType.APPLICATION_JSON).content(requestBody)
-                        .accept(MediaTypes.HAL_JSON)) // 执行请求
+                        post("/signup").contentType(MediaType.APPLICATION_JSON).content(requestBody)
+                                .accept(MediaTypes.HAL_JSON)) // 执行请求
                 .andExpect(status().isCreated()) // 201
                 .andExpect(jsonPath("$.msg").exists()) // 使用Json path验证JSON
                 .andExpect(content().contentType(MediaTypes.HAL_JSON)).andReturn();

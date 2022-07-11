@@ -12,7 +12,7 @@ RESTful Web 服务的简单实现，目前实现了注册、认证、用户管�
 
 1. 后端
 
-    使用Maven构建，主要使用的框架、第三方库
+   使用Maven构建，主要使用的框架、第三方库
 
     * Spring Framework 4.1
     * Apache Shiro 1.2
@@ -25,7 +25,7 @@ RESTful Web 服务的简单实现，目前实现了注册、认证、用户管�
 
 2. [前端](https://github.com/howiefh/restful-web-app)
 
-    使用Gulp构建，Bower进行包管理，主要使用的框架、第三方库
+   使用Gulp构建，Bower进行包管理，主要使用的框架、第三方库
 
     * AngularJS
     * Bootstrap
@@ -64,17 +64,22 @@ cd jee-restful-web
 # [API]
 
 ## 认证
-认证使用 Json Web Token，用户登录时提交用户名和密码，认证成功后会返回一个 *access_token* 以及必要的用户信息，服务器端并不保存状态，客户端保存状态并且之后的每次请求都应该在头部 *Authorization* 携带 *access_token*。
+
+认证使用 Json Web Token，用户登录时提交用户名和密码，认证成功后会返回一个 *access_token* 以及必要的用户信息，服务器端并不保存状态，客户端保存状态并且之后的每次请求都应该在头部 *Authorization*
+携带 *access_token*。
 
 ## 缓存
+
 服务器返回资源时会设置`Etag`头部，客户端应该在请求资源时携带`If-None-Match`头部。
 
 ## Media Types
+
 使用 [HAL+JSON](https://github.com/mikekelly/hal_specification/blob/master/hal_specification.md) media-type 来表现状态。
 
 请求使用最基本的JSON格式。
 
 ## 错误状态码
+
 如果发生错误，可能返回以下状态码：
 
 + Response 400 请求错误
@@ -83,9 +88,11 @@ cd jee-restful-web
 + Response 500 服务器错误
 
 ## 注册 [/signup]
+
 通过提交用户名、密码、邮箱可以注册一个账号
 
 ### 注册一个账号 [POST]
+
 通过提交包含 *username* *password* *email* 字段的json数据可以注册一个账号
 
 + Request (application/json)
@@ -99,9 +106,11 @@ cd jee-restful-web
 + Response 201
 
 ## 登录 [/login]
+
 通过提交用户名、密码可以登录系统
 
 ### 登录一个账号 [POST]
+
 通过提交包含 *username* *password* 字段的json数据可以登录一个账号
 
 + Request (application/json)
@@ -126,6 +135,7 @@ cd jee-restful-web
             }
 
 ## 用户列表 [/users{?page,size,sort}]
+
 获取所有用户列表
 
 可以有以下参数：
@@ -135,6 +145,7 @@ cd jee-restful-web
 + sort
 
 ### 获取用户列表 [GET]
+
 获取所有用户列表
 
 + Parameters
@@ -228,8 +239,8 @@ cd jee-restful-web
                 }
             }
 
-
 ### 删除多个用户 [DELETE]
+
 请求内容为将要删除的用户id数组
 
 + Request
@@ -245,6 +256,7 @@ cd jee-restful-web
 + Response 204
 
 ### 创建用户 [POST]
+
 创建一个新的用户
 
 + Request (application/json)
@@ -323,6 +335,7 @@ cd jee-restful-web
         }
 
 ## 单个用户 [/users/{id}]
+
 获取单个用户
 
 ### 获取单个用户 [GET]
@@ -402,6 +415,7 @@ cd jee-restful-web
         }
 
 ### 更新用户 [PUT]
+
 更新一个用户，可以只提交部分数据
 
 + Request (application/json)
@@ -481,6 +495,7 @@ cd jee-restful-web
         }
 
 ### 删除用户 [DELETE]
+
 + Response 204
 
 [API]: http://docs.jeerestfulweb.apiary.io

@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.modules.sys.resource;
@@ -20,14 +20,14 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 public class ResourcesAssembler {
     /**
      * 将实体集entities转化为Resources
-     * 
+     *
      * @param entities
      * @param assembler
      * @param clazz
      * @return
      */
     public static <T, D extends ResourceSupport> Resources<D> toResources(Iterable<T> entities,
-            ResourceAssemblerSupport<T, D> assembler, Class<?> clazz) {
+                                                                          ResourceAssemblerSupport<T, D> assembler, Class<?> clazz) {
         Link link = linkTo(clazz).withSelfRel();
         Resources<D> resources = new Resources<>(assembler.toResources(entities), link);
         return resources;

@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.common.dao;
@@ -13,7 +13,7 @@ import org.springframework.data.repository.Repository;
 
 /**
  * 增删改查的基本接口
- * 
+ *
  * @author howiefh
  */
 public interface CrudDao<T, ID extends Serializable> extends Repository<T, ID> {

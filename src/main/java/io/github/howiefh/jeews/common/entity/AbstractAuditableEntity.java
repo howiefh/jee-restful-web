@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.common.entity;
@@ -38,7 +38,7 @@ public abstract class AbstractAuditableEntity<U, ID extends Serializable> extend
 
     /**
      * Returns the user who created this entity.
-     * 
+     *
      * @return the createdBy
      */
     public U getCreatedBy() {
@@ -47,7 +47,7 @@ public abstract class AbstractAuditableEntity<U, ID extends Serializable> extend
 
     /**
      * Sets the user who created this entity.
-     * 
+     *
      * @param createdBy
      *            the creating entity to set
      */
@@ -57,7 +57,7 @@ public abstract class AbstractAuditableEntity<U, ID extends Serializable> extend
 
     /**
      * Returns the creation date of the entity.
-     * 
+     *
      * @return the createdDate
      */
     public Date getCreatedDate() {
@@ -66,7 +66,7 @@ public abstract class AbstractAuditableEntity<U, ID extends Serializable> extend
 
     /**
      * Sets the creation date of the entity.
-     * 
+     *
      * @param creationDate
      *            the creation date to set
      */
@@ -76,7 +76,7 @@ public abstract class AbstractAuditableEntity<U, ID extends Serializable> extend
 
     /**
      * Returns the user who modified the entity lastly.
-     * 
+     *
      * @return the lastModifiedBy
      */
     public U getLastModifiedBy() {
@@ -85,7 +85,7 @@ public abstract class AbstractAuditableEntity<U, ID extends Serializable> extend
 
     /**
      * Sets the user who modified the entity lastly.
-     * 
+     *
      * @param lastModifiedBy
      *            the last modifying entity to set
      */
@@ -95,7 +95,7 @@ public abstract class AbstractAuditableEntity<U, ID extends Serializable> extend
 
     /**
      * Returns the date of the last modification.
-     * 
+     *
      * @return the lastModifiedDate
      */
     public Date getLastModifiedDate() {
@@ -104,7 +104,7 @@ public abstract class AbstractAuditableEntity<U, ID extends Serializable> extend
 
     /**
      * Sets the date of the last modification.
-     * 
+     *
      * @param lastModifiedDate
      *            the date of the last modification to set
      */

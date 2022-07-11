@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.common;
@@ -20,8 +20,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 // 默认是src/main/webapp
 @WebAppConfiguration(value = "src/main/webapp")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextHierarchy({ @ContextConfiguration(name = "parent", locations = "classpath:config/spring-config.xml"),
-    @ContextConfiguration(name = "child", locations = "classpath:config/spring-mvc.xml") })
+@ContextHierarchy({@ContextConfiguration(name = "parent", locations = "classpath:config/spring-config.xml"),
+        @ContextConfiguration(name = "child", locations = "classpath:config/spring-mvc.xml")})
 public abstract class BaseSpringJUnit4Test extends AbstractJUnit4SpringContextTests {
 
 }

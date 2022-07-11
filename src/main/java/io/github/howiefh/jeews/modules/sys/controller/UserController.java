@@ -50,7 +50,7 @@ public class UserController {
     public HttpEntity<PagedResources<UserResource>> getList(
             // @SortDefaults see
             // http://terasolunaorg.github.io/guideline/1.0.x/en/ArchitectureInDetail/Pagination.html#implementation-of-application-layer
-            @PageableDefault(size = 10, page = 0, sort = { "id" }, direction = Direction.ASC) Pageable pageable,
+            @PageableDefault(size = 10, page = 0, sort = {"id"}, direction = Direction.ASC) Pageable pageable,
             User user) {
         Page<User> users = userService.findPageBy(pageable, user);
         return new ResponseEntity<>(assembler.toResource(users, new UserResourceAssembler()), HttpStatus.OK);

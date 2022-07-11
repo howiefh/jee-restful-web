@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import io.github.howiefh.jeews.common.BaseSpringJUnit4Test;
 import io.github.howiefh.jeews.common.shiro.ShiroTestUtils;
 import io.github.howiefh.jeews.modules.sys.entity.User;
@@ -70,11 +71,11 @@ public class UserControllerTest extends BaseSpringJUnit4Test {
     @Test
     public void testGetList() throws Exception {
         mockMvc.perform(
-                get("/users?page=0&size=10&sort=id,asc&sort=username,desc&username=user").accept(MediaTypes.HAL_JSON)) // 执行请求
+                        get("/users?page=0&size=10&sort=id,asc&sort=username,desc&username=user").accept(MediaTypes.HAL_JSON)) // 执行请求
                 .andExpect(status().isOk()) // 200
                 .andExpect(content().contentType(MediaTypes.HAL_JSON)); // 验证响应contentType
         mockMvc.perform(
-                get("/users?page=0&size=10&sort=id,asc&sort=username,desc&email=10").accept(MediaTypes.HAL_JSON)) // 执行请求
+                        get("/users?page=0&size=10&sort=id,asc&sort=username,desc&email=10").accept(MediaTypes.HAL_JSON)) // 执行请求
                 .andExpect(status().isOk()) // 200
                 .andExpect(content().contentType(MediaTypes.HAL_JSON)); // 验证响应contentType
         mockMvc.perform(get("/users?page=0&size=10&sort=id,asc").accept(MediaTypes.HAL_JSON)) // 执行请求
@@ -114,11 +115,11 @@ public class UserControllerTest extends BaseSpringJUnit4Test {
         // requestBody = "{\"id\":"+id+",\"username\":\"user" + id +
         // "\",\"password\":\"123456\",\"roles\":[1]}";
         mockMvc.perform(
-                put("/users/{id}", id).contentType(MediaType.APPLICATION_JSON).content(requestBody)
-                        .accept(MediaTypes.HAL_JSON)) // 执行请求
+                        put("/users/{id}", id).contentType(MediaType.APPLICATION_JSON).content(requestBody)
+                                .accept(MediaTypes.HAL_JSON)) // 执行请求
                 .andExpect(status().isOk()) // 200
                 .andExpect(jsonPath("$.id").value(id)) // 使用Json path验证JSON
-                                                       // 请参考http://goessner.net/articles/JsonPath/
+                // 请参考http://goessner.net/articles/JsonPath/
                 .andExpect(content().contentType(MediaTypes.HAL_JSON)); // 验证响应contentType
 
         String errorBody = "{username:user2,password:123456,roles:[1]}";
@@ -128,7 +129,7 @@ public class UserControllerTest extends BaseSpringJUnit4Test {
                                 .accept(MediaType.APPLICATION_JSON)) // 执行请求
                 .andExpect(status().isInternalServerError()) // 500错误请求
                 .andExpect(jsonPath("$.code").value(500 + "")) // 使用Json
-                                                               // path验证JSON
+                // path验证JSON
                 .andReturn();
 
         assertTrue(HttpMessageNotReadableException.class.isAssignableFrom(result.getResolvedException().getClass()));// 错误的请求内容体
@@ -142,7 +143,7 @@ public class UserControllerTest extends BaseSpringJUnit4Test {
         mockMvc.perform(delete("/users/?id={id}", 0L).accept(MediaType.APPLICATION_JSON)) // 执行请求
                 .andExpect(status().isInternalServerError()) // 500错误请求
                 .andExpect(jsonPath("$.code").value(500 + "")) // 使用Json
-                                                               // path验证JSON
+                // path验证JSON
                 .andReturn();
     }
 
@@ -162,8 +163,8 @@ public class UserControllerTest extends BaseSpringJUnit4Test {
             ids.add(id);
         }
         mockMvc.perform(
-                delete("/users").contentType(MediaType.APPLICATION_JSON).content(ids.toString())
-                        .accept(MediaTypes.HAL_JSON)) // 执行请求
+                        delete("/users").contentType(MediaType.APPLICATION_JSON).content(ids.toString())
+                                .accept(MediaTypes.HAL_JSON)) // 执行请求
                 .andExpect(status().isNoContent()); // 204
     }
 

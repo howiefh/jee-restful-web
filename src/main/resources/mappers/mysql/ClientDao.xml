@@ -1,100 +1,100 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.howiefh.jeews.modules.oauth2.dao.ClientDao">
-  <!-- 加keyProperty和useGenerateKeys属性可以使返回主键值 -->
-  <insert id="save" useGeneratedKeys="true" keyProperty="id">
-    insert
-    into oauth2_client (id,client_name,client_id,client_secret)
-    values
-    (#{id},#{clientName},#{clientId},#{clientSecret})
-  </insert>
-  
-  <select id="findOne" resultType="Client">
-    select * from oauth2_client where
-    id = #{id}
-  </select>
-  
-  <select id="countBy" resultType="long">
-    <if test="param.clientName != null and param.clientName != ''">
-      <bind name="_clientName" value="'%' + param.clientName + '%'" />
-    </if>
-    select count(0) from oauth2_client
-    <where>
-      <if test="param.clientName != null and param.clientName != ''">
-        client_name like #{_clientName}
-      </if>
-    </where>
-  </select>
-  
-  <select id="count" resultType="long">
-    select count(0) from oauth2_client
-  </select>
-  
-  <select id="findAll" resultType="Client">
-    select * from oauth2_client
-  </select>
-  
-  <select id="findByClientId" resultType="Client">
-    select * from oauth2_client
-    where client_id like #{clientId}
-  </select>
-  
-  <select id="findByClientName" resultType="Client">
-    select * from oauth2_client
-    where client_Name like #{clientName}
-  </select>
-  
-  <select id="findByClientSecret" resultType="Client">
-    select * from oauth2_client
-    where client_secret like #{clientSecret}
-  </select>
-  
-  <select id="findPage" resultType="Client">
-    select * from oauth2_client
-    order by id limit #{offset}, #{pageSize}
-  </select>
-  
-  <select id="findPageBy" resultType="Client">
-    <if test="param.clientName != null and param.clientName != ''">
-      <bind name="_clientName" value="'%' + param.clientName + '%'" />
-    </if>
-    select * from oauth2_client
-    <where>
-      <if test="param.clientName != null and param.clientName != ''">
-        client_name like #{_clientName}
-      </if>
-    </where>
-    order by
-    <foreach item="item" collection="page.sort" separator=",">
-      ${item.property} ${item.direction}
-    </foreach>
-    limit #{page.offset}, #{page.pageSize}
-  </select>
-  
-  <select id="findByName" resultType="Client">
-    select * from oauth2_client
-    where client_name like #{clientName}
-  </select>
-  
-  <update id="update">
-    update oauth2_client
-    <set>
-      <if test="clientName != null">client_name=#{clientName}</if>
-    </set>
-    where id = #{id}
-  </update>
-  
-  <delete id="delete">
-    delete from oauth2_client
-    where id = #{id}
-  </delete>
-  
-  <delete id="deleteBatch" parameterType="java.util.List">
-    delete from oauth2_client
-    where id in
-    <foreach item="item" index="index" collection="ids" open="("
-      separator="," close=")">
-      #{item}
-    </foreach>
-  </delete>
+    <!-- 加keyProperty和useGenerateKeys属性可以使返回主键值 -->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert
+        into oauth2_client (id,client_name,client_id,client_secret)
+        values
+        (#{id},#{clientName},#{clientId},#{clientSecret})
+    </insert>
+
+    <select id="findOne" resultType="Client">
+        select * from oauth2_client where
+        id = #{id}
+    </select>
+
+    <select id="countBy" resultType="long">
+        <if test="param.clientName != null and param.clientName != ''">
+            <bind name="_clientName" value="'%' + param.clientName + '%'"/>
+        </if>
+        select count(0) from oauth2_client
+        <where>
+            <if test="param.clientName != null and param.clientName != ''">
+                client_name like #{_clientName}
+            </if>
+        </where>
+    </select>
+
+    <select id="count" resultType="long">
+        select count(0) from oauth2_client
+    </select>
+
+    <select id="findAll" resultType="Client">
+        select * from oauth2_client
+    </select>
+
+    <select id="findByClientId" resultType="Client">
+        select * from oauth2_client
+        where client_id like #{clientId}
+    </select>
+
+    <select id="findByClientName" resultType="Client">
+        select * from oauth2_client
+        where client_Name like #{clientName}
+    </select>
+
+    <select id="findByClientSecret" resultType="Client">
+        select * from oauth2_client
+        where client_secret like #{clientSecret}
+    </select>
+
+    <select id="findPage" resultType="Client">
+        select * from oauth2_client
+        order by id limit #{offset}, #{pageSize}
+    </select>
+
+    <select id="findPageBy" resultType="Client">
+        <if test="param.clientName != null and param.clientName != ''">
+            <bind name="_clientName" value="'%' + param.clientName + '%'"/>
+        </if>
+        select * from oauth2_client
+        <where>
+            <if test="param.clientName != null and param.clientName != ''">
+                client_name like #{_clientName}
+            </if>
+        </where>
+        order by
+        <foreach item="item" collection="page.sort" separator=",">
+            ${item.property} ${item.direction}
+        </foreach>
+        limit #{page.offset}, #{page.pageSize}
+    </select>
+
+    <select id="findByName" resultType="Client">
+        select * from oauth2_client
+        where client_name like #{clientName}
+    </select>
+
+    <update id="update">
+        update oauth2_client
+        <set>
+            <if test="clientName != null">client_name=#{clientName}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from oauth2_client
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from oauth2_client
+        where id in
+        <foreach item="item" index="index" collection="ids" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

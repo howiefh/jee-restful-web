@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.modules.oauth2.controller;
@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import io.github.howiefh.jeews.common.BaseSpringJUnit4Test;
 import io.github.howiefh.jeews.common.shiro.ShiroTestUtils;
 import io.github.howiefh.jeews.modules.oauth2.shiro.filter.TokenFilter;
@@ -111,9 +112,9 @@ public class OAuthTest extends BaseSpringJUnit4Test {
         MvcResult result = mockMvc
                 .perform(
                         get("/authentication").param("client_id", clientID).param("response_type", responseType)
-                        .param("redirect_uri", redirectUri).param("state", "public")
-                        .accept(MediaTypes.HAL_JSON)).andExpect(status().isFound()) // 302
-                        .andReturn();
+                                .param("redirect_uri", redirectUri).param("state", "public")
+                                .accept(MediaTypes.HAL_JSON)).andExpect(status().isFound()) // 302
+                .andReturn();
         String redirect = result.getResponse().getRedirectedUrl();
         assertTrue(redirect.matches(".*code=.*"));
 
@@ -127,20 +128,20 @@ public class OAuthTest extends BaseSpringJUnit4Test {
         result = mockMvc
                 .perform(
                         post("/accessToken").param("code", code).param("client_id", clientID)
-                        .param("client_secret", clientSecret).param("grant_type", grantType)
-                        .param("redirect_uri", redirectUri).contentType("application/x-www-form-urlencoded")
-                        .accept(MediaTypes.HAL_JSON)).andExpect(status().isOk()) // 200
-                        .andExpect(jsonPath("$.expires_in").value(3600)).andReturn();
+                                .param("client_secret", clientSecret).param("grant_type", grantType)
+                                .param("redirect_uri", redirectUri).contentType("application/x-www-form-urlencoded")
+                                .accept(MediaTypes.HAL_JSON)).andExpect(status().isOk()) // 200
+                .andExpect(jsonPath("$.expires_in").value(3600)).andReturn();
 
         String content = result.getResponse().getContentAsString();
         JSONObject json = new JSONObject(content);
         String accessToken = json.get("access_token").toString();
         mockMvc.perform(get("/users/1").header("Authorization", "Bearer " + accessToken).accept(MediaTypes.HAL_JSON))
-        .andExpect(status().isOk()) // 200
-        .andExpect(content().contentType(MediaTypes.HAL_JSON)) // 验证响应contentType
-        .andReturn();
+                .andExpect(status().isOk()) // 200
+                .andExpect(content().contentType(MediaTypes.HAL_JSON)) // 验证响应contentType
+                .andReturn();
         mockMvc.perform(get("/users/1")).andExpect(status().isUnauthorized()) // 401
-        .andReturn();
+                .andReturn();
     }
 
     @Test
@@ -149,9 +150,9 @@ public class OAuthTest extends BaseSpringJUnit4Test {
         MvcResult result = mockMvc
                 .perform(
                         get("/authentication").param("client_id", clientID).param("response_type", responseType)
-                        .param("redirect_uri", redirectUri).param("state", "public")
-                        .accept(MediaTypes.HAL_JSON)).andExpect(status().isFound()) // 302
-                        .andReturn();
+                                .param("redirect_uri", redirectUri).param("state", "public")
+                                .accept(MediaTypes.HAL_JSON)).andExpect(status().isFound()) // 302
+                .andReturn();
         String redirect = result.getResponse().getRedirectedUrl();
         assertTrue(redirect.matches(".*access_token=.*"));
 
@@ -163,10 +164,10 @@ public class OAuthTest extends BaseSpringJUnit4Test {
         }
 
         mockMvc.perform(get("/users/1").header("Authorization", "Bearer " + accessToken).accept(MediaTypes.HAL_JSON))
-        .andExpect(status().isOk()) // 200
-        .andExpect(content().contentType(MediaTypes.HAL_JSON)) // 验证响应contentType
-        .andReturn();
+                .andExpect(status().isOk()) // 200
+                .andExpect(content().contentType(MediaTypes.HAL_JSON)) // 验证响应contentType
+                .andReturn();
         mockMvc.perform(get("/users/1")).andExpect(status().isUnauthorized()) // 401
-        .andReturn();
+                .andReturn();
     }
 }

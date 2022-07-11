@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.common.entity;
@@ -23,7 +23,7 @@ public abstract class AbstractEntity<ID extends Serializable> implements Persist
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.springframework.data.domain.Persistable#getId()
      */
     @Override
@@ -33,7 +33,7 @@ public abstract class AbstractEntity<ID extends Serializable> implements Persist
 
     /**
      * Set the id of the entity
-     * 
+     *
      * @param id
      */
     public void setId(ID id) {
@@ -42,7 +42,7 @@ public abstract class AbstractEntity<ID extends Serializable> implements Persist
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.springframework.data.domain.Persistable#isNew()
      */
     @Override
@@ -52,7 +52,7 @@ public abstract class AbstractEntity<ID extends Serializable> implements Persist
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -62,7 +62,7 @@ public abstract class AbstractEntity<ID extends Serializable> implements Persist
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -83,7 +83,7 @@ public abstract class AbstractEntity<ID extends Serializable> implements Persist
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override

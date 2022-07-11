@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.common.dao;
@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 
 /**
  * 有分页功能的Dao接口
- * 
+ *
  * @author howiefh
  */
 public interface PagingAndSortingDao<T, ID extends Serializable> extends CrudDao<T, ID> {

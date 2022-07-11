@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.modules.sys.suite;
@@ -19,8 +19,8 @@ import org.junit.runners.Suite;
  * @author howiefh
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ UserDaoTest.class, UserControllerTest.class, LoginControllerTest.class,
-        SignupControllerTest.class })
+@Suite.SuiteClasses({UserDaoTest.class, UserControllerTest.class, LoginControllerTest.class,
+        SignupControllerTest.class})
 public class UserTestSuite {
 
 }

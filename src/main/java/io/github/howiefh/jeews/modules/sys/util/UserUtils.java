@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.modules.sys.util;
@@ -21,7 +21,7 @@ import org.apache.shiro.subject.Subject;
 public class UserUtils {
     /**
      * 生成DataEntity类中的公共字段
-     * 
+     *
      * @param entity
      */
     public static void genCommonFiled(DataEntity entity) {
@@ -37,7 +37,7 @@ public class UserUtils {
 
     /**
      * 获取当前登陆用户
-     * 
+     *
      * @return
      */
     public static User getCurrentUser() {

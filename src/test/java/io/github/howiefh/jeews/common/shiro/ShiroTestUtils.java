@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 
 /**
  * 在单元测试中的Shiro工具类
- * 
+ *
  * @author calvin
  */
 public class ShiroTestUtils {

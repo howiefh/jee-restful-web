@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.modules.sys.security.token;
@@ -31,7 +31,7 @@ public class JsonWebToken implements AuthenticationToken {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.apache.shiro.authc.AuthenticationToken#getPrincipal()
      */
     @Override
@@ -41,7 +41,7 @@ public class JsonWebToken implements AuthenticationToken {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.apache.shiro.authc.AuthenticationToken#getCredentials()
      */
     @Override

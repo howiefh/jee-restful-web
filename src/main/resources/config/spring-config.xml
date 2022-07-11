@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-  xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
-  xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
         http://www.springframework.org/schema/beans 
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context 
@@ -12,103 +13,104 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd
         "
-  default-lazy-init="true">
+       default-lazy-init="true">
 
-  <!-- 加载配置属性文件 -->
-  <context:property-placeholder location="classpath:config/jeews.properties" />
+    <!-- 加载配置属性文件 -->
+    <context:property-placeholder location="classpath:config/jeews.properties"/>
 
-  <!-- 使用Annotation自动注册Bean，解决事物失效问题 http://jinnianshilongnian.iteye.com/blog/1762632： 
-    在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。 -->
-  <!-- base-package 如果多个，用“,”分隔 -->
-  <!-- 可以去掉context:annotation-config -->
-  <context:component-scan base-package="io.github.howiefh.jeews">
-    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
-  </context:component-scan>
+    <!-- 使用Annotation自动注册Bean，解决事物失效问题 http://jinnianshilongnian.iteye.com/blog/1762632：
+      在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。 -->
+    <!-- base-package 如果多个，用“,”分隔 -->
+    <!-- 可以去掉context:annotation-config -->
+    <context:component-scan base-package="io.github.howiefh.jeews">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
-  <!-- 开启AOP监听 只对当前配置文件有效 -->
-  <aop:aspectj-autoproxy expose-proxy="true"/>
-  
-  <!-- 数据源 -->
-  <!--see https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_DruidDataSource%E5%8F%82%E8%80%83%E9%85%8D%E7%BD%AE -->
-  <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-    <!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
-    <property name="driverClassName" value="${jdbc.driver}" />
-    <!-- 基本属性 url、user、password -->
-    <property name="url" value="${jdbc.url}" />
-    <property name="username" value="${jdbc.username}" />
-    <property name="password" value="${jdbc.password}" />
+    <!-- 开启AOP监听 只对当前配置文件有效 -->
+    <aop:aspectj-autoproxy expose-proxy="true"/>
 
-    <!-- 配置初始化大小、最小、最大 -->
-    <property name="initialSize" value="${dataSource.initialSize}" />
-    <property name="minIdle" value="${dataSource.minIdle}" />
-    <property name="maxActive" value="${dataSource.maxActive}" />
+    <!-- 数据源 -->
+    <!--see https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_DruidDataSource%E5%8F%82%E8%80%83%E9%85%8D%E7%BD%AE -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
 
-    <!-- 配置获取连接等待超时的时间 -->
-    <property name="maxWait" value="${dataSource.maxWait}" />
-    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-    <property name="timeBetweenEvictionRunsMillis"
-      value="${dataSource.timeBetweenEvictionRunsMillis}" />
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="${dataSource.initialSize}"/>
+        <property name="minIdle" value="${dataSource.minIdle}"/>
+        <property name="maxActive" value="${dataSource.maxActive}"/>
 
-    <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-    <property name="minEvictableIdleTimeMillis" value="${dataSource.minEvictableIdleTimeMillis}" />
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${dataSource.maxWait}"/>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis"
+                  value="${dataSource.timeBetweenEvictionRunsMillis}"/>
 
-    <property name="validationQuery" value="${dataSource.validationQuery}" />
-    <property name="testWhileIdle" value="${dataSource.testWhileIdle}" />
-    <property name="testOnBorrow" value="${dataSource.testOnBorrow}" />
-    <property name="testOnReturn" value="${dataSource.testOnReturn}" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${dataSource.minEvictableIdleTimeMillis}"/>
 
-    <!-- 打开PSCache，并且指定每个连接上PSCache的大小 如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。 -->
-    <property name="poolPreparedStatements" value="${dataSource.poolPreparedStatements}" />
-    <property name="maxPoolPreparedStatementPerConnectionSize" value="${dataSource.maxPoolPreparedStatementPerConnectionSize}" />
+        <property name="validationQuery" value="${dataSource.validationQuery}"/>
+        <property name="testWhileIdle" value="${dataSource.testWhileIdle}"/>
+        <property name="testOnBorrow" value="${dataSource.testOnBorrow}"/>
+        <property name="testOnReturn" value="${dataSource.testOnReturn}"/>
 
-    <!-- 配置监控统计拦截的filters -->
-    <property name="filters" value="${dataSource.filters}" />
-  </bean>
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。 -->
+        <property name="poolPreparedStatements" value="${dataSource.poolPreparedStatements}"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="${dataSource.maxPoolPreparedStatementPerConnectionSize}"/>
 
-  <!-- 使用jDBC事务 -->
-  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-    <property name="dataSource" ref="dataSource" />
-  </bean>
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="${dataSource.filters}"/>
+    </bean>
 
-  <!-- AOP配置事务 -->
-  <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
-    <tx:attributes>
-      <tx:method name="get*" propagation="REQUIRED" read-only="true" />
-      <tx:method name="count*" propagation="REQUIRED" read-only="true" />
-      <tx:method name="find*" propagation="REQUIRED" read-only="true" />
-      <tx:method name="list*" propagation="REQUIRED" read-only="true" />
-      <tx:method name="delete*" propagation="REQUIRED" />
-      <tx:method name="update*" propagation="REQUIRED" />
-      <tx:method name="insert*" propagation="REQUIRED" />
-      <tx:method name="*" propagation="REQUIRED" />
-    </tx:attributes>
-  </tx:advice>
+    <!-- 使用jDBC事务 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
 
-  <!-- 配置AOP切面 -->
-  <aop:config expose-proxy="true" proxy-target-class="true">
-    <aop:pointcut id="transactionPointcut" expression="execution(* io.github.howiefh.jeews..service.*.*(..))" />
-    <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
-  </aop:config>
+    <!-- AOP配置事务 -->
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="count*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="list*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
 
-  <!-- 使用annotation注解方式配置事务 使用CGLIB而非JDK的动态代理 -->
-  <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    <!-- 配置AOP切面 -->
+    <aop:config expose-proxy="true" proxy-target-class="true">
+        <aop:pointcut id="transactionPointcut" expression="execution(* io.github.howiefh.jeews..service.*.*(..))"/>
+        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>
+    </aop:config>
 
-  <!-- MyBatis -->
-  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-    <property name="dataSource" ref="dataSource" />
-    <property name="typeAliasesPackage" value="io.github.howiefh.jeews" />
-    <property name="mapperLocations" value="classpath:mappers/mysql/**/*.xml" />
-    <property name="configLocation" value="classpath:config/mybatis-config.xml"></property>
-  </bean>
+    <!-- 使用annotation注解方式配置事务 使用CGLIB而非JDK的动态代理 -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 
-  <!-- 扫描basePackage下所有以@Repository注解的接口 并且使它们 autowired -->
-  <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-    <property name="basePackage" value="io.github.howiefh.jeews"/>
-    <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
-  </bean>
- 
-  <import resource="classpath:config/spring-config-cache.xml"/>
-  <import resource="classpath:config/spring-config-shiro-stateless.xml"/>
-  <import resource="classpath:config/spring-config-captcha.xml"/>
+    <!-- MyBatis -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeAliasesPackage" value="io.github.howiefh.jeews"/>
+        <property name="mapperLocations" value="classpath:mappers/mysql/**/*.xml"/>
+        <property name="configLocation" value="classpath:config/mybatis-config.xml"></property>
+    </bean>
+
+    <!-- 扫描basePackage下所有以@Repository注解的接口 并且使它们 autowired -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="io.github.howiefh.jeews"/>
+        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+    </bean>
+
+    <import resource="classpath:config/spring-config-cache.xml"/>
+    <import resource="classpath:config/spring-config-shiro-stateless.xml"/>
+    <import resource="classpath:config/spring-config-captcha.xml"/>
 </beans> 

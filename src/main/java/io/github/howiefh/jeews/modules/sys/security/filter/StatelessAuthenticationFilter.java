@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.modules.sys.security.filter;
@@ -167,7 +167,7 @@ public class StatelessAuthenticationFilter extends AuthenticatingFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         boolean loggedIn = false; // false by default or we wouldn't be in this
-                                  // method
+        // method
         if (isTokenLoginAttempt(request, response)) {
             loggedIn = executeLogin(request, response);
         }
@@ -186,7 +186,7 @@ public class StatelessAuthenticationFilter extends AuthenticatingFilter {
      * <p/>
      * 如果请求中包含头部 {@link #AUTHORIZATION_HEADER AUTHORIZATION_HEADER}，并且其值中包含
      * {@link #getAuthzScheme() authzScheme}将返回true，否则返回false
-     * 
+     *
      * @param request
      *            请求
      * @param response

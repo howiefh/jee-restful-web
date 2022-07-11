@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.modules.oauth2.shiro.filter;
@@ -25,7 +25,7 @@ import org.apache.shiro.web.filter.AccessControlFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * 
+ *
  *
  * @author howiefh
  */
@@ -84,7 +84,7 @@ public class TokenFilter extends AccessControlFilter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.apache.shiro.web.filter.AccessControlFilter#isAccessAllowed(javax
      * .servlet.ServletRequest, javax.servlet.ServletResponse, java.lang.Object)

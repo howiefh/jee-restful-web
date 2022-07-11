@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ehcache>
 <ehcache name="jeews">
-  <diskStore path="java.io.tmpdir" />
+    <diskStore path="java.io.tmpdir"/>
 
-  <defaultCache maxEntriesLocalHeap="1000" eternal="false"
-    timeToIdleSeconds="3600" timeToLiveSeconds="3600" overflowToDisk="false">
-  </defaultCache>
+    <defaultCache maxEntriesLocalHeap="1000" eternal="false"
+                  timeToIdleSeconds="3600" timeToLiveSeconds="3600" overflowToDisk="false">
+    </defaultCache>
 
-  <!-- shiro 会话缓存 不需要序列化到磁盘 此处我们放到db中了 此处cache没必要过期 因为我们存放到db了 -->
-  <cache name="shiro-activeSessionCache" maxEntriesLocalHeap="10000"
-    overflowToDisk="false" eternal="false" diskPersistent="false"
-    timeToLiveSeconds="0" timeToIdleSeconds="0" statistics="true" />
-    
-  <cache name="code-cache" maxEntriesLocalHeap="2000" eternal="false"
-    timeToIdleSeconds="3600" timeToLiveSeconds="0" overflowToDisk="false"
-    statistics="true">
-  </cache>
+    <!-- shiro 会话缓存 不需要序列化到磁盘 此处我们放到db中了 此处cache没必要过期 因为我们存放到db了 -->
+    <cache name="shiro-activeSessionCache" maxEntriesLocalHeap="10000"
+           overflowToDisk="false" eternal="false" diskPersistent="false"
+           timeToLiveSeconds="0" timeToIdleSeconds="0" statistics="true"/>
+
+    <cache name="code-cache" maxEntriesLocalHeap="2000" eternal="false"
+           timeToIdleSeconds="3600" timeToLiveSeconds="0" overflowToDisk="false"
+           statistics="true">
+    </cache>
 
 </ehcache>

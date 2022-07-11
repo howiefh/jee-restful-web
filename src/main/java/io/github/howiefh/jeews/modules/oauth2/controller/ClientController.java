@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2015 https://github.com/howiefh
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package io.github.howiefh.jeews.modules.oauth2.controller;
@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 
+ *
  *
  * @author howiefh
  */
@@ -57,7 +57,7 @@ public class ClientController {
     @RequiresPermissions("clients:view")
     @RequestMapping(value = "", method = RequestMethod.GET)
     public HttpEntity<PagedResources<ClientResource>> getList(
-            @PageableDefault(size = 10, page = 0, sort = { "id" }, direction = Direction.ASC) Pageable pageable,
+            @PageableDefault(size = 10, page = 0, sort = {"id"}, direction = Direction.ASC) Pageable pageable,
             Client Client) {
         Page<Client> Clients = clientService.findPageBy(pageable, Client);
         return new ResponseEntity<>(assembler.toResource(Clients, new ClientResourceAssembler()), HttpStatus.OK);

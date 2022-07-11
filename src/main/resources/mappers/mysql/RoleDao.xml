@@ -1,132 +1,133 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="io.github.howiefh.jeews.modules.sys.dao.RoleDao">
-  <resultMap id="BaseResultMap" type="Role">
-    <id column="r_id" property="id" jdbcType="BIGINT" />
-    <result column="r_name" property="name" jdbcType="VARCHAR" />
-    <result column="r_cnname" property="cnname" jdbcType="VARCHAR" />
-    <result column="r_available" property="available" jdbcType="BIT" />
-    <result column="r_created_at" property="createdAt" jdbcType="TIMESTAMP" />
-    <result column="r_updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
-    <association property="createdBy" javaType="User">
-      <id property="id" column="r_created_by"/>
-    </association>
-    <association property="updatedBy" javaType="User">
-      <id property="id" column="r_updated_by"/>
-    </association>
-    <collection property="menus" ofType="Menu" resultMap="io.github.howiefh.jeews.modules.sys.dao.MenuDao.BaseResultMap" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="Role">
+        <id column="r_id" property="id" jdbcType="BIGINT"/>
+        <result column="r_name" property="name" jdbcType="VARCHAR"/>
+        <result column="r_cnname" property="cnname" jdbcType="VARCHAR"/>
+        <result column="r_available" property="available" jdbcType="BIT"/>
+        <result column="r_created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="r_updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+        <association property="createdBy" javaType="User">
+            <id property="id" column="r_created_by"/>
+        </association>
+        <association property="updatedBy" javaType="User">
+            <id property="id" column="r_updated_by"/>
+        </association>
+        <collection property="menus" ofType="Menu"
+                    resultMap="io.github.howiefh.jeews.modules.sys.dao.MenuDao.BaseResultMap"/>
+    </resultMap>
 
-  <sql id="roleColumns">
-    r.id r_id,
-    r.name r_name,
-    r.cnname r_cnname,
-    r.available r_available,
-    r.created_by r_created_by,
-    r.created_at r_created_at,
-    r.updated_by r_updated_by,
-    r.updated_at r_updated_at
-  </sql>
-  <sql id="roleMenuColumns">
-    <include refid="roleColumns" />,
-    <include refid="io.github.howiefh.jeews.modules.sys.dao.MenuDao.menuColumns" />
-  </sql>
-  <sql id="roleJoins">
-    left outer join sys_role_menu rm on rm.role_id = r.id
-    left outer join sys_menu m on m.id = rm.role_id
-  </sql>
+    <sql id="roleColumns">
+        r.id r_id,
+        r.name r_name,
+        r.cnname r_cnname,
+        r.available r_available,
+        r.created_by r_created_by,
+        r.created_at r_created_at,
+        r.updated_by r_updated_by,
+        r.updated_at r_updated_at
+    </sql>
+    <sql id="roleMenuColumns">
+        <include refid="roleColumns"/>,
+        <include refid="io.github.howiefh.jeews.modules.sys.dao.MenuDao.menuColumns"/>
+    </sql>
+    <sql id="roleJoins">
+        left outer join sys_role_menu rm on rm.role_id = r.id
+        left outer join sys_menu m on m.id = rm.role_id
+    </sql>
 
-  <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="Role">
-    insert into sys_role (id, name, cnname,
-    available, created_by, created_at,
-    updated_by, updated_at)
-    values (
-    #{id,jdbcType=BIGINT},
-    #{name,jdbcType=VARCHAR},
-    #{cnname,jdbcType=VARCHAR},
-    #{available,jdbcType=BIT},
-    #{createdBy.id,jdbcType=BIGINT},
-    #{createdAt,jdbcType=TIMESTAMP},
-    #{updatedBy.id,jdbcType=BIGINT},
-    #{updatedAt,jdbcType=TIMESTAMP}
-    )
-  </insert>
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="Role">
+        insert into sys_role (id, name, cnname,
+        available, created_by, created_at,
+        updated_by, updated_at)
+        values (
+        #{id,jdbcType=BIGINT},
+        #{name,jdbcType=VARCHAR},
+        #{cnname,jdbcType=VARCHAR},
+        #{available,jdbcType=BIT},
+        #{createdBy.id,jdbcType=BIGINT},
+        #{createdAt,jdbcType=TIMESTAMP},
+        #{updatedBy.id,jdbcType=BIGINT},
+        #{updatedAt,jdbcType=TIMESTAMP}
+        )
+    </insert>
 
-  <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
-    select
-    <include refid="roleMenuColumns" />
-    from sys_role r
-    <include refid="roleJoins" />
-    where r.id = #{id,jdbcType=BIGINT}
-  </select>
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="roleMenuColumns"/>
+        from sys_role r
+        <include refid="roleJoins"/>
+        where r.id = #{id,jdbcType=BIGINT}
+    </select>
 
-  <select id="findAll" resultMap="BaseResultMap">
-    select
-    <include refid="roleColumns" />
-    from sys_role r
-  </select>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="roleColumns"/>
+        from sys_role r
+    </select>
 
-  <select id="findByName" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select
-    <include refid="roleMenuColumns" />
-    from sys_role r
-    <include refid="roleJoins" />
-    where r.name = #{name}
-  </select>
+    <select id="findByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="roleMenuColumns"/>
+        from sys_role r
+        <include refid="roleJoins"/>
+        where r.name = #{name}
+    </select>
 
-  <select id="findByCNName" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select
-    <include refid="roleMenuColumns" />
-    from sys_role r
-    <include refid="roleJoins" />
-    where cnname = #{cnname}
-  </select>
+    <select id="findByCNName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="roleMenuColumns"/>
+        from sys_role r
+        <include refid="roleJoins"/>
+        where cnname = #{cnname}
+    </select>
 
-  <select id="countBy" resultType="long">
-    select count(0) from sys_role
-  </select>
+    <select id="countBy" resultType="long">
+        select count(0) from sys_role
+    </select>
 
-  <select id="count" resultType="long">
-    select count(0) from sys_role
-  </select>
+    <select id="count" resultType="long">
+        select count(0) from sys_role
+    </select>
 
-  <update id="update" parameterType="Role">
-    update sys_role
-    set
-    name = #{name,jdbcType=VARCHAR},
-    cnname = #{cnname,jdbcType=VARCHAR},
-    available = #{available,jdbcType=BIT},
-    updated_by = #{updatedBy.id},
-    updated_at = #{updatedAt}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    <update id="update" parameterType="Role">
+        update sys_role
+        set
+        name = #{name,jdbcType=VARCHAR},
+        cnname = #{cnname,jdbcType=VARCHAR},
+        available = #{available,jdbcType=BIT},
+        updated_by = #{updatedBy.id},
+        updated_at = #{updatedAt}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
-  <delete id="delete" parameterType="java.lang.Long">
-    delete from
-    sys_role
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from
+        sys_role
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
 
-  <delete id="deleteBatch" parameterType="java.util.List">
-    delete from sys_role
-    where id in
-    <foreach item="item" index="index" collection="ids" open="("
-      separator="," close=")">
-      #{item}
-    </foreach>
-  </delete>
-  
-  <delete id="deleteRoleMenu">
-    delete from sys_role_menu where role_id = #{id}
-  </delete>
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from sys_role
+        where id in
+        <foreach item="item" index="index" collection="ids" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 
-  <insert id="saveRoleMenu">
-    insert
-    into sys_role_menu(role_id, menu_id)
-    values
-    <foreach collection="menus" item="menu" open="" separator=","
-      close="">
-      (#{id}, #{menu.id})
-    </foreach>
-  </insert>
+    <delete id="deleteRoleMenu">
+        delete from sys_role_menu where role_id = #{id}
+    </delete>
+
+    <insert id="saveRoleMenu">
+        insert
+        into sys_role_menu(role_id, menu_id)
+        values
+        <foreach collection="menus" item="menu" open="" separator=","
+                 close="">
+            (#{id}, #{menu.id})
+        </foreach>
+    </insert>
 </mapper>

@@ -9,7 +9,7 @@ import io.github.howiefh.jeews.modules.sys.entity.User;
 public interface UserDao extends PagingAndSortingDao<User, Long> {
     /**
      * 根据用户名查找用户
-     * 
+     *
      * @param username
      * @return
      */
@@ -17,7 +17,7 @@ public interface UserDao extends PagingAndSortingDao<User, Long> {
 
     /**
      * 删除用户角色关联数据
-     * 
+     *
      * @param user
      * @return
      */
@@ -25,7 +25,7 @@ public interface UserDao extends PagingAndSortingDao<User, Long> {
 
     /**
      * 插入用户角色关联数据
-     * 
+     *
      * @param user
      * @return
      */
@@ -33,7 +33,7 @@ public interface UserDao extends PagingAndSortingDao<User, Long> {
 
     /**
      * 删除用户组织关联数据
-     * 
+     *
      * @param user
      * @return
      */
@@ -41,7 +41,7 @@ public interface UserDao extends PagingAndSortingDao<User, Long> {
 
     /**
      * 插入用户组织关联数据
-     * 
+     *
      * @param user
      * @return
      */
