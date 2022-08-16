@@ -35,7 +35,7 @@
         <slf4j.version>1.7.12</slf4j.version>
         <log4j.version>2.17.1</log4j.version>
 
-        <shiro.version>1.8.0</shiro.version>
+        <shiro.version>1.9.1</shiro.version>
 
         <ehcache.version>2.6.11</ehcache.version>
         <ehcache-web.version>2.0.4</ehcache-web.version>
